@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  tick3d-fe:
+    image: ghcr.io/ngyngcphu/tick3d-fe:latest
+    ports:
+      - 7001:7001
+    container_name: tick3d-fe
+    restart: always
