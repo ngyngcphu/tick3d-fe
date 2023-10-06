@@ -17,11 +17,12 @@ export function useSidebarMenu() {
     setSelectedCategoryItem
   } = useMenuBarStore();
 
+  const [openSidebar, setOpenSidebar] = useState<boolean>(false);
+
   const SIDEBAR_ITEM_CLASSNAME =
     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold h-14 px-6 py-4 rounded-none text-gray/4 font-medium';
   const CATEGORYBAR_ITEM_CLASSNAME =
     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold px-6 rounded-none text-gray/4 font-medium';
-  const [openSidebar, setOpenSidebar] = useState<boolean>(false);
 
   const CategoryBar = useMemo(
     () => () => {
