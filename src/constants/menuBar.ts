@@ -1,5 +1,18 @@
-export const MAIN_MENU = {
-  sample: 'Sample',
+export const MENU_BAR = {
+  home: 'Home',
+  category: 'Categories',
   upload: 'Upload & print',
-  login: 'Login'
+  login: 'Log in',
+  signup: 'Sign up'
 };
+
+export const CATEGORY_LIST = [
+  'All things',
+  'Fashion',
+  'Hobby',
+  'Learning',
+  'Tools',
+  'Toys & Games',
+  'Art',
+  'Household'
+];

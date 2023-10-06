@@ -1,28 +1,41 @@
-import { MAIN_MENU } from '@constants';
+import { MENU_BAR } from '@constants';
 import { AppLayout } from '@layouts';
-import { LoginPage } from '@pages';
+import { LoginPage, SignupPage } from '@pages';
 
 export default function App() {
   return (
     <AppLayout
       menu={[
         {
-          type: 'main-item',
+          type: 'item',
           path: '/',
-          name: MAIN_MENU.sample,
+          name: MENU_BAR.home,
           element: <></>
         },
         {
-          type: 'main-item',
+          type: 'item',
+          path: '/category',
+          name: MENU_BAR.category,
+          element: <></>
+        },
+        {
+          type: 'item',
+          path: '/up',
+          name: MENU_BAR.upload,
+          element: <></>
+        },
+        'divider',
+        {
+          type: 'item',
           path: '/login',
-          name: MAIN_MENU.login,
+          name: MENU_BAR.login,
           element: <LoginPage />
         },
         {
-          type: 'main-item',
-          path: '/home',
-          name: MAIN_MENU.upload,
-          element: <></>
+          type: 'item',
+          path: '/signup',
+          name: MENU_BAR.signup,
+          element: <SignupPage />
         }
       ]}
     />

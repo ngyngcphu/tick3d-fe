@@ -6,7 +6,7 @@ type RoutesList = {
 
 type RouteItem = {
   name: string;
-  type: 'main-item' | 'sub-item';
+  type: 'item';
   path: string;
   element: React.ReactElement;
 };
@@ -24,6 +24,6 @@ type RouteSkeleton = {
   element: React.ReactElement;
 };
 
-type RouteMenuItem = RouteItem | RoutesList | RouteSkeleton | LogoutBtn;
+type RouteMenuItem = RouteItem | RoutesList | RouteSkeleton | LogoutBtn | 'divider';
 
 type RouteMenu = RouteMenuItem[];

@@ -1,13 +1,10 @@
-import { Chip } from '@material-tailwind/react';
+import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { AppDrawer, DesktopNavbar, ToggleSidebarBtn, useSidebarMenu } from '@components/common';
 import { ScreenSize } from '@constants';
 import { useScreenSize } from '@hooks';
 
-export const AppNavigation: Component<{ mainMenu: RouteMenu; subMenu: RouteMenu }> = ({
-  mainMenu,
-  subMenu
-}) => {
+export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
   const { screenSize } = useScreenSize();
   const { openSidebar, handleOpenSidebar, SidebarMenu } = useSidebarMenu();
 
@@ -15,21 +12,21 @@ export const AppNavigation: Component<{ mainMenu: RouteMenu; subMenu: RouteMenu 
     <div className='w-full max-h-[768px] px-6 lg:px-9 py-3 shadow-md lg:sticky'>
       <div className='flex items-center justify-between h-full'>
         <div className='flex items-center justify-between w-full lg:hidden'>
-          <div
-            className='cursor-pointer opacity-40 focus:opacity-100 active:opacity-100 mr-4'
-            onClick={handleOpenSidebar}
-          >
+          <div className='cursor-pointer' onClick={handleOpenSidebar}>
             <ToggleSidebarBtn open={openSidebar} />
           </div>
           <img className='w-12 h-12' src={tick3D} alt='tick3D-logo' />
-          <Chip className='normal-case' variant='outlined' value='Sign up' />
+          <div className='flex items-center gap-8'>
+            <MagnifyingGlassIcon strokeWidth={2} className='w-6 h-6 cursor-pointer' />
+            <ShoppingCartIcon strokeWidth={2} className='w-6 h-6 cursor-pointer' />
+          </div>
         </div>
         {screenSize < ScreenSize.LG ? (
           <AppDrawer open={openSidebar} onClose={handleOpenSidebar}>
-            <SidebarMenu mainMenu={mainMenu} subMenu={subMenu} />
+            <SidebarMenu menu={menu} />
           </AppDrawer>
         ) : (
-          <DesktopNavbar mainMenu={mainMenu} />
+          <DesktopNavbar menu={menu} />
         )}
       </div>
     </div>
