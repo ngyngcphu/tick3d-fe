@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { List, ListItem } from '@material-tailwind/react';
+import tick3D from '@assets/tick3D-logo.svg';
 import { ToggleSidebarBtn } from '@components/common';
 import { useMenuBarStore } from '@states/common';
 
@@ -16,16 +17,13 @@ export function useSidebarMenu() {
       ({ mainMenu, subMenu }) => {
         return (
           <>
-            <div className='h-11 pt-4 px-6 flex items-center gap-1 self-stretch'>
+            <div className='h-11 pt-4 px-6 flex items-center justify-between'>
+              <img className='w-10 h-10' src={tick3D} alt='tick3D-logo'></img>
               <div
                 className='cursor-pointer opacity-40 focus:opacity-100 active:opacity-100 mr-4'
                 onClick={() => setOpenSidebar(false)}
               >
                 <ToggleSidebarBtn open={openSidebar} />
-              </div>
-              <div className='flex'>
-                <img className='w-7 h-7 mr-2' src={''}></img>
-                <img className='w-7 h-7' src={''}></img>
               </div>
             </div>
             <div className='min-h-[90%] mt-10 flex flex-col justify-between pb-4'>
