@@ -18,7 +18,6 @@ export function useSidebarMenu() {
   } = useMenuBarStore();
 
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
-
   const SIDEBAR_ITEM_CLASSNAME =
     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold h-14 px-6 py-4 rounded-none text-gray/4 font-medium';
   const CATEGORYBAR_ITEM_CLASSNAME =
@@ -89,46 +88,49 @@ export function useSidebarMenu() {
                   if (menuItem === 'divider') {
                     return <hr key={idx} className='my-2 border-blue-gray-100' />;
                   }
-                  if (menuItem.name === MENU_BAR.category) {
+                  if (menuItem.type === 'item') {
+                    if (menuItem.name === MENU_BAR.category) {
+                      return (
+                        <Link key={idx} to={menuItem.path}>
+                          <ListItem
+                            className={
+                              SIDEBAR_ITEM_CLASSNAME +
+                              (selectedMenu === menuItem.name
+                                ? ' bg-blue-100 text-blue/1 font-bold'
+                                : '')
+                            }
+                            onClick={() => {
+                              setSelectedMenu(menuItem.name);
+                              setIsCategoryItem(true);
+                            }}
+                          >
+                            {menuItem.name}
+                            <ListItemSuffix>
+                              <ChevronRightIcon className='w-5 h-5' />
+                            </ListItemSuffix>
+                          </ListItem>
+                        </Link>
+                      );
+                    }
                     return (
-                      <ListItem
-                        key={idx}
-                        className={
-                          SIDEBAR_ITEM_CLASSNAME +
-                          (selectedMenu === menuItem.name
-                            ? ' bg-blue-100 text-blue/1 font-bold'
-                            : '')
-                        }
-                        onClick={() => {
-                          setSelectedMenu(menuItem.name);
-                          setIsCategoryItem(true);
-                        }}
-                      >
-                        {menuItem.name}
-                        <ListItemSuffix>
-                          <ChevronRightIcon className='w-5 h-5' />
-                        </ListItemSuffix>
-                      </ListItem>
+                      <Link key={idx} to={menuItem.path}>
+                        <ListItem
+                          className={
+                            SIDEBAR_ITEM_CLASSNAME +
+                            (selectedMenu === menuItem.name
+                              ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
+                              : '')
+                          }
+                          onClick={() => {
+                            setSelectedMenu(menuItem.name);
+                            setOpenSidebar(false);
+                          }}
+                        >
+                          {menuItem.name}
+                        </ListItem>
+                      </Link>
                     );
                   }
-                  return (
-                    <Link key={idx} to='#'>
-                      <ListItem
-                        className={
-                          SIDEBAR_ITEM_CLASSNAME +
-                          (selectedMenu === menuItem.name
-                            ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
-                            : '')
-                        }
-                        onClick={() => {
-                          setSelectedMenu(menuItem.name);
-                          setOpenSidebar(false);
-                        }}
-                      >
-                        {menuItem.name}
-                      </ListItem>
-                    </Link>
-                  );
                 })}
               </List>
             </div>
