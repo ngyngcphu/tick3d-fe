@@ -18,7 +18,15 @@ module.exports = withMT({
       decimal: 'decimal',
       circle: 'circle'
     },
-    extend: {}
+    extend: {
+      colors: {
+        'blue/1': '#1488D8',
+        'blue/2': '#030391',
+        'gray/1': '#F5F5F5',
+        'gray/3': '#ACB5BD',
+        'gray/4': '#495057'
+      }
+    }
   },
   plugins: []
 });

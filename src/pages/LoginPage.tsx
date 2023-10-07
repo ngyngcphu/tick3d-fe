@@ -3,9 +3,9 @@ import { toast } from 'react-toastify';
 import { Card, Input, Button, Typography } from '@material-tailwind/react';
 import { EnvelopeIcon, KeyIcon } from '@heroicons/react/24/outline';
 import { authService } from '@services';
-import { useUserStore } from '@states';
+import { useUserStore } from '@states/common';
 
-export function AuthPage() {
+export function LoginPage() {
   const { register, handleSubmit } = useForm<LoginFormData>();
 
   const { getUserData } = useUserStore();
