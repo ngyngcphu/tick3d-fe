@@ -15,20 +15,18 @@ const LINKS = [
 export function Footer() {
   const [email, setEmail] = useState('');
   return (
-    <footer className='relative w-full py-16 bg-black'>
-      <div className='grid grid-cols-3 justify-between gap-4 px-24 mb-16'>
+    <footer className='relative w-full py-8 lg:py-16 bg-black'>
+      <div className='grid grid-cols-2 justify-between lg:gap-4 px-8 lg:px-24 mb-16'>
         {LINKS.map(({ title, items }) => (
           <ul key={title}>
-            <Typography variant='small' color='white' className='mb-3 font-medium text-lg'>
+            <Typography color='white' className='mb-3 font-medium text-[14px] lg:text-[24px]'>
               {title}
             </Typography>
             {items.map((link) => (
               <li key={link}>
                 <Typography
-                  as='a'
-                  href='#'
                   color='white'
-                  className='py-1.5 font-normal transition-colors'
+                  className='py-1.5 font-normal transition-colors text-xs lg:text-base'
                 >
                   {link}
                 </Typography>
@@ -37,16 +35,16 @@ export function Footer() {
           </ul>
         ))}
       </div>
-      <div className='flex justify-between px-16 items-center'>
+      <div className='px-4 lg:px-16 flex flex-col lg:flex-row lg:justify-between lg:items-center'>
         <div className='text-white'>
           <Typography className='mb-4'>Nhận email của chúng tôi</Typography>
-          <div className='flex relative'>
+          <div className='flex relative lg:w-[400px] mb-4'>
             <Input
               type='email'
               label='Email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className='bg-white w-[300px]'
+              className='bg-white'
               crossOrigin=''
             ></Input>
             <Button
@@ -59,7 +57,7 @@ export function Footer() {
             </Button>
           </div>
         </div>
-        <div className='flex gap-4 text-white sm:justify-center'>
+        <div className='flex gap-4 text-white justify-center'>
           <Link to='https://www.facebook.com/'>
             <FaFacebook size='2rem' color='#fff' className='hover:bg-indigo-600 hover:text-white' />
           </Link>
