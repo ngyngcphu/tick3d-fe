@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { AppNavigation } from '@components/common';
+import { AppNavigation, Footer } from '@components/common';
 
 export const AppLayout: Component<{ menu: RouteMenu }> = ({ menu }) => {
   const routeItems = useMemo(() => {
@@ -25,6 +25,7 @@ export const AppLayout: Component<{ menu: RouteMenu }> = ({ menu }) => {
           ))}
         </Routes>
       </div>
+      <Footer />
     </div>
   );
 };

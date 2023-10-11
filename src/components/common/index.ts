@@ -5,5 +5,6 @@
 export * from './AppDrawer';
 export * from './AppNavigation';
 export * from './DesktopNavbar';
+export * from './Footer';
 export * from './SidebarMenu';
 export * from './ToggleSidebarBtn';
