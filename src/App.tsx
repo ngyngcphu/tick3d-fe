@@ -1,6 +1,6 @@
 import { MENU_BAR } from '@constants';
 import { AppLayout } from '@layouts';
-import { LoginPage, SignUpPage, HomePage } from '@pages';
+import { LoginPage, SignUpPage, HomePage, DetailModelPage } from '@pages';
 
 export default function App() {
   return (
@@ -36,6 +36,12 @@ export default function App() {
           path: '/signup',
           name: MENU_BAR.signup,
           element: <SignUpPage />
+        }
+      ]}
+      child={[
+        {
+          path: '/category/:id',
+          element: <DetailModelPage />
         }
       ]}
     />
