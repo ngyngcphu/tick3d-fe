@@ -3,36 +3,36 @@ import { Card, CardBody, Input, Button, Typography } from '@material-tailwind/re
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { authService } from '@services';
-import { useUserStore } from '@states/common';
 import * as yup from 'yup';
 
-export function LoginPage() {
-  const { getUserData } = useUserStore();
-
+export function SignUpPage() {
   const validateSchema = yup.object({
+    firstName: yup.string().required('Vui lòng nhập tên của bạn'),
+    lastName: yup.string(),
     email: yup.string().required('Vui lòng nhập email').email('Email không đúng định dạng'),
     password: yup
       .string()
       .required('Vui lòng nhập mật khẩu')
       .min(8, 'Vui lòng nhập tối thiểu 8 kí tự')
-  }) as yup.ObjectSchema<LoginFormData>;
+  }) as yup.ObjectSchema<SignUpFormData>;
 
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<LoginFormData>({
+  } = useForm<SignUpFormData>({
     defaultValues: {
+      firstName: '',
+      lastName: '',
       email: '',
       password: ''
     },
     resolver: yupResolver(validateSchema)
   });
 
-  const submit = async (data: LoginFormData) => {
+  const submit = async (data: SignUpFormData) => {
     try {
-      await authService.login(data);
-      await getUserData();
+      await authService.signUp(data);
     } catch (err) {
       const error = err as Error;
       toast.error(error.message);
@@ -50,7 +50,7 @@ export function LoginPage() {
       <Card className='bg-black/50 rounded-none' shadow={false}>
         <CardBody className='flex flex-col gap-8'>
           <Typography className='font-normal' variant='h2' color='white'>
-            Đăng nhập
+            Đăng ký tài khoản
           </Typography>
           <form
             className='flex flex-col gap-8 w-fit max-w-screen-lg'
@@ -58,8 +58,56 @@ export function LoginPage() {
           >
             <div className='flex flex-col gap-4 w-fit'>
               <div className='w-fit'>
+                <div className='flex w-fit gap-4'>
+                  <Input
+                    className=' text-white !rounded-none border-border-dark focus:border-white transition-all placeholder-shown:border-border-dark'
+                    placeholder=' '
+                    labelProps={{
+                      className:
+                        'before:rounded-tl-none after:rounded-tr-none text-border-dark before:border-border-dark after:border-border-dark peer-focus:before:!border-white peer-focus:text-white peer-focus:after:!border-white peer-placeholder-shown:text-border-dark',
+                      style: {
+                        top: '-0.45rem'
+                      }
+                    }}
+                    label='Họ'
+                    style={{
+                      WebkitTransition: 'background-color 5000s ease-in-out 0s',
+                      WebkitTextFillColor: 'white',
+                      caretColor: 'white'
+                    }}
+                    crossOrigin=''
+                    {...register('lastName', { minLength: 8, required: true })}
+                  />
+                  <Input
+                    className=' text-white !rounded-none border-border-dark focus:border-white transition-all placeholder-shown:border-border-dark'
+                    labelProps={{
+                      className:
+                        'before:rounded-tl-none after:rounded-tr-none text-border-dark before:border-border-dark after:border-border-dark peer-focus:before:!border-white peer-focus:text-white peer-focus:after:!border-white peer-placeholder-shown:text-border-dark',
+                      style: {
+                        top: '-0.45rem'
+                      }
+                    }}
+                    label='Tên'
+                    style={{
+                      WebkitTransition: 'background-color 5000s ease-in-out 0s',
+                      WebkitTextFillColor: 'white',
+                      caretColor: 'white'
+                    }}
+                    crossOrigin=''
+                    {...register('firstName', { minLength: 8, required: true })}
+                  />
+                </div>
+
+                {errors.email?.message && (
+                  <Typography color='red' variant='small'>
+                    {errors.email?.message}{' '}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
                 <Input
-                  className='min-w-[25rem] text-white !rounded-none border-border-dark focus:border-white transition-all placeholder-shown:border-border-dark'
+                  className='text-white !rounded-none border-border-dark focus:border-white transition-all placeholder-shown:border-border-dark'
                   labelProps={{
                     className:
                       'before:rounded-tl-none after:rounded-tr-none text-border-dark before:border-border-dark after:border-border-dark peer-focus:before:!border-white peer-focus:text-white peer-focus:after:!border-white peer-placeholder-shown:text-border-dark',
@@ -84,9 +132,9 @@ export function LoginPage() {
                 )}
               </div>
 
-              <div className='w-fit'>
+              <div>
                 <Input
-                  className='min-w-[25rem] text-white !rounded-none border-border-dark focus:border-white transition-all placeholder-shown:border-border-dark'
+                  className='text-white !rounded-none border-border-dark focus:border-white transition-all placeholder-shown:border-border-dark'
                   labelProps={{
                     className:
                       'before:rounded-tl-none after:rounded-tr-none text-border-dark before:border-border-dark after:border-border-dark peer-focus:before:!border-white peer-focus:text-white peer-focus:after:!border-white peer-placeholder-shown:text-border-dark',
@@ -94,6 +142,7 @@ export function LoginPage() {
                       top: '-0.45rem'
                     }
                   }}
+                  size='lg'
                   label='Mật khẩu'
                   type='password'
                   style={{
@@ -116,7 +165,7 @@ export function LoginPage() {
               className='py-2 px-8 bg-transparent border rounded-none border-white capitalize w-fit font-normal text-base'
               type='submit'
             >
-              Gửi
+              <div>Gửi</div>
             </Button>
           </form>
         </CardBody>
