@@ -4,4 +4,5 @@
 
 export * from './HomePage';
 export * from './LoginPage';
+export * from './PaymentCheckoutPage';
 export * from './SignUpPage';
