@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { AppNavigation } from '@components/common';
+import { AppNavigation, Footer } from '@components/common';
 
 export const AppLayout: Component<{ menu: RouteMenu }> = ({ menu }) => {
   const routeItems = useMemo(() => {
@@ -18,12 +18,13 @@ export const AppLayout: Component<{ menu: RouteMenu }> = ({ menu }) => {
   return (
     <div className='flex flex-col h-screen sm:min-h-screen'>
       <AppNavigation menu={menu} />
-      <div className='flex-1 h-100vh bg-gray-200'>
+      <div className='flex-1 h-screen overflow-y-scroll bg-gray-200'>
         <Routes>
           {routeItems.map((item) => (
             <Route path={item.path} element={item.element} key={item.path} />
           ))}
         </Routes>
+        <Footer />
       </div>
     </div>
   );

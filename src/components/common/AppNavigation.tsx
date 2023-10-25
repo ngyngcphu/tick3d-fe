@@ -9,7 +9,7 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
   const { openSidebar, handleOpenSidebar, SidebarMenu } = useSidebarMenu();
 
   return (
-    <div className='w-full max-h-[768px] px-6 lg:px-9 py-3 shadow-md lg:sticky'>
+    <div className='w-full max-h-[768px] px-6 lg:px-9 py-3 shadow-2xl z-10'>
       <div className='flex items-center justify-between h-full'>
         <div className='flex items-center justify-between w-full lg:hidden'>
           <div className='cursor-pointer' onClick={handleOpenSidebar}>

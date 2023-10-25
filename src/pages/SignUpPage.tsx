@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Card, CardBody, Input, Button, Typography } from '@material-tailwind/react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { authService } from '@services';
+import { authService } from '@services/common';
 import * as yup from 'yup';
 
 export function SignUpPage() {
