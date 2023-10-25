@@ -4,4 +4,6 @@
 
 export * from './auth';
 export * from './common';
+export * from './item';
+export * from './slide';
 export * from './user';

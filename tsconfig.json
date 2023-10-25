@@ -21,6 +21,7 @@
     "paths": {
       "@assets/*": ["src/assets/*"],
       "@components/common": ["src/components/common"],
+      "@components/home": ["src/components/home"],
       "@constants": ["src/constants"],
       "@hooks": ["src/hooks"],
       "@interfaces": ["src/interfaces"],
