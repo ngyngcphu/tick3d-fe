@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { slideService } from '@services';
+import { slideService } from '@services/home';
 
 export const useSlideStore = create<SlideStore>()((set) => ({
   slideStatus: 'UNINIT',

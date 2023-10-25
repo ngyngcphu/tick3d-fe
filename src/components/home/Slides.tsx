@@ -20,19 +20,22 @@ export const Slides: Component<{ slides: SlideData[] }> = ({ slides }) => {
       autoplayDelay={3000}
     >
       {slides.map((slide, index) => (
-        <div className='relative'>
+        <div key={index} className='relative'>
           <img
-            key={index}
             src={slide.src}
             alt={slide.alt}
-            className='h-[200px] object-cover w-full lg:h-[600px]'
+            className='h-[200px] object-cover w-full lg:h-[400px]'
           />
-          <div className='absolute bg-black opacity-40 w-full bottom-1/4 lg:w-[400px] lg:left-1/3 lg:top-1/3 text-center flex flex-col items-center text-white py-5'>
-            <Typography className='text-xl lg:text-[52px] font-bold mb-3 leading-tight'>
-              3D printing service
+          <div className='absolute bg-black opacity-40 w-full bottom-1/4 lg:w-[400px] lg:left-1/3 lg:top-[15%] text-center flex flex-col items-center text-white py-5'>
+            <Typography className='text-xl lg:text-[52px] font-bold mb-3 lg:mb-1 leading-tight'>
+              3D Printing Service
             </Typography>
-            <Typography className='text-sm lg:text-base mb-3'>Mẫu có sẵn hoặc tải lên</Typography>
-            <Button className='hover:bg-white hover:text-black'>Khám phá thêm</Button>
+            <Typography className='text-sm lg:text-base mb-3 lg:mb-1 font-extrabold'>
+              Mẫu có sẵn hoặc tải lên
+            </Typography>
+            <Button className='hover:bg-white hover:text-black font-extrabold'>
+              Khám phá thêm
+            </Button>
           </div>
         </div>
       ))}

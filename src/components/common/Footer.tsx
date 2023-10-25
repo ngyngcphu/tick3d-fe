@@ -1,24 +1,16 @@
-import { Typography, Input, Button } from '@material-tailwind/react';
 import { useState } from 'react';
-import { FaFacebook, FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-const LINKS = [
-  {
-    title: 'Đường dẫn nhanh',
-    items: ['Trang trí', 'Mô hình', 'Tải lên']
-  },
-  {
-    title: 'Thông tin',
-    items: ['Chúng tôi', 'Liên hệ', 'Chính sách vận chuyển']
-  }
-];
+import { Typography, Input, Button } from '@material-tailwind/react';
+import { HOME_LINKS, FOOTER_SOCIAL } from '@constants';
+
 export function Footer() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState<string>('');
+
   return (
     <footer className='relative w-full py-8 lg:py-16 bg-black'>
       <div className='grid grid-cols-2 justify-between lg:gap-4 px-8 lg:px-24 mb-16'>
-        {LINKS.map(({ title, items }) => (
-          <ul key={title}>
+        {HOME_LINKS.map(({ title, items }) => (
+          <ul key={title} className='list-disc text-white space-x-5'>
             <Typography color='white' className='mb-3 font-medium text-[14px] lg:text-[24px]'>
               {title}
             </Typography>
@@ -58,22 +50,11 @@ export function Footer() {
           </div>
         </div>
         <div className='flex gap-4 text-white justify-center'>
-          <Link to='https://www.facebook.com/'>
-            <FaFacebook size='2rem' color='#fff' className='hover:bg-indigo-600 hover:text-white' />
-          </Link>
-          <Link to='https://www.instagram.com/'>
-            <FaInstagram
-              size='2rem'
-              color='#fff'
-              className='hover:bg-indigo-600 hover:text-white'
-            />
-          </Link>
-          <Link to='https://twitter.com/home'>
-            <FaTiktok size='2rem' color='#fff' className='hover:bg-indigo-600 hover:text-white' />
-          </Link>
-          <Link to='https://www.linkedin.com/feed/'>
-            <FaYoutube size='2rem' color='#fff' className='hover:bg-indigo-600 hover:text-white' />
-          </Link>
+          {FOOTER_SOCIAL.map((item, index) => (
+            <Link key={index} to={item.url}>
+              <div className='text-3xl hover:text-indigo-600'>{item.icon}</div>
+            </Link>
+          ))}
         </div>
       </div>
     </footer>

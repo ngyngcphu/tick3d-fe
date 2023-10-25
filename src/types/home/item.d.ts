@@ -7,6 +7,7 @@ type ItemData = {
 };
 
 type ItemStore = {
+  itemStatus: StoreStatus;
   itemData: ItemData[];
   getItemData: () => void;
 };
