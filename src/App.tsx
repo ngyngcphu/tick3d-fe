@@ -1,6 +1,6 @@
 import { MENU_BAR } from '@constants';
 import { AppLayout } from '@layouts';
-import { LoginPage, SignUpPage, HomePage } from '@pages';
+import { LoginPage, SignUpPage, HomePage, CategoryPage } from '@pages';
 
 export default function App() {
   return (
@@ -16,7 +16,7 @@ export default function App() {
           type: 'item',
           path: '/category',
           name: MENU_BAR.category,
-          element: <></>
+          element: <CategoryPage />
         },
         {
           type: 'item',
