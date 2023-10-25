@@ -20,7 +20,6 @@ export const AppLayout: Component<{ menu: RouteMenu }> = ({ menu }) => {
       <AppNavigation menu={menu} />
       <div className='flex-1 h-100vh bg-gray-200'>
         <Routes>
-          ``
           {routeItems.map((item) => (
             <Route path={item.path} element={item.element} key={item.path} />
           ))}
