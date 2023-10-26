@@ -3,7 +3,8 @@ export const MENU_BAR = {
   category: 'Categories',
   upload: 'Upload & print',
   login: 'Log in',
-  signup: 'Sign up'
+  signup: 'Sign up',
+  checkout: 'Check out'
 };
 
 export const CATEGORY_LIST = [
