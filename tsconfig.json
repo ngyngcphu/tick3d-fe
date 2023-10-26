@@ -22,6 +22,7 @@
       "@assets/*": ["src/assets/*"],
       "@components/common": ["src/components/common"],
       "@components/home": ["src/components/home"],
+      "@components/model": ["src/components/model"],
       "@constants": ["src/constants"],
       "@hooks": ["src/hooks"],
       "@interfaces": ["src/interfaces"],
