@@ -298,7 +298,9 @@ function OrderDetails() {
     <div className='flex flex-col gap-5 my-5'>
       {cart.map((item) => (
         <div className='flex gap-4' key={item.name}>
-          <img src={item.image} alt={item.name} className='w-1/6' />
+          <div className='w-1/6 m-auto'>
+            <img src={item.image} alt={item.name} className='w-full block' />
+          </div>
           <div className='flex flex-row gap-10 w-full p-5'>
             <Typography className='text-left w-1/2' variant='h5' color='dark'>
               {item.name}
