@@ -1,6 +1,6 @@
 import { MENU_BAR } from '@constants';
 import { AppLayout } from '@layouts';
-import { LoginPage, SignUpPage, HomePage, PaymentCheckoutPage } from '@pages';
+import { LoginPage, SignUpPage, HomePage, DetailModelPage, PaymentCheckoutPage } from '@pages';
 
 export default function App() {
   return (
@@ -42,6 +42,18 @@ export default function App() {
           path: '/checkout',
           name: 'Checkout',
           element: <PaymentCheckoutPage />
+        }
+      ]}
+      child={[
+        {
+          path: '/category/:id',
+          element: <DetailModelPage />
+        }
+      ]}
+      child={[
+        {
+          path: '/category/:id',
+          element: <DetailModelPage />
         }
       ]}
     />

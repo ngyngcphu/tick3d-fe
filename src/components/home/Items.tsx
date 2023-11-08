@@ -1,10 +1,13 @@
 import { Button, Card, CardBody, Chip, Typography } from '@material-tailwind/react';
+import { useNavigate } from 'react-router-dom';
 
 export const Items: Component<{ items: ItemData[] }> = ({ items }) => {
+  const navigate = useNavigate();
   return (
     <div className='grid grid-cols-2 gap-2 lg:grid-cols-4 lg:py-6 lg:px-24 lg:gap-3'>
       {items.map((item, index) => (
         <Card
+          onClick={() => navigate(`/category/${item.id}`)}
           key={index}
           className='border-2 border-gray-400 hover:border-gray-600 cursor-pointer rounded-lg'
         >
