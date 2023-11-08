@@ -3,6 +3,7 @@ import tick3D from '@assets/tick3D-logo.svg';
 import { AppDrawer, DesktopNavbar, ToggleSidebarBtn, useSidebarMenu } from '@components/common';
 import { ScreenSize } from '@constants';
 import { useScreenSize } from '@hooks';
+import { Link } from 'react-router-dom';
 
 export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
   const { screenSize } = useScreenSize();
@@ -18,7 +19,9 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           <img className='w-12 h-12' src={tick3D} alt='tick3D-logo' />
           <div className='flex items-center gap-8'>
             <MagnifyingGlassIcon strokeWidth={2} className='w-6 h-6 cursor-pointer' />
-            <ShoppingCartIcon strokeWidth={2} className='w-6 h-6 cursor-pointer' />
+            <Link to='/card' className='cursor-pointer'>
+              <ShoppingCartIcon strokeWidth={2} className='w-6 h-6 ' />
+            </Link>
           </div>
         </div>
         {screenSize < ScreenSize.LG ? (

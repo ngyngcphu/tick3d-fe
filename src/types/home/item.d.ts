@@ -1,4 +1,5 @@
 type ItemData = {
+  id: string;
   image: string;
   name: string;
   price: number;

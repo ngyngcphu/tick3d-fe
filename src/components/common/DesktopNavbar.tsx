@@ -107,7 +107,9 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
                       {menuItem.name}
                     </ListItem>
                   </Link>
-                  <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+                  <Link to={'/card'}>
+                    <ShoppingCartIcon strokeWidth={2} className='w-6 h-6 cursor-pointer' />
+                  </Link>
                 </div>
               );
             return (

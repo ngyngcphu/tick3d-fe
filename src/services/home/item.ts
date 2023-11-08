@@ -1,5 +1,6 @@
 import { mockServer, invoke } from '@services/common';
 
 export const itemService = {
-  getItem: () => invoke<ItemData[]>(mockServer.get('/items'))
+  getItem: () => invoke<ItemData[]>(mockServer.get('/items')),
+  updateItems: (item: ItemData) => invoke<ItemData>(mockServer.put(`/items/${item.id}`, item))
 };

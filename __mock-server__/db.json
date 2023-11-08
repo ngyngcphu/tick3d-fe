@@ -19,27 +19,31 @@
   ],
   "items": [
     {
+      "id": "1",
       "image": "http://localhost:3003/item_1.jpg",
       "name": "Pokeball 3D Model",
       "price": 490000,
       "description": "Đây là mô hình 3D Pokeball, Pokeball là mô hình bán chạy, mang vẻ đẹp thế giới Pokemon.",
-      "numberBought": 69
+      "numberBought": 76
     },
     {
+      "id": "2",
       "image": "http://localhost:3003/item_2.jpg",
       "name": "Pikachu 3D Model",
       "price": 59000,
       "description": "Đây là mô hình 3D Pikachu, Pikachu là biểu tượng của Pokemon hệ điện.",
-      "numberBought": 89
+      "numberBought": 94
     },
     {
+      "id": "3",
       "image": "http://localhost:3003/item_3.jpg",
       "name": "Squirtle 3D Model",
       "price": 55000,
       "description": "Đây là mô hình 3D Squirtle, Squirtle là biểu tượng của Pokemon hệ nước.",
-      "numberBought": 80
+      "numberBought": 71
     },
     {
+      "id": "4",
       "image": "http://localhost:3003/item_4.jpg",
       "name": "Bullbasur 3D Model",
       "price": 49000,

@@ -4,7 +4,8 @@ export const MENU_BAR = {
   upload: 'Upload & print',
   login: 'Log in',
   signup: 'Sign up',
-  checkout: 'Check out'
+  checkout: 'Check out',
+  card: 'Card'
 };
 
 export const CATEGORY_LIST = [
