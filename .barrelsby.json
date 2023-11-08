@@ -3,6 +3,7 @@
     "./src/components/common",
     "./src/components/home",
     "./src/components/model",
+    "./src/components/category",
     "./src/constants",
     "./src/hooks",
     "./src/interfaces",
