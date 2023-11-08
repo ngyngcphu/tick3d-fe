@@ -3,4 +3,5 @@
  */
 
 export * from './escapeRegex';
+export * from './formatItemName';
 export * from './formatMoney';
