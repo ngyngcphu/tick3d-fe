@@ -50,12 +50,6 @@ export default function App() {
           element: <DetailModelPage />
         }
       ]}
-      child={[
-        {
-          path: '/category/:id',
-          element: <DetailModelPage />
-        }
-      ]}
     />
   );
 }

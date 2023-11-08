@@ -9,10 +9,11 @@ export const ImageSlider: Component<{ images: (string | undefined)[] }> = ({ ima
   const handleNext = () => {
     setCurrentIndex((currentIndex + 1) % images.length);
   };
+
   return (
     <div className='flex flex-col items-center mb-3 lg:mb-0 lg:w-[40%]'>
       <div className='mb-3 w-[200px] h-[200px] lg:w-[300px] lg:h-[300px] lg:mb-8'>
-        <img src={images[currentIndex]} className='w-full h-full object-cover' />
+        <img src={images[currentIndex]} alt='' className='w-full h-full object-cover' />
       </div>
       <div className='flex'>
         <ChevronLeftIcon

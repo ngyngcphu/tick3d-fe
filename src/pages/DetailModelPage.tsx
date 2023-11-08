@@ -1,16 +1,19 @@
-import { useParams } from 'react-router-dom';
-import { useItemStore } from '@states/home';
 import { useEffect, useState } from 'react';
-import { ImageSlider } from '@components/model';
+import { useParams } from 'react-router-dom';
 import { Typography } from '@material-tailwind/react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
+import { ImageSlider } from '@components/model';
+import { useHomeStore } from '@states';
+
 export function DetailModelPage() {
   const [numberModel, setNumberModel] = useState<number>(1);
-  const { itemData, getItemData } = useItemStore();
+  const { itemData, getItemData } = useHomeStore();
+
   useEffect(() => {
     getItemData();
-  }, []);
-  const params = useParams();
+  }, [getItemData]);
+
+  const params = useParams<string>();
   const modelId = params.id;
   const model = itemData.find((item) => item.id.toString() === modelId);
   const images = [model?.image, model?.subImage1, model?.subImage2];
