@@ -1,11 +1,12 @@
-import { Button, Card, CardBody, Chip, Typography } from '@material-tailwind/react';
 import { useNavigate, NavigateFunction } from 'react-router-dom';
+import { Button, Card, CardBody, Chip, Typography } from '@material-tailwind/react';
+import { formatMoney } from '@utils';
 
 export const Items: Component<{ items: ItemData[] }> = ({ items }) => {
   const navigate: NavigateFunction = useNavigate();
 
   return (
-    <div className='grid grid-cols-2 gap-2 lg:grid-cols-4 lg:py-6 lg:px-24 lg:gap-3'>
+    <div className='grid grid-cols-2 gap-2 lg:grid-cols-4 lg:py-6 lg:px-4 lg:gap-3'>
       {items.map((item, index) => (
         <Card
           key={index}
@@ -18,7 +19,11 @@ export const Items: Component<{ items: ItemData[] }> = ({ items }) => {
               <Typography variant='lead' className='font-bold'>
                 {item.name}
               </Typography>
-              <Chip color='amber' value={`${item.price} VNĐ`} className='w-fit' />
+              <Chip
+                color='amber'
+                value={`${formatMoney(item.price.toString())} VNĐ`}
+                className='w-fit'
+              />
               <Typography variant='paragraph'>{item.description}</Typography>
             </div>
             <div className='flex flex-col gap-2'>
