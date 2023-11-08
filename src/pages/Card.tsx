@@ -1,7 +1,7 @@
 import { Avatar, Button, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import { useCardStore } from '@states/home';
+import { useCardStore, useItemStore } from '@states/home';
 import { useEffect } from 'react';
 import { formatNumberWithCommas } from '@utils';
 
@@ -73,7 +73,7 @@ export const CardPage = () => {
       );
     };
 
-    const SumaryPrice = () => {
+    const SummaryPrice = () => {
       return (
         <div className='flex flex-col gap-3 items-end'>
           <div className='flex flex-col gap-2 items-end'>
@@ -85,9 +85,7 @@ export const CardPage = () => {
             </Typography>
           </div>
 
-          <Button className='capitalize w-fit rounded-none w-96 text-md bg-red-500'>
-            Thanh toán
-          </Button>
+          <Button className='normal-case rounded-none w-96 text-md bg-red-500'>Thanh toán</Button>
         </div>
       );
     };
@@ -112,7 +110,48 @@ export const CardPage = () => {
           <Item key={idx} item={item} />
         ))}
         <hr />
-        <SumaryPrice />
+        <SummaryPrice />
+      </div>
+    );
+  };
+
+  const RecommendList = () => {
+    const ItemCards = () => {
+      const { itemData, getItemData } = useItemStore();
+      useEffect(() => {
+        getItemData();
+      }, [getItemData]);
+
+      const recommendList = itemData.slice(0, 4);
+
+      const ItemCard: Component<{ item: ItemData }> = ({ item }) => {
+        return (
+          <div className='flex flex-col gap-2 cursor-pointer'>
+            <img className='w-[20rem] border-0' src={item.image} alt={item.name} />
+            <Typography variant='h6'>{item.name}</Typography>
+            <Typography>{`${formatNumberWithCommas(item.price)} VNĐ`}</Typography>
+          </div>
+        );
+      };
+      return (
+        <div className='w-full flex justify-center'>
+          <div className='flex flex-wrap w-fit justify-start gap-6'>
+            {recommendList.map((item, idx) => (
+              <ItemCard key={idx} item={item} />
+            ))}
+          </div>
+        </div>
+      );
+    };
+    return (
+      <div className='flex flex-col gap-8 w-full'>
+        <Typography variant='h4'>Có thể bạn cũng thích !</Typography>
+        <ItemCards />
+        <Link to={'/home'} className='w-full flex justify-center'>
+          <Button className='normal-case rounded-none w-fit px-6 text-md bg-red-500'>
+            Xem thêm
+          </Button>
+        </Link>
       </div>
     );
   };
@@ -121,7 +160,7 @@ export const CardPage = () => {
     <div className='flex flex-col gap-12 justify-center p-8 bg-white'>
       <Header />
       <ItemsList />
-      <div></div>
+      <RecommendList />
     </div>
   );
 };
