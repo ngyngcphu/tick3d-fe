@@ -2,15 +2,14 @@
   "directory": [
     "./src/components/common",
     "./src/components/home",
+    "./src/components/model",
     "./src/constants",
     "./src/hooks",
     "./src/interfaces",
     "./src/layouts",
     "./src/pages",
-    "./src/services/common",
-    "./src/services/home",
-    "./src/states/common",
-    "./src/states/home",
+    "./src/services",
+    "./src/states",
     "./src/utils"
   ],
   "delete": true
