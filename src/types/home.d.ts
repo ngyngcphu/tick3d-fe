@@ -8,6 +8,7 @@ type ItemData = {
   subImage1: string;
   subImage2: string;
   name: string;
+  discount: number;
   price: number;
   description: string;
   numberBought: number;

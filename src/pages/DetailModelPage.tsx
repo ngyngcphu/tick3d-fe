@@ -1,34 +1,54 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography } from '@material-tailwind/react';
+import { Chip, Typography } from '@material-tailwind/react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { ImageSlider } from '@components/model';
-import { useHomeStore } from '@states';
+import { useModelStore } from '@states';
+import { formatMoney } from '@utils';
 
 export function DetailModelPage() {
+  const params = useParams<string>();
   const [numberModel, setNumberModel] = useState<number>(1);
-  const { itemData, getItemData } = useHomeStore();
+  const { modelData, getModelById } = useModelStore();
 
   useEffect(() => {
-    getItemData();
-  }, [getItemData]);
+    if (params.id) {
+      getModelById(params.id);
+    }
+  }, [params.id, getModelById]);
 
-  const params = useParams<string>();
-  const modelId = params.id;
-  const model = itemData.find((item) => item.id.toString() === modelId);
-  const images = [model?.image, model?.subImage1, model?.subImage2];
   return (
-    <div className='px-6 py-3 lg:px-[100px] lg:py-[120px] lg:bg-white'>
-      <div className='flex flex-col lg:flex-row'>
-        <ImageSlider images={images} />
-        <div className='lg:w-[30%]'>
-          <Typography className='font-bold text-2xl lg:mb-3'>{model?.name}</Typography>
-          <Typography className='text-red-500 font-bold lg:mb-3'>
-            {`${model?.price} VNĐ`}
+    <div className='px-6 py-3 lg:items-center lg:justify-items-center lg:bg-white'>
+      <div className='flex flex-col lg:flex-row lg:my-12'>
+        <ImageSlider images={[modelData.image, modelData.subImage1, modelData.subImage2]} />
+        <div className='lg:w-[50%]'>
+          <Typography className='font-bold text-2xl lg:mb-3'>{modelData.name}</Typography>
+          {modelData.discount > 0 ? (
+            <div>
+              <Chip
+                value={`-${modelData.discount * 100}%`}
+                color='red'
+                className='w-fit rounded-full'
+              />
+              <Typography className='text-black font-bold lg:mb-3 line-through'>
+                {`${formatMoney(modelData.price.toString())} VNĐ`}
+              </Typography>
+              <Typography className='text-red-500 font-bold lg:mb-3'>
+                {`${formatMoney((modelData.price * (1 - modelData.discount)).toString())} VNĐ`}
+              </Typography>
+            </div>
+          ) : (
+            <Typography className='text-red-500 font-bold lg:mb-3'>
+              {`${formatMoney(modelData.price.toString())} VNĐ`}
+            </Typography>
+          )}
+          <Typography className='font-bold lg:mb-3' variant='h6'>
+            Thông tin chi tiết
           </Typography>
-          <Typography className='font-bold lg:mb-3'>Thông tin chi tiết</Typography>
-          <Typography className='lg:mb-3'>{model?.description}</Typography>
-          <Typography>Số lượng</Typography>
+          <Typography className='lg:mb-3' variant='paragraph'>
+            {modelData?.description}
+          </Typography>
+          <Typography variant='h6'>Số lượng</Typography>
           <div className='flex items-center gap-8 w-[120px] border-gray-400 border-2 p-2 my-3 lg:mb-6'>
             <MinusIcon
               width={20}

@@ -4,4 +4,5 @@
 
 export * from './home';
 export * from './menuBar';
+export * from './model';
 export * from './user';

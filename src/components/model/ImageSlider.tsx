@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
-export const ImageSlider: Component<{ images: (string | undefined)[] }> = ({ images }) => {
+export const ImageSlider: Component<{ images: string[] }> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const handlePrev = () => {
     setCurrentIndex((currentIndex - 1 + images.length) % images.length);
@@ -11,7 +11,7 @@ export const ImageSlider: Component<{ images: (string | undefined)[] }> = ({ ima
   };
 
   return (
-    <div className='flex flex-col items-center mb-3 lg:mb-0 lg:w-[40%]'>
+    <div className='flex flex-col items-center mb-3 lg:mb-0 lg:w-[40%] justify-center'>
       <div className='mb-3 w-[200px] h-[200px] lg:w-[300px] lg:h-[300px] lg:mb-8'>
         <img src={images[currentIndex]} alt='' className='w-full h-full object-cover' />
       </div>
@@ -24,9 +24,8 @@ export const ImageSlider: Component<{ images: (string | undefined)[] }> = ({ ima
         />
         <div className='flex items-center gap-2'>
           {images.map((image, index) => (
-            <div className='w-[50px] h-[50px] lg:w-[100px] lg:h-[100px]'>
+            <div key={index} className='w-[50px] h-[50px] lg:w-[100px] lg:h-[100px]'>
               <img
-                key={index}
                 src={image}
                 className={`w-full h-full object-cover ${
                   currentIndex !== index ? 'opacity-40' : ''

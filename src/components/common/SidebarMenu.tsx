@@ -5,7 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { ToggleSidebarBtn } from '@components/common';
 import { MENU_BAR, CATEGORY_LIST } from '@constants';
-import { useMenuBarStore } from '@states/common';
+import { useMenuBarStore } from '@states';
 
 export function useSidebarMenu() {
   const {
