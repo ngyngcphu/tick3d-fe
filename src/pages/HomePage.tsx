@@ -2,11 +2,10 @@ import { useEffect } from 'react';
 import { Card, CardBody, Typography } from '@material-tailwind/react';
 import { Items, Slides } from '@components/home';
 import { HOME_CONTACT } from '@constants';
-import { useSlideStore, useItemStore } from '@states/home';
+import { useHomeStore } from '@states';
 
 export function HomePage() {
-  const { slideData, getSlideData } = useSlideStore();
-  const { itemData, getItemData } = useItemStore();
+  const { slideData, itemData, getSlideData, getItemData } = useHomeStore();
 
   useEffect(() => {
     getSlideData();
