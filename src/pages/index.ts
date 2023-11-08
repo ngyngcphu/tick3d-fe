@@ -3,6 +3,7 @@
  */
 
 export * from './Card';
+export * from './DetailModelPage';
 export * from './HomePage';
 export * from './LoginPage';
 export * from './PaymentCheckoutPage';

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { itemService } from '@services/home';
+import { itemService } from '@services';
 
 export const useCardStore = create<CardStore>()((set, get) => ({
   itemStatus: 'UNINIT',

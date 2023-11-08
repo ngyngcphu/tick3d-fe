@@ -4,7 +4,7 @@ import { Chip, List, ListItem, Input, Tooltip } from '@material-tailwind/react';
 import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { CATEGORY_LIST, MENU_BAR } from '@constants';
-import { useMenuBarStore } from '@states/common';
+import { useMenuBarStore } from '@states';
 
 export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
   const {

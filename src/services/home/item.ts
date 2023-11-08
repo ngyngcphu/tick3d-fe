@@ -1,4 +1,4 @@
-import { mockServer, invoke } from '@services/common';
+import { mockServer, invoke } from '@services';
 
 export const itemService = {
   getItem: () => invoke<ItemData[]>(mockServer.get('/items')),

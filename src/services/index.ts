@@ -4,4 +4,7 @@
 
 export * from './auth';
 export * from './common';
+export * from './home';
+export * from './model';
 export * from './user';
+export * from './home/item';

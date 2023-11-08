@@ -21,3 +21,10 @@ type RouteSkeleton = {
 type RouteMenuItem = RouteItem | RouteSkeleton | LogoutBtn | 'divider';
 
 type RouteMenu = RouteMenuItem[];
+
+type RouteChildItem = {
+  path: string;
+  element: React.ReactElement;
+};
+
+type RouteChild = RouteChildItem[];

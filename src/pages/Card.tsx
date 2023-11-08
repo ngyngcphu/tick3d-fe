@@ -1,7 +1,7 @@
 import { Avatar, Button, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import { useCardStore, useItemStore } from '@states/home';
+import { useCardStore, useHomeStore } from '@states';
 import { useEffect } from 'react';
 import { formatItemName, formatNumberWithCommas } from '@utils';
 import { useScreenSize } from '@hooks';
@@ -143,7 +143,7 @@ export const CardPage = () => {
 
   const RecommendList = () => {
     const ItemCards = () => {
-      const { itemData, getItemData } = useItemStore();
+      const { itemData, getItemData } = useHomeStore();
       useEffect(() => {
         getItemData();
       }, [getItemData]);

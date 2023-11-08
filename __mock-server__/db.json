@@ -21,31 +21,43 @@
     {
       "id": "1",
       "image": "http://localhost:3003/item_1.jpg",
+      "subImage1": "http://localhost:3003/sub1_image1.jpg",
+      "subImage2": "http://localhost:3003/sub1_image2.jpg",
       "name": "Pokeball 3D Model",
+      "discount": 0.15,
       "price": 490000,
       "description": "Đây là mô hình 3D Pokeball, Pokeball là mô hình bán chạy, mang vẻ đẹp thế giới Pokemon.",
-      "numberBought": 76
+      "numberBought": 77
     },
     {
       "id": "2",
       "image": "http://localhost:3003/item_2.jpg",
+      "subImage1": "http://localhost:3003/sub2_image1.jpg",
+      "subImage2": "http://localhost:3003/sub2_image2.jpg",
       "name": "Pikachu 3D Model",
+      "discount": 0.2,
       "price": 59000,
       "description": "Đây là mô hình 3D Pikachu, Pikachu là biểu tượng của Pokemon hệ điện.",
-      "numberBought": 94
+      "numberBought": 95
     },
     {
       "id": "3",
       "image": "http://localhost:3003/item_3.jpg",
+      "subImage1": "http://localhost:3003/sub3_image1.jpg",
+      "subImage2": "http://localhost:3003/sub3_image2.jpg",
       "name": "Squirtle 3D Model",
+      "discount": 0.25,
       "price": 55000,
       "description": "Đây là mô hình 3D Squirtle, Squirtle là biểu tượng của Pokemon hệ nước.",
-      "numberBought": 71
+      "numberBought": 86
     },
     {
       "id": "4",
       "image": "http://localhost:3003/item_4.jpg",
+      "subImage1": "http://localhost:3003/sub4_image1.jpg",
+      "subImage2": "http://localhost:3003/sub4_image2.jpg",
       "name": "Bullbasur 3D Model",
+      "discount": 0.1,
       "price": 49000,
       "description": "Đây là mô hình 3D Bulbasur, Bulbasur là biểu tượng của Pokemon hệ thực vật.",
       "numberBought": 39
