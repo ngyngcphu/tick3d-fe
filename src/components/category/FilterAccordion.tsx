@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Accordion,
   AccordionBody,
@@ -8,12 +8,12 @@ import {
 } from '@material-tailwind/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { CATEGORY_LIST } from '@constants';
-import { useMenuBarStore } from '@states/common';
+import { useMenuBarStore } from '@states';
 
 export const FilterAccordion: Component<{
   closeDrawer?: () => void;
 }> = ({ closeDrawer }) => {
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState<number>(0);
   const { selectedCategoryItem, setSelectedCategoryItem } = useMenuBarStore();
 
   const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
@@ -22,7 +22,7 @@ export const FilterAccordion: Component<{
     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold px-6 rounded-none text-gray/4 font-medium';
 
   return (
-    <div className='accordion w-full'>
+    <div className='w-full'>
       <Accordion
         open={open === 1}
         icon={
