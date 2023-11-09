@@ -62,5 +62,23 @@
       "description": "Đây là mô hình 3D Bulbasur, Bulbasur là biểu tượng của Pokemon hệ thực vật.",
       "numberBought": 39
     }
+  ],
+  "orders": [
+    {
+      "id": "1",
+      "image": "http://localhost:3003/item_2.jpg",
+      "name": "Pikachu 3D Model",
+      "discount": 0.2,
+      "price": 59000,
+      "numberBought": 89
+    },
+    {
+      "id": "2",
+      "image": "http://localhost:3003/item_3.jpg",
+      "name": "Squirtle 3D Model",
+      "discount": 0.25,
+      "price": 55000,
+      "numberBought": 80
+    }
   ]
 }

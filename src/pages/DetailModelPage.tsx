@@ -4,7 +4,6 @@ import { Chip, Typography } from '@material-tailwind/react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { ImageSlider } from '@components/model';
 import { useModelStore } from '@states';
-import { formatMoney } from '@utils';
 
 export function DetailModelPage() {
   const params = useParams<string>();
@@ -31,15 +30,15 @@ export function DetailModelPage() {
                 className='w-fit rounded-full'
               />
               <Typography className='text-black font-bold lg:mb-3 line-through'>
-                {`${formatMoney(modelData.price.toString())} VNĐ`}
+                {`${modelData.price.toLocaleString('en-US')} VNĐ`}
               </Typography>
               <Typography className='text-red-500 font-bold lg:mb-3'>
-                {`${formatMoney((modelData.price * (1 - modelData.discount)).toString())} VNĐ`}
+                {`${(modelData.price * (1 - modelData.discount)).toLocaleString('en-US')} VNĐ`}
               </Typography>
             </div>
           ) : (
             <Typography className='text-red-500 font-bold lg:mb-3'>
-              {`${formatMoney(modelData.price.toString())} VNĐ`}
+              {`${modelData.price.toLocaleString('en-US')} VNĐ`}
             </Typography>
           )}
           <Typography className='font-bold lg:mb-3' variant='h6'>
