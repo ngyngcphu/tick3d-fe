@@ -3,6 +3,7 @@
  */
 
 export * from './category';
+export * from './checkout';
 export * from './home';
 export * from './menuBar';
 export * from './model';

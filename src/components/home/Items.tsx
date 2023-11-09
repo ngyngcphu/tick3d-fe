@@ -1,6 +1,5 @@
 import { useNavigate, NavigateFunction } from 'react-router-dom';
 import { Button, Card, CardBody, Chip, Typography } from '@material-tailwind/react';
-import { formatMoney } from '@utils';
 
 export const Items: Component<{ items: ItemData[] }> = ({ items }) => {
   const navigate: NavigateFunction = useNavigate();
@@ -21,7 +20,7 @@ export const Items: Component<{ items: ItemData[] }> = ({ items }) => {
               </Typography>
               <Chip
                 color='amber'
-                value={`${formatMoney(item.price.toString())} VNĐ`}
+                value={`${item.price.toLocaleString('en-US')} VNĐ`}
                 className='w-fit'
               />
               <Typography variant='paragraph'>{item.description}</Typography>

@@ -6,7 +6,6 @@ import { FilterDrawer, FilterAccordion } from '@components/category';
 import { ScreenSize } from '@constants';
 import { useScreenSize } from '@hooks';
 import { useCategoryStore } from '@states';
-import { formatMoney } from '@utils';
 
 export function CategoryPage() {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
@@ -65,7 +64,7 @@ export function CategoryPage() {
                   <Typography variant='paragraph'>{item.description}</Typography>
                   <Chip
                     color='amber'
-                    value={`${formatMoney(item.price.toString())} VNĐ`}
+                    value={`${item.price.toLocaleString('en-US')} VNĐ`}
                     className='w-fit'
                   />
 
