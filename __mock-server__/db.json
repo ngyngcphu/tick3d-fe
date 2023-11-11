@@ -27,7 +27,7 @@
       "discount": 0.15,
       "price": 490000,
       "description": "Đây là mô hình 3D Pokeball, Pokeball là mô hình bán chạy, mang vẻ đẹp thế giới Pokemon.",
-      "numberBought": 69
+      "numberBought": 77
     },
     {
       "id": "2",
@@ -38,7 +38,7 @@
       "discount": 0.2,
       "price": 59000,
       "description": "Đây là mô hình 3D Pikachu, Pikachu là biểu tượng của Pokemon hệ điện.",
-      "numberBought": 89
+      "numberBought": 95
     },
     {
       "id": "3",
@@ -49,7 +49,7 @@
       "discount": 0.25,
       "price": 55000,
       "description": "Đây là mô hình 3D Squirtle, Squirtle là biểu tượng của Pokemon hệ nước.",
-      "numberBought": 80
+      "numberBought": 86
     },
     {
       "id": "4",

@@ -7,4 +7,5 @@ export * from './checkout';
 export * from './home';
 export * from './menuBar';
 export * from './model';
+export * from './shoppingCart';
 export * from './user';
