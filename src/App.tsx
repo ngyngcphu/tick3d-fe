@@ -1,11 +1,12 @@
 import { MENU_BAR } from '@constants';
 import { AppLayout } from '@layouts';
 import {
-  LoginPage,
   CategoryPage,
-  SignUpPage,
-  HomePage,
   DetailModelPage,
+  HomePage,
+  LoginPage,
+  ShoppingCartPage,
+  SignUpPage,
   PaymentCheckoutPage
 } from '@pages';
 
@@ -49,6 +50,12 @@ export default function App() {
           path: '/checkout',
           name: 'Checkout',
           element: <PaymentCheckoutPage />
+        },
+        {
+          type: 'skeleton',
+          path: '/cart',
+          name: MENU_BAR.cart,
+          element: <ShoppingCartPage />
         }
       ]}
       child={[
