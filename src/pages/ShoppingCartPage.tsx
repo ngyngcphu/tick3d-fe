@@ -1,41 +1,42 @@
-import { Avatar, Button, Typography } from '@material-tailwind/react';
-import { Link } from 'react-router-dom';
-import { TrashIcon } from '@heroicons/react/24/outline';
-import { useShoppingCartStore, useHomeStore } from '@states';
-import { useEffect } from 'react';
-import { formatItemName } from '@utils';
-import { useScreenSize } from '@hooks';
+import { useEffect, useMemo } from 'react';
+import { Link, useNavigate, NavigateFunction } from 'react-router-dom';
+import { Avatar, Button, Chip, Typography } from '@material-tailwind/react';
+import { TrashIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { Items } from '@components/home';
 import { ScreenSize } from '@constants';
+import { useScreenSize } from '@hooks';
+import { useCheckoutStore, useHomeStore } from '@states';
 
 export const ShoppingCartPage = () => {
   const { screenSize } = useScreenSize();
   const Header = () => {
     return (
-      <div className='flex justify-between bg-white'>
+      <div className='flex items-center justify-between bg-white'>
         <Typography variant={screenSize >= ScreenSize.MD ? 'h3' : 'h4'}>Giỏ hàng</Typography>
-        <Link to={'/'} className='flex justify-center items-center'>
-          <Typography variant='small' className='underline hover:cursor-pointer'>
-            Tiếp tục mua hàng
-          </Typography>
+        <Link to={'/category'} className='flex justify-center items-center hover:bg-gray-100'>
+          <Button variant='outlined' className='flex items-center gap-2 normal-case cursor-pointer'>
+            <Typography variant='h6'>Tiếp tục mua hàng</Typography>
+            <ChevronRightIcon className='w-5 h-5' />
+          </Button>
         </Link>
       </div>
     );
   };
 
-  const ItemsList = () => {
-    const { itemData, summaryPrice, getCardItems, updateItem } = useShoppingCartStore();
+  const OrdersList = () => {
+    const navigate: NavigateFunction = useNavigate();
+    const { allOrder, getAllOrder, updateOrder } = useCheckoutStore();
 
     useEffect(() => {
-      getCardItems();
-    }, [getCardItems]);
+      getAllOrder();
+    }, [getAllOrder]);
 
-    const Item: Component<{ item: ItemData }> = ({ item }) => {
+    const Item: Component<{ order: OrderData }> = ({ order }) => {
       const handleIncreaseNumBought = () => {
-        updateItem({ ...item, numberBought: item.numberBought + 1 });
+        updateOrder({ ...order, numberBought: order.numberBought + 1 });
       };
-
       const handleDecreaseNumBought = () => {
-        updateItem({ ...item, numberBought: item.numberBought - 1 });
+        updateOrder({ ...order, numberBought: order.numberBought - 1 });
       };
 
       const QuantityButton = () => {
@@ -48,7 +49,7 @@ export const ShoppingCartPage = () => {
               >
                 -
               </Typography>
-              <Typography className='h-fit text-xs md:text-base'>{item.numberBought}</Typography>
+              <Typography className='h-fit text-xs md:text-base'>{order.numberBought}</Typography>
               <Typography
                 className='text-xl md:text-2xl h-fit cursor-pointer'
                 onClick={handleIncreaseNumBought}
@@ -61,55 +62,81 @@ export const ShoppingCartPage = () => {
         );
       };
       return (
-        <div className='flex justify-between w-full'>
-          <div className='flex gap-2 md:gap-6'>
+        <div className='flex items-center justify-between w-full'>
+          <div className='flex items-center gap-2 md:gap-6'>
             <Avatar
-              src={item.image}
+              src={order.image}
+              alt=''
               variant='square'
               size={screenSize < ScreenSize.MD ? 'lg' : 'xxl'}
             />
             <div className='flex flex-col gap-1 justify-start items-start'>
               <Typography
                 variant={screenSize < ScreenSize.MD ? 'small' : 'paragraph'}
-                className='capitalize'
+                className='capitalize w-36 md:w-72 truncate'
               >
-                {formatItemName(item.name, screenSize < ScreenSize.MD)}
+                {order.name}
               </Typography>
               {screenSize < ScreenSize.MD && <QuantityButton />}
             </div>
           </div>
-          <div className='flex flex-col md:flex-row items-end md:items-start md:justify-between w-fit md:w-[34rem]'>
+          <div className='flex items-center md:justify-between w-fit md:w-[34rem]'>
             {screenSize >= ScreenSize.MD && <QuantityButton />}
-            {screenSize < ScreenSize.MD && (
-              <Typography variant={screenSize < ScreenSize.MD ? 'small' : 'paragraph'}>
-                {'VNĐ'}
-              </Typography>
+            {order.discount > 0 ? (
+              <div className='flex flex-col gap-2'>
+                <Chip
+                  variant='ghost'
+                  value={
+                    <span className='line-through'>
+                      {(order.price * order.numberBought).toLocaleString()} VNĐ
+                    </span>
+                  }
+                />
+                <Chip
+                  variant='ghost'
+                  value={`${(
+                    order.price *
+                    (1 - order.discount) *
+                    order.numberBought
+                  ).toLocaleString()} VNĐ`}
+                />
+              </div>
+            ) : (
+              <Chip
+                variant='ghost'
+                value={`${(order.price * order.numberBought).toLocaleString()} VNĐ`}
+              />
             )}
-            <Typography
-              variant={screenSize < ScreenSize.MD ? 'small' : 'paragraph'}
-              className='uppercase'
-            >
-              {`${(item.price * item.numberBought).toLocaleString('en-US')}` +
-                (screenSize > ScreenSize.MD ? ' VNĐ' : '')}
-            </Typography>
           </div>
         </div>
       );
     };
 
     const SummaryPrice = () => {
+      const productPrice = useMemo(
+        () =>
+          allOrder.reduce(
+            (acc, order) => acc + order.price * (1 - order.discount) * order.numberBought,
+            0
+          ),
+        []
+      );
       return (
         <div className='flex flex-col gap-3 items-center md:items-end'>
           <div className='flex flex-col gap-2 items-center md:items-end'>
-            <Typography className='w-fit'>{`Tổng ${summaryPrice.toLocaleString(
-              'en-US'
-            )} VNĐ`}</Typography>
+            <Typography className='w-fit'>
+              <span>Tổng: </span>
+              <span className='font-bold text-xl'>{productPrice.toLocaleString('en-US')} VNĐ</span>
+            </Typography>
             <Typography variant='small' className='w-fit text-center'>
               Thuế và phí giao hàng được tính tại bước thanh toán
             </Typography>
           </div>
 
-          <Button className='normal-case rounded-none w-80 md:w-96 text-md bg-red-500'>
+          <Button
+            className='normal-case rounded-none w-80 md:w-96 text-md bg-red-500'
+            onClick={() => navigate('/checkout')}
+          >
             Thanh toán
           </Button>
         </div>
@@ -132,8 +159,8 @@ export const ShoppingCartPage = () => {
           </div>
         </div>
         <hr className='mb-2' />
-        {itemData.map((item, idx) => (
-          <Item key={idx} item={item} />
+        {allOrder.map((order, idx) => (
+          <Item key={idx} order={order} />
         ))}
         <hr />
         <SummaryPrice />
@@ -142,56 +169,20 @@ export const ShoppingCartPage = () => {
   };
 
   const RecommendList = () => {
-    const ItemCards = () => {
-      const { itemData, getItemData } = useHomeStore();
-      useEffect(() => {
-        getItemData();
-      }, [getItemData]);
+    const { itemData, getItemData } = useHomeStore();
+    useEffect(() => {
+      getItemData();
+    }, [getItemData]);
 
-      const ItemCard: Component<{ item: ItemData }> = ({ item }) => {
-        return (
-          <div className='flex flex-col gap-2 cursor-pointer'>
-            <img className='w-[9.4rem] md:w-[20rem] border-0' src={item.image} alt={item.name} />
-            <Typography variant='h6' className='w-[9.4rem] md:w-[20rem]'>
-              {formatItemName(item.name, screenSize < ScreenSize.MD)}
-            </Typography>
-            <Typography>{`${item.price.toLocaleString('en-US')} VNĐ`}</Typography>
-          </div>
-        );
-      };
-      return (
-        <div className='w-full flex justify-center'>
-          <div className='flex w-fit justify-start gap-6'>
-            {screenSize >= ScreenSize.MD ? (
-              itemData.slice(0, 4).map((item, idx) => <ItemCard key={idx} item={item} />)
-            ) : (
-              <div className='flex flex-col gap-5'>
-                <div className='flex gap-5 justify-center'>
-                  {itemData.slice(0, 2).map((item, idx) => (
-                    <ItemCard key={idx} item={item} />
-                  ))}
-                </div>
-                <div className='flex gap-5 justify-center'>
-                  {itemData.slice(2, 4).map((item, idx) => (
-                    <ItemCard key={idx} item={item} />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    };
     return (
-      <div className='flex flex-col gap-8 w-full'>
+      <div className='flex flex-col gap-2 w-full'>
         <div className='flex justify-start'>
           <Typography variant={screenSize >= ScreenSize.MD ? 'h4' : 'h5'} className='w-fit'>
             Có thể bạn cũng thích !
           </Typography>
         </div>
-
-        <ItemCards />
-        <Link to={'/home'} className='w-full flex justify-center'>
+        <Items items={itemData} />
+        <Link to={'/category'} className='w-full flex justify-center'>
           <Button className='normal-case rounded-none w-fit px-6 text-md bg-red-500'>
             Xem thêm
           </Button>
@@ -203,7 +194,7 @@ export const ShoppingCartPage = () => {
   return (
     <div className='flex flex-col gap-12 justify-center p-4 md:p-8 bg-white'>
       <Header />
-      <ItemsList />
+      <OrdersList />
       <RecommendList />
     </div>
   );

@@ -19,7 +19,7 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           <img className='w-12 h-12' src={tick3D} alt='tick3D-logo' />
           <div className='flex items-center gap-8'>
             <MagnifyingGlassIcon strokeWidth={2} className='w-6 h-6 cursor-pointer' />
-            <Link to='/card' className='cursor-pointer'>
+            <Link to='/cart' className='cursor-pointer'>
               <ShoppingCartIcon strokeWidth={2} className='w-6 h-6 ' />
             </Link>
           </div>

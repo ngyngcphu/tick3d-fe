@@ -20,4 +20,5 @@ type CheckoutStore = {
   checkoutStatus: StoreStatus;
   allOrder: OrderData[];
   getAllOrder: () => Promise<void>;
+  updateOrder: (order: OrderData) => Promise<void>;
 };
