@@ -7,8 +7,9 @@ import * as yup from 'yup';
 
 export function SignUpPage() {
   const validateSchema = yup.object({
-    firstName: yup.string().required('Vui lòng nhập tên của bạn'),
-    lastName: yup.string(),
+    firstname: yup.string().required('Vui lòng nhập tên của bạn'),
+    lastname: yup.string().required('Vui lòng nhập họ của bạn'),
+    tel: yup.string().required('Vui lòng nhập số điện thoại'),
     email: yup.string().required('Vui lòng nhập email').email('Email không đúng định dạng'),
     password: yup
       .string()
@@ -22,8 +23,9 @@ export function SignUpPage() {
     formState: { errors }
   } = useForm<SignUpFormData>({
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      firstname: '',
+      lastname: '',
+      tel: '',
       email: '',
       password: ''
     },
@@ -33,6 +35,7 @@ export function SignUpPage() {
   const submit = async (data: SignUpFormData) => {
     try {
       await authService.signUp(data);
+      toast.success('Register successfully');
     } catch (err) {
       const error = err as Error;
       toast.error(error.message);
@@ -76,8 +79,14 @@ export function SignUpPage() {
                       caretColor: 'white'
                     }}
                     crossOrigin=''
-                    {...register('lastName', { minLength: 8, required: true })}
+                    {...register('lastname', { minLength: 8, required: true })}
                   />
+
+                  {errors.lastname?.message && (
+                    <Typography color='red' variant='small'>
+                      {errors.lastname?.message}{' '}
+                    </Typography>
+                  )}
                   <Input
                     className=' text-white !rounded-none border-border-dark focus:border-white transition-all placeholder-shown:border-border-dark'
                     labelProps={{
@@ -94,13 +103,41 @@ export function SignUpPage() {
                       caretColor: 'white'
                     }}
                     crossOrigin=''
-                    {...register('firstName', { minLength: 8, required: true })}
+                    {...register('firstname', { minLength: 8, required: true })}
                   />
                 </div>
 
-                {errors.email?.message && (
+                {errors.firstname?.message && (
                   <Typography color='red' variant='small'>
-                    {errors.email?.message}{' '}
+                    {errors.firstname?.message}{' '}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Input
+                  className='text-white !rounded-none border-border-dark focus:border-white transition-all placeholder-shown:border-border-dark'
+                  labelProps={{
+                    className:
+                      'before:rounded-tl-none after:rounded-tr-none text-border-dark before:border-border-dark after:border-border-dark peer-focus:before:!border-white peer-focus:text-white peer-focus:after:!border-white peer-placeholder-shown:text-border-dark',
+                    style: {
+                      top: '-0.45rem'
+                    }
+                  }}
+                  size='lg'
+                  label='Số điện thoại'
+                  type='tel'
+                  style={{
+                    WebkitTransition: 'background-color 5000s ease-in-out 0s',
+                    WebkitTextFillColor: 'white',
+                    caretColor: 'white'
+                  }}
+                  crossOrigin=''
+                  {...register('tel', { minLength: 8, required: true })}
+                />
+                {errors.tel?.message && (
+                  <Typography color='red' variant='small'>
+                    {errors.tel?.message}{' '}
                   </Typography>
                 )}
               </div>
