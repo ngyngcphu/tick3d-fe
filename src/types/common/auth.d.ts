@@ -9,4 +9,5 @@ type SignUpFormData = {
   email: string;
   tel: string;
   password: string;
+  tel: string;
 };

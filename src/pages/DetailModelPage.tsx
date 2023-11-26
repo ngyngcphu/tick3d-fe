@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, NavigateFunction } from 'react-router-dom';
 import { Chip, Typography } from '@material-tailwind/react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { ImageSlider } from '@components/model';
 import { useModelStore } from '@states';
 
 export function DetailModelPage() {
+  const navigate: NavigateFunction = useNavigate();
   const params = useParams<string>();
   const [numberModel, setNumberModel] = useState<number>(1);
   const { modelData, getModelById } = useModelStore();
@@ -67,10 +68,16 @@ export function DetailModelPage() {
               }}
             />
           </div>
-          <button className='text-red-500 font-bold text-center block w-full p-3 border-2 border-red-500 mb-2 lg:w-[300px]'>
+          <button
+            className='text-red-500 font-bold text-center block w-full p-3 border-2 border-red-500 mb-2 lg:w-[300px]'
+            onClick={() => navigate('/cart')}
+          >
             Thêm vào giỏ hàng
           </button>
-          <button className='bg-red-500 font-bold text-center w-full text-white p-3 lg:w-[300px]'>
+          <button
+            className='bg-red-500 font-bold text-center w-full text-white p-3 lg:w-[300px]'
+            onClick={() => navigate('/checkout')}
+          >
             Mua ngay
           </button>
         </div>
