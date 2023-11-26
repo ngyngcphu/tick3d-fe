@@ -8,7 +8,7 @@ export const apiClient = createClient<paths>({
 });
 
 export const mockServer = axios.create({
-  baseURL: 'http://localhost:3003',
+  baseURL: import.meta.env.VITE_MOCK_BACKEND_URL,
   withCredentials: true
 });
 

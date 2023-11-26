@@ -4,9 +4,10 @@ type LoginFormData = {
 };
 
 type SignUpFormData = {
-  email: string;
-  password: string;
-  tel: string;
   firstname: string;
   lastname: string;
+  email: string;
+  tel: string;
+  password: string;
+  tel: string;
 };

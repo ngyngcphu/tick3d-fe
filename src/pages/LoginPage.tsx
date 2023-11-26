@@ -33,6 +33,7 @@ export function LoginPage() {
     try {
       await authService.login(data);
       await getUserData();
+      toast.success('Login successfully');
     } catch (err) {
       const error = err as Error;
       toast.error(error.message);
