@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/ngyngcphu/tick3d-fe/compare/v1.1.0...v1.1.1) (2023-11-26)
+
+
+### Bug Fixes
+
+* **package:** add is-ci devDependencies ([9901155](https://github.com/ngyngcphu/tick3d-fe/commit/9901155dc523fbe29e3501b2a924e8ca851e8482))
+* **vars:** add mock backend url into env in production ([e2ff0a1](https://github.com/ngyngcphu/tick3d-fe/commit/e2ff0a118db3d0d8bde01880e4174cc1b671a9d5))
+
 ## [1.1.0](https://github.com/ngyngcphu/tick3d-fe/compare/v1.0.1...v1.1.0) (2023-11-26)
 
 
