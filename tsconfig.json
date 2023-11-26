@@ -20,6 +20,7 @@
     "strict": true,
     "paths": {
       "@assets/*": ["src/assets/*"],
+      "@api/spec": ["src/openapi-spec.ts"],
       "@components/common": ["src/components/common"],
       "@components/home": ["src/components/home"],
       "@components/category": ["src/components/category"],

@@ -1,7 +1,7 @@
-import { server, invoke } from './common';
+import { apiClient, invoke } from './common';
 
 export const authService = {
-  login: (data: LoginFormData) => invoke(server.post('/auth/login', data)),
-  logout: () => invoke(server.post('/auth/logout')),
-  signUp: (data: SignUpFormData) => invoke(server.post('/auth/signup', data))
+  login: (data: LoginFormData) => invoke(apiClient.POST('/auth/login', { body: data })),
+  logout: () => invoke(apiClient.DELETE('/auth/logout')),
+  signUp: (data: SignUpFormData) => invoke(apiClient.POST('/auth/signup', { body: data }))
 };

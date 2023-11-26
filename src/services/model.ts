@@ -1,5 +1,5 @@
-import { mockServer, invoke } from './common';
+import { mockServer, invokeMockServer } from './common';
 
 export const modelService = {
-  getById: (id: string) => invoke<ItemData>(mockServer.get(`/items/${id}`))
+  getById: (id: string) => invokeMockServer<ItemData>(mockServer.get(`/items/${id}`))
 };

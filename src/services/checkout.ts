@@ -1,6 +1,7 @@
-import { mockServer, invoke } from './common';
+import { mockServer, invokeMockServer } from './common';
 
 export const checkoutService = {
-  getAll: () => invoke<OrderData[]>(mockServer.get('/orders')),
-  update: (order: OrderData) => invoke<OrderData>(mockServer.put(`/orders/${order.id}`, order))
+  getAll: () => invokeMockServer<OrderData[]>(mockServer.get('/orders')),
+  update: (order: OrderData) =>
+    invokeMockServer<OrderData>(mockServer.put(`/orders/${order.id}`, order))
 };

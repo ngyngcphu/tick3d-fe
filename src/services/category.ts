@@ -1,5 +1,5 @@
-import { mockServer, invoke } from './common';
+import { mockServer, invokeMockServer } from './common';
 
 export const categoryService = {
-  getAll: () => invoke<ItemData[]>(mockServer.get('/items'))
+  getAll: () => invokeMockServer<ItemData[]>(mockServer.get('/items'))
 };

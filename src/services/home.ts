@@ -1,6 +1,6 @@
-import { mockServer, invoke } from './common';
+import { mockServer, invokeMockServer } from './common';
 
 export const homeService = {
-  getSlide: () => invoke<SlideData[]>(mockServer.get('/slides')),
-  getItem: () => invoke<ItemData[]>(mockServer.get('/items'))
+  getSlide: () => invokeMockServer<SlideData[]>(mockServer.get('/slides')),
+  getItem: () => invokeMockServer<ItemData[]>(mockServer.get('/items'))
 };
