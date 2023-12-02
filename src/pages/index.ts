@@ -7,5 +7,6 @@ export * from './DetailModelPage';
 export * from './HomePage';
 export * from './LoginPage';
 export * from './PaymentCheckoutPage';
+export * from './ProfileSettingPage';
 export * from './ShoppingCartPage';
 export * from './SignUpPage';

@@ -11,3 +11,17 @@ type SignUpFormData = {
   password: string;
   tel: string;
 };
+
+type ProfileFormData = {
+  firstName: string;
+  lastName: string;
+  headline: string;
+  biography: string;
+  website: string;
+  language: string;
+  twitter: string;
+  facebook: string;
+  youtube: string;
+  linkedIn: string;
+  avatar: string;
+};
