@@ -20,7 +20,7 @@ export function ProfileSettingPage() {
     headline: yup
       .string()
       .required('Vui lòng nhập headline của bạn')
-      .max(60, 'Vui lòng nhập tối đa 60 kí tự'),
+      .max(60, 'Vui lòng nhập chỉ nhập tối đa 60 kí tự'),
     biography: yup
       .string()
       .required('Vui lòng nhập biography của bạn')
@@ -60,7 +60,8 @@ export function ProfileSettingPage() {
       console.log(error.message);
     }
   };
-
+  const INPUT_CLASSNAME =
+    'rounded-none text-xs lg:text-base placeholder-gray-600 bg-white text-gray-900 !border-t-gray-900 !border-gray-900';
   const [avatarPreview, setAvatarPreview] = useState<string>(avatar);
   const handleChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -84,12 +85,12 @@ export function ProfileSettingPage() {
       </Typography>
       <form className='mt-4 mb-2 min-w-full ' onSubmit={handleSubmit(submit)}>
         <div className='mb-2 flex flex-col gap-4 lg:gap-10 lg:flex-row'>
-          <div className='flex flex-col gap-2 lg:max-w-[600px]'>
+          <div className='flex flex-col gap-2 lg:max-w-[600px] lg:min-w-[400px]'>
             <Typography variant='h6' color='blue-gray' className='text-sm lg:text-base'>
               Họ
             </Typography>
             <Input
-              className=' !border-t-blue-gray-200 focus:!border-t-gray-900 rounded-none text-sm lg:text-base'
+              className={INPUT_CLASSNAME}
               labelProps={{
                 className: 'before:content-none after:content-none'
               }}
@@ -105,7 +106,7 @@ export function ProfileSettingPage() {
               Tên
             </Typography>
             <Input
-              className=' !border-t-blue-gray-200 focus:!border-t-gray-900 rounded-none text-sm lg:text-base '
+              className={INPUT_CLASSNAME}
               labelProps={{
                 className: 'before:content-none after:content-none'
               }}
@@ -121,7 +122,7 @@ export function ProfileSettingPage() {
               Headline
             </Typography>
             <Input
-              className=' !border-t-blue-gray-200 focus:!border-t-gray-900 rounded-none text-sm lg:text-base '
+              className={INPUT_CLASSNAME}
               labelProps={{
                 className: 'before:content-none after:content-none'
               }}
@@ -141,7 +142,7 @@ export function ProfileSettingPage() {
               labelProps={{
                 className: 'before:content-none after:content-none'
               }}
-              className='!border-t-blue-gray-200 focus:!border-t-gray-900 rounded-none text-sm lg:text-base'
+              className={INPUT_CLASSNAME}
               {...register('biography')}
             />
             {errors.biography?.message && (
@@ -166,7 +167,7 @@ export function ProfileSettingPage() {
               render={({ field }) => (
                 <Select
                   {...field}
-                  className='!border-t-blue-gray-200 focus:!border-t-gray-900 rounded-none text-sm lg:text-base '
+                  className={INPUT_CLASSNAME}
                   labelProps={{
                     className: 'before:content-none after:content-none'
                   }}
@@ -185,7 +186,20 @@ export function ProfileSettingPage() {
               </Typography>
             )}
           </div>
-          <div className='flex flex-col gap-2 lg:min-w-[600px]'>
+          <div className='flex flex-col gap-2 lg:max-w-[600px] lg:min-w-[400px] lg:w-[600px]'>
+            <Typography variant='h6' color='blue-gray' className='text-sm lg:text-base'>
+              Social Media
+            </Typography>
+            <Input
+              size='md'
+              className='rounded-none text-xs lg:text-base placeholder-gray-600 cursor-not-allowed pointer-events-none select-none bg-inherit text-gray-900 !border-t-gray-900 !border-gray-900'
+              crossOrigin=''
+              placeholder='Url'
+              labelProps={{
+                className: 'before:content-none after:content-none'
+              }}
+            />
+
             {Object.entries(SOCIAL_MEDIA).map(([name, label]) => (
               <div key={name} className='flex flex-col gap-2'>
                 <Typography variant='h6' color='blue-gray' className='text-sm lg:text-base'>
@@ -194,22 +208,21 @@ export function ProfileSettingPage() {
                 <div className='flex'>
                   <Input
                     size='md'
-                    className='rounded-none text-xs disabled:border-gray-900 disabled:border disabled:cursor-not-allowed disabled:border-t-gray-900 placeholder-gray-500 lg:text-base'
+                    className='rounded-none text-xs lg:text-base placeholder-gray-600 cursor-not-allowed pointer-events-none select-none bg-inherit text-gray-900 !border-t-gray-900 !border-gray-900 !border-r-0'
                     containerProps={{
-                      className: 'min-w-[100px]'
+                      className: '!min-w-[100px] !max-w-1/2'
                     }}
                     crossOrigin=''
                     placeholder={`https://www.${name}.com/`}
-                    disabled
                   />
                   <Input
                     size='md'
-                    className=' !border-t-blue-gray-200 focus:!border-t-gray-900 rounded-none text-xs lg:text-base '
+                    className={INPUT_CLASSNAME}
                     labelProps={{
                       className: 'before:content-none after:content-none'
                     }}
                     containerProps={{
-                      className: 'min-w-[100px]'
+                      className: '!min-w-[100px] !max-w-1/2'
                     }}
                     placeholder='username'
                     crossOrigin=''
@@ -227,11 +240,11 @@ export function ProfileSettingPage() {
           <Typography className='text-xs text-gray-500 lg:text-sm'>
             Kích thước ảnh tối thiểu 200x200px, kích thước đối đa 6000x6000px
           </Typography>
-          <div className='flex justify-center items-center border border-gray-900 p-4'>
+          <div className='flex justify-center items-center border border-gray-900 p-4 bg-white text-gray-900'>
             <img className='w-[200px] h-[200px] object-cover' src={avatarPreview} alt='avatar' />
           </div>
           <Input
-            className='!border-t-blue-gray-200 focus:!border-t-gray-900 rounded-none text-sm lg:text-base'
+            className='!border-t-blue-gray-200 focus:!border-t-gray-900 rounded-none text-sm lg:text-base bg-white text-gray-900'
             labelProps={{
               className: 'before:content-none after:content-none'
             }}
