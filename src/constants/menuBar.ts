@@ -5,7 +5,8 @@ export const MENU_BAR = {
   cart: 'Shopping Cart',
   login: 'Log in',
   signup: 'Sign up',
-  checkout: 'Check out'
+  checkout: 'Check out',
+  manageOrder: 'Manage Order'
 };
 
 export const CATEGORY_LIST = [

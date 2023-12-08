@@ -7,7 +7,8 @@ import {
   LoginPage,
   ShoppingCartPage,
   SignUpPage,
-  PaymentCheckoutPage
+  PaymentCheckoutPage,
+  ManagementOrderPage
 } from '@pages';
 
 export default function App() {
@@ -31,6 +32,12 @@ export default function App() {
           path: '/up',
           name: MENU_BAR.upload,
           element: <></>
+        },
+        {
+          type: 'item',
+          path: '/manageOrder',
+          name: MENU_BAR.manageOrder,
+          element: <ManagementOrderPage />
         },
         'divider',
         {

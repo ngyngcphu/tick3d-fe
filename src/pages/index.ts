@@ -6,6 +6,7 @@ export * from './CategoryPage';
 export * from './DetailModelPage';
 export * from './HomePage';
 export * from './LoginPage';
+export * from './ManagementOrderPage';
 export * from './PaymentCheckoutPage';
 export * from './ShoppingCartPage';
 export * from './SignUpPage';
