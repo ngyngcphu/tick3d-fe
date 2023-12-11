@@ -7,7 +7,8 @@ import {
   LoginPage,
   ShoppingCartPage,
   SignUpPage,
-  PaymentCheckoutPage
+  PaymentCheckoutPage,
+  AdminDetailModelPage
 } from '@pages';
 
 export default function App() {
@@ -62,6 +63,10 @@ export default function App() {
         {
           path: '/category/:id',
           element: <DetailModelPage />
+        },
+        {
+          path: '/detail/:id',
+          element: <AdminDetailModelPage />
         }
       ]}
     />
