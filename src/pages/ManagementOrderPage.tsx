@@ -2,18 +2,9 @@ import {
   ShoppingCartIcon,
   Cog8ToothIcon,
   TruckIcon,
-  CreditCardIcon,
-  XMarkIcon
+  CreditCardIcon
 } from '@heroicons/react/24/outline';
-import {
-  Button,
-  Stepper,
-  Step,
-  Typography,
-  Dialog,
-  DialogBody,
-  DialogHeader
-} from '@material-tailwind/react';
+import { Button, Stepper, Step, Typography } from '@material-tailwind/react';
 import { useState, useMemo } from 'react';
 
 import {
@@ -23,10 +14,10 @@ import {
   RowModel,
   useReactTable
 } from '@tanstack/react-table';
+import { ManageOrderProduct } from '@components/model';
 
 export function ManagementOrderPage() {
   const [activeStep, setActiveStep] = useState<number>(0);
-  const [openDialog, setOpenDialog] = useState(false);
   const [isLastStep, setIsLastStep] = useState<boolean>(false);
   const [isFirstStep, setIsFirstStep] = useState<boolean>(false);
   const columnHelper = createColumnHelper<Order>();
@@ -225,7 +216,7 @@ export function ManagementOrderPage() {
           isLastStep={(value) => setIsLastStep(value)}
           isFirstStep={(value) => setIsFirstStep(value)}
         >
-          <Step className='cursor-pointer' color='bg-red-400'>
+          <Step className='cursor-pointer'>
             <ShoppingCartIcon className='w-[1.25rem] h-[1.25rem]' />
             <Typography className='absolute -bottom-[2rem] w-max text-center text-black text-[0.5rem] lg:text-[0.75rem]'>
               Đang chờ xử lý
@@ -284,54 +275,7 @@ export function ManagementOrderPage() {
         </thead>
         <tbody>
           {orderTable.getRowModel().rows.map((row, index) => (
-            <tr
-              className={index % 2 === 0 ? 'cursor-pointer' : 'bg-white cursor-pointer'}
-              key={row.id}
-              onClick={() => setOpenDialog(true)}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className='py-2 px-4'>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-              <Dialog open={openDialog} handler={() => setOpenDialog(!openDialog)}>
-                <DialogHeader className='flex justify-between border-b-2 border-gray-200'>
-                  <Typography variant='h4'>{`Chi tiết đơn hàng ${row.original.idOrder}`}</Typography>
-                  <XMarkIcon
-                    width={32}
-                    className='cursor-pointer hover:text-red-500'
-                    onClick={() => setOpenDialog(false)}
-                  />
-                </DialogHeader>
-                <DialogBody>
-                  <div className='mb-5'>
-                    <Typography variant='h5' className='text-black'>
-                      Thông tin khách hàng
-                    </Typography>
-                    <Typography>{`Họ và tên: ${row.original.customerName}`}</Typography>
-                  </div>
-                  <div>
-                    <Typography variant='h5' className='text-black mb-5'>
-                      Giỏ hàng
-                    </Typography>
-                    {row.original.listProduct.map((product) => (
-                      <div className='h-[50px] lg:h-[70px] mb-5 flex justify-between'>
-                        <div className='flex gap-3 items-center'>
-                          <img src={product.image} className='h-full w-[70px] lg:w-[100px]' />
-                          <Typography className='text-black font-bold'>{product.name}</Typography>
-                        </div>
-                        <div className='flex gap-3 items-center'>
-                          <Typography>{`Số lượng: ${product.number}`}</Typography>
-                          <Button className='py-2 text-white font-bold bg-red-700 '>{`${
-                            product.cost * product.number
-                          } VND`}</Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </DialogBody>
-              </Dialog>
-            </tr>
+            <ManageOrderProduct row={row} index={index} />
           ))}
         </tbody>
       </table>
