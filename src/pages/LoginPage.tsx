@@ -47,7 +47,7 @@ export function LoginPage() {
       className='w-full h-full flex items-center justify-center bg-cover bg-no-repeat p-0 m-0 '
       style={{
         background: `linear-gradient(rgba(18, 18, 18, 0.4), rgba(18, 18, 18, 0.4)),
-          url(https://www.kisscom.co.uk/media/pages/news/3d-printing-a-world-of-possibilities/5824bcf0fe-1666776023/blog_31.08.18.png)`
+          url('./src/assets/auth-background.png')`
       }}
     >
       <Card className='bg-black/50 rounded-none' shadow={false}>

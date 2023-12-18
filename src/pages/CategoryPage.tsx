@@ -1,20 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Chip, List, ListItem, Select, Option, Typography } from '@material-tailwind/react';
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
 import { Items } from '@components/home';
 import { FilterDrawer, FilterAccordion } from '@components/category';
 import { ScreenSize } from '@constants';
 import { useScreenSize } from '@hooks';
-import { useCategoryStore } from '@states';
 
 export function CategoryPage() {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const { screenSize } = useScreenSize();
-  const { allCategory, getAllCategory } = useCategoryStore();
 
-  useEffect(() => {
-    getAllCategory();
-  }, [getAllCategory]);
+  const mockData = [
+    {
+      id: 1,
+      image: '',
+      subImage1: '',
+      subImage2: '',
+      name: '',
+      discount: 0,
+      price: 0,
+      description: '',
+      numberBought: 0
+    }
+  ];
 
   return (
     <>
@@ -51,7 +59,7 @@ export function CategoryPage() {
         ) : null}
         {screenSize <= ScreenSize.SM ? (
           <List className='grid gap-2 w-full'>
-            {allCategory.map((item, index) => (
+            {mockData.map((item, index) => (
               <ListItem
                 key={index}
                 className='flex gap-5 border-2 border-b-gray-400 cursor-pointer rounded-lg p-4'
@@ -81,7 +89,7 @@ export function CategoryPage() {
             ))}
           </List>
         ) : (
-          <Items items={allCategory} />
+          <Items items={[]} />
         )}
       </div>
       {screenSize <= ScreenSize.MD ? (

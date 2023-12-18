@@ -1,12 +1,18 @@
-import { useEffect, useMemo } from 'react';
 import { Link, useNavigate, NavigateFunction } from 'react-router-dom';
 import { Avatar, Button, Chip, Typography } from '@material-tailwind/react';
 import { TrashIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Items } from '@components/home';
 import { ScreenSize } from '@constants';
 import { useScreenSize } from '@hooks';
-import { useCheckoutStore, useHomeStore } from '@states';
 
+type OrderData = {
+  id: string;
+  image: string;
+  name: string;
+  discount: number;
+  price: number;
+  numberBought: number;
+};
 export const ShoppingCartPage = () => {
   const { screenSize } = useScreenSize();
   const Header = () => {
@@ -25,19 +31,10 @@ export const ShoppingCartPage = () => {
 
   const OrdersList = () => {
     const navigate: NavigateFunction = useNavigate();
-    const { allOrder, getAllOrder, updateOrder } = useCheckoutStore();
-
-    useEffect(() => {
-      getAllOrder();
-    }, [getAllOrder]);
 
     const Item: Component<{ order: OrderData }> = ({ order }) => {
-      const handleIncreaseNumBought = () => {
-        updateOrder({ ...order, numberBought: order.numberBought + 1 });
-      };
-      const handleDecreaseNumBought = () => {
-        updateOrder({ ...order, numberBought: order.numberBought - 1 });
-      };
+      const handleIncreaseNumBought = () => null;
+      const handleDecreaseNumBought = () => null;
 
       const QuantityButton = () => {
         return (
@@ -113,14 +110,7 @@ export const ShoppingCartPage = () => {
     };
 
     const SummaryPrice = () => {
-      const productPrice = useMemo(
-        () =>
-          allOrder.reduce(
-            (acc, order) => acc + order.price * (1 - order.discount) * order.numberBought,
-            0
-          ),
-        []
-      );
+      const productPrice = 0;
       return (
         <div className='flex flex-col gap-3 items-center md:items-end'>
           <div className='flex flex-col gap-2 items-center md:items-end'>
@@ -159,7 +149,7 @@ export const ShoppingCartPage = () => {
           </div>
         </div>
         <hr className='mb-2' />
-        {allOrder.map((order, idx) => (
+        {[].map((order, idx) => (
           <Item key={idx} order={order} />
         ))}
         <hr />
@@ -169,11 +159,6 @@ export const ShoppingCartPage = () => {
   };
 
   const RecommendList = () => {
-    const { itemData, getItemData } = useHomeStore();
-    useEffect(() => {
-      getItemData();
-    }, [getItemData]);
-
     return (
       <div className='flex flex-col gap-2 w-full'>
         <div className='flex justify-start'>
@@ -181,7 +166,7 @@ export const ShoppingCartPage = () => {
             Có thể bạn cũng thích !
           </Typography>
         </div>
-        <Items items={itemData} />
+        <Items items={[]} />
         <Link to={'/category'} className='w-full flex justify-center'>
           <Button className='normal-case rounded-none w-fit px-6 text-md bg-red-500'>
             Xem thêm

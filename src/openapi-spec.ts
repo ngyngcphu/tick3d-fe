@@ -533,7 +533,32 @@ export interface paths {
     /** Get all default models */
     get: {
       parameters: {
-        query?: never;
+        query?: {
+          /** @description The substring that the model name should contain */
+          keyword?: string;
+          /**
+           * @description The time after which the model was uploaded, specified in ISO format
+           * @example 2023-12-18
+           */
+          uploaded_after?: string;
+          /**
+           * @description The time before which the model was uploaded, specified in ISO format
+           * @example 2023-12-25
+           */
+          uploaded_before?: string;
+          /** @description The category id */
+          categoryId?: string;
+          /** @description The minimum threshold for number of likes */
+          likes_ge?: number;
+          /** @description For pagination purpose - the index of the start item, starting at 1 */
+          start?: number;
+          /** @description For pagination purpose - the number of items to return */
+          noItems?: number;
+          /** @description The name of the field to order on */
+          orderBy?: 'likesNo' | 'uploadedTime' | 'price' | 'name' | 'numberBought';
+          /** @description Sort ascending or descending */
+          order?: 'asc' | 'desc';
+        };
         header?: never;
         path?: never;
         cookie?: never;
@@ -983,6 +1008,192 @@ export interface paths {
               src: string;
               alt: string;
             }[];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/category': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get all category */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              id: string;
+              name: string;
+            }[];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/order': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get all orders of the current customer. For managers, return all orders */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              id: string;
+              userId: string;
+              totalPrice: number;
+              shippingFee: number;
+              /** Format: date-time */
+              estimatedDeliveryTime: string;
+              status:
+                | 'ORDER_PENDING'
+                | 'ORDER_PROCESSED'
+                | 'PRINT_PENDING'
+                | 'PRINTED'
+                | 'DELIVERING'
+                | 'DELIVERED'
+                | 'REJECTED';
+              district: string;
+              ward: string;
+              street: string;
+              streetNo: string;
+              /** Format: date-time */
+              creationTime: string;
+              isPaid: boolean;
+              note?: string;
+              digitalOrderId?: string;
+            }[];
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': string;
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/order/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get the order with the specified id and owned by the current user. For managers, they can view the order without owning it */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              id: string;
+              userId: string;
+              totalPrice: number;
+              shippingFee: number;
+              /** Format: date-time */
+              estimatedDeliveryTime: string;
+              status:
+                | 'ORDER_PENDING'
+                | 'ORDER_PROCESSED'
+                | 'PRINT_PENDING'
+                | 'PRINTED'
+                | 'DELIVERING'
+                | 'DELIVERED'
+                | 'REJECTED';
+              district: string;
+              ward: string;
+              street: string;
+              streetNo: string;
+              /** Format: date-time */
+              creationTime: string;
+              isPaid: boolean;
+              note?: string;
+              digitalOrderId?: string;
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': string;
+          };
+        };
+        /** @description Default Response */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': string;
           };
         };
       };
