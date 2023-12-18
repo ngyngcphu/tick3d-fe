@@ -7,7 +7,8 @@ import {
   LoginPage,
   ShoppingCartPage,
   SignUpPage,
-  PaymentCheckoutPage
+  PaymentCheckoutPage,
+  AdminDashboard
 } from '@pages';
 
 export default function App() {
@@ -56,6 +57,12 @@ export default function App() {
           path: '/cart',
           name: MENU_BAR.cart,
           element: <ShoppingCartPage />
+        },
+        {
+          type: 'skeleton',
+          path: '/admin/dashboard',
+          name: MENU_BAR.cart,
+          element: <AdminDashboard />
         }
       ]}
       child={[
