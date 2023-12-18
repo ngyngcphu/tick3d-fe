@@ -166,7 +166,7 @@ export const ShoppingCartPage = () => {
             Có thể bạn cũng thích !
           </Typography>
         </div>
-        <Items items={[]} />
+        <Items />
         <Link to={'/category'} className='w-full flex justify-center'>
           <Button className='normal-case rounded-none w-fit px-6 text-md bg-red-500'>
             Xem thêm
