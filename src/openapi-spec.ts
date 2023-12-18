@@ -43,6 +43,7 @@ export interface paths {
               firstname: string;
               lastname: string;
               role: 'CUSTOMER' | 'MANAGER';
+              verified: boolean;
             };
           };
         };
@@ -95,6 +96,7 @@ export interface paths {
               lastname: string;
               firstname: string;
               role: 'CUSTOMER' | 'MANAGER';
+              verified: boolean;
             };
           };
         };
@@ -139,30 +141,41 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/auth/verify/{id}': {
+  '/auth/otp/verify/{userId}': {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    get: {
+    get?: never;
+    put?: never;
+    /** Verify the OTP for the user */
+    post: {
       parameters: {
         query?: never;
         header?: never;
         path: {
-          id: string;
+          userId: string;
         };
         cookie?: never;
       };
-      requestBody?: never;
+      requestBody: {
+        content: {
+          'application/json': {
+            otp: string;
+          };
+        };
+      };
       responses: {
         /** @description Default Response */
         200: {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': string;
+          };
         };
         /** @description Default Response */
         404: {
@@ -173,15 +186,13 @@ export interface paths {
         };
       };
     };
-    put?: never;
-    post?: never;
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  '/auth/verify': {
+  '/auth/otp/generate/{userId}': {
     parameters: {
       query?: never;
       header?: never;
@@ -190,11 +201,14 @@ export interface paths {
     };
     get?: never;
     put?: never;
+    /** Send an email containing the OTP to the user's email */
     post: {
       parameters: {
         query?: never;
         header?: never;
-        path?: never;
+        path: {
+          userId: string;
+        };
         cookie?: never;
       };
       requestBody?: never;
@@ -204,14 +218,18 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': string;
+          };
         };
         /** @description Default Response */
         400: {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': string;
+          };
         };
       };
     };
