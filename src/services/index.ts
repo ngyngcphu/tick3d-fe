@@ -8,4 +8,4 @@ export * from './checkout';
 export * from './common';
 export * from './home';
 export * from './model';
-export * from './user';
+export * from './user.service';

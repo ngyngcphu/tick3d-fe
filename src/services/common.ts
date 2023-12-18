@@ -14,7 +14,7 @@ export const mockServer = axios.create({
 
 export async function invoke<T = unknown>(call: Promise<FetchResponse<T>>) {
   const { data, error } = await call;
-  if (data) return data;
+  if (data !== undefined) return data;
   throw (error as ResponseError).message;
 }
 

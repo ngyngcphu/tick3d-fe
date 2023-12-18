@@ -1,14 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Card, CardBody, Input, Button, Typography } from '@material-tailwind/react';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { authService } from '@services';
-import { useUserStore } from '@states';
 import * as yup from 'yup';
 
 export function LoginPage() {
-  const { getUserData } = useUserStore();
-
   const validateSchema = yup.object({
     email: yup.string().required('Vui lòng nhập email').email('Email không đúng định dạng'),
     password: yup
@@ -29,10 +27,14 @@ export function LoginPage() {
     resolver: yupResolver(validateSchema)
   });
 
+  const login = useMutation({
+    mutationKey: ['login'],
+    mutationFn: (data: LoginFormData) => authService.login(data)
+  });
+
   const submit = async (data: LoginFormData) => {
     try {
-      await authService.login(data);
-      await getUserData();
+      await login.mutateAsync(data);
       toast.success('Login successfully');
     } catch (err) {
       const error = err as Error;
