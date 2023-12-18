@@ -1,3 +1,4 @@
+import { AdminProtected, ProtectedRoutes } from '@components/common';
 import { MENU_BAR } from '@constants';
 import { AppLayout } from '@layouts';
 import {
@@ -50,19 +51,31 @@ export default function App() {
           type: 'skeleton',
           path: '/checkout',
           name: 'Checkout',
-          element: <PaymentCheckoutPage />
+          element: (
+            <ProtectedRoutes>
+              <PaymentCheckoutPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'skeleton',
           path: '/cart',
           name: MENU_BAR.cart,
-          element: <ShoppingCartPage />
+          element: (
+            <ProtectedRoutes>
+              <ShoppingCartPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'skeleton',
           path: '/admin/dashboard',
           name: MENU_BAR.cart,
-          element: <AdminDashboard />
+          element: (
+            <AdminProtected>
+              <AdminDashboard />
+            </AdminProtected>
+          )
         }
       ]}
       child={[
