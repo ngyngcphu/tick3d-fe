@@ -1,4 +1,3 @@
-import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Card,
@@ -15,26 +14,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import cashPaymentLogo from '@assets/cashpayment.webp';
 import momoPaymentLogo from '@assets/momopayment.png';
 import { PaymentMethod } from '@constants';
-import { useCheckoutStore } from '@states';
 
 export function PaymentCheckoutPage() {
-  const { getAllOrder } = useCheckoutStore();
-
-  useEffect(() => {
-    getAllOrder();
-  }, [getAllOrder]);
-
   const CheckoutForm = () => {
     const validateSchema = yup.object({
-      paymentMethod: yup
-        .mixed()
-        .oneOf([PaymentMethod.CASH, PaymentMethod.MOMO])
-        .required('Vui lòng chọn phương thức thanh toán'),
+      total_price: yup.number(),
+      shipping_fee: yup.number(),
+      est_deli_time: yup.string(),
       district: yup.string(),
       ward: yup.string(),
       street: yup.string(),
       streetNo: yup.string(),
-      note: yup.string().optional()
+      isPaid: yup.boolean(),
+      extra_note: yup.string().optional()
     }) as yup.ObjectSchema<CheckoutForm>;
 
     const {
@@ -43,12 +35,11 @@ export function PaymentCheckoutPage() {
       formState: { errors }
     } = useForm<CheckoutForm>({
       defaultValues: {
-        paymentMethod: PaymentMethod.CASH,
         district: '',
         ward: '',
         street: '',
         streetNo: '',
-        note: ''
+        extra_note: ''
       },
       resolver: yupResolver(validateSchema)
     });
@@ -89,11 +80,11 @@ export function PaymentCheckoutPage() {
               crossOrigin=''
             />
           </div>
-          {errors.paymentMethod?.message && (
+          {/* {errors.paymentMethod?.message && (
             <Typography color='red' variant='small'>
               {errors.paymentMethod?.message}{' '}
             </Typography>
-          )}
+          )} */}
         </div>
         <Input
           className='text-black !rounded-none border-border-dark focus:border-dark transition-all placeholder-shown:border-border-dark'
@@ -183,24 +174,32 @@ export function PaymentCheckoutPage() {
             }}
             size='lg'
             label='Ghi chú'
-            {...register('note')}
+            {...register('extra_note')}
           />
-          {errors.note?.message && (
+          {/* {errors.note?.message && (
             <Typography color='red' variant='small'>
               {errors.note?.message}{' '}
             </Typography>
-          )}
+          )} */}
         </div>
       </form>
     );
   };
 
   const OrderDetails = () => {
-    const { allOrder } = useCheckoutStore();
-
+    const mockData = [
+      {
+        id: '0',
+        image: '',
+        name: '',
+        discount: 0,
+        price: 0,
+        numberBought: 0
+      }
+    ];
     return (
       <div className='flex flex-col gap-5 my-5'>
-        {allOrder.map((item, index) => (
+        {mockData.map((item, index) => (
           <div key={index} className='flex gap-4 items-center'>
             <div className='w-1/6 m-auto'>
               <img src={item.image} alt={item.name} className='w-full block' />
@@ -239,15 +238,8 @@ export function PaymentCheckoutPage() {
 
   const OrderSummary = () => {
     const shippingFee = 30000;
-    const { allOrder } = useCheckoutStore();
-    const productPrice = useMemo(
-      () => allOrder.reduce((acc, item) => acc + item.price * item.numberBought, 0),
-      [allOrder]
-    );
-    const discount = useMemo(
-      () => allOrder.reduce((acc, item) => acc + item.price * item.discount * item.numberBought, 0),
-      [allOrder]
-    );
+    const productPrice = 0;
+    const discount = 0;
 
     return (
       <>

@@ -1,21 +1,25 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate, NavigateFunction } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, NavigateFunction } from 'react-router-dom';
 import { Chip, Typography } from '@material-tailwind/react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { ImageSlider } from '@components/model';
-import { useModelStore } from '@states';
 
 export function DetailModelPage() {
   const navigate: NavigateFunction = useNavigate();
-  const params = useParams<string>();
+  //const params = useParams<string>();
   const [numberModel, setNumberModel] = useState<number>(1);
-  const { modelData, getModelById } = useModelStore();
 
-  useEffect(() => {
-    if (params.id) {
-      getModelById(params.id);
-    }
-  }, [params.id, getModelById]);
+  const modelData = {
+    id: '',
+    image: '',
+    subImage1: '',
+    subImage2: '',
+    name: '',
+    discount: 0,
+    price: 0,
+    description: '',
+    numberBought: 0
+  };
 
   return (
     <div className='px-6 py-3 lg:items-center lg:justify-items-center lg:bg-white'>
