@@ -32,7 +32,10 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 import Chart from 'react-apexcharts';
-import DonutChart from 'react-donut-chart';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+ChartJS.register(ArcElement, Tooltip, Legend);
+// import DonutChart from 'react-donut-chart';
 export function AdminDetailModelPage() {
   const date = new Date();
   const formattedDay = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
@@ -54,6 +57,19 @@ export function AdminDetailModelPage() {
     }),
     []
   );
+  const data = {
+    labels: ['Doanh thu sản phẩm', 'Tổng doanh thu'],
+    datasets: [
+      {
+        label: '%Venue',
+        data: [infoProduct.productVenue, totalVenue],
+        backgroundColor: ['yellow', 'red'],
+        borderColor: ['yellow', 'red'],
+        borderWidth: 1
+      }
+    ]
+  };
+  const options = {};
   const lineChartConfig = {
     type: 'line',
     height: 240,
@@ -204,8 +220,8 @@ export function AdminDetailModelPage() {
     }
   }, [params.id, getModelById]);
   return (
-    <div className='flex p-5 gap-4'>
-      <div className='w-[25%]'>
+    <div className='flex p-5 gap-4 w-screen'>
+      <div className='w-[25%] bg-white rounded-lg p-3'>
         <div className='flex flex-col items-center'>
           <Typography className='font-bold text-2xl lg:mb-3'>{modelData.name}</Typography>
           <ImageSlider images={[modelData.image, modelData.subImage1, modelData.subImage2]} />
@@ -317,8 +333,8 @@ export function AdminDetailModelPage() {
         <div className='flex gap-5 h-[400px]'>
           <Card className='w-[60%] p-5'>
             <div className='flex items-center gap-2'>
-              <Typography className='w-[60%] font-bold'>Thống kê sản phẩm được bán</Typography>
-              <Select label='Select Version'>
+              <Typography className='w-[100%] font-bold'>Thống kê sản phẩm được bán</Typography>
+              <Select label='Chọn khoảng thời gian'>
                 <Option>Tháng 9 - 2023</Option>
                 <Option>Tháng 10 - 2023</Option>
                 <Option>Tháng 11 - 2023</Option>
@@ -326,24 +342,14 @@ export function AdminDetailModelPage() {
               </Select>
             </div>
             <CardBody>
-              <Chart config={lineChartConfig} />
+              <Chart {...lineChartConfig} />
             </CardBody>
           </Card>
-          <Card className='w-[40%] p-5'>
-            <Typography className='font-bold '>Thống kê doanh thu</Typography>
-            <DonutChart
-              data={[
-                {
-                  label: 'Doanh thu sản phẩm',
-                  value: infoProduct.productVenue
-                },
-                {
-                  label: 'Tổng doanh thu',
-                  value: totalVenue
-                }
-              ]}
-              width={400}
-            />
+          <Card className='w-[40%] p-5 flex flex-col items-center'>
+            <Typography className='font-bold mb-5'>Thống kê doanh thu</Typography>
+            <div className='w-[90%] h-[90%]'>
+              <Doughnut data={data} options={options}></Doughnut>
+            </div>
           </Card>
         </div>
         <table className='w-full my-5'>

@@ -532,6 +532,8 @@ export interface paths {
               name: string;
               price: number;
               imageUrl: string;
+              category_id: string;
+              category: string;
               likesNo: number;
               /** Format: date-time */
               uploadTime: string;
@@ -582,6 +584,8 @@ export interface paths {
               name: string;
               price: number;
               imageUrl: string;
+              category_id: string;
+              category: string;
               likesNo: number;
               /** Format: date-time */
               uploadTime: string;
@@ -630,6 +634,7 @@ export interface paths {
               name: string;
               price: number;
               category_id: string;
+              category: string;
               imageUrl: string;
               likesNo: number;
               gcode: string;
@@ -657,7 +662,7 @@ export interface paths {
         };
         cookie?: never;
       };
-      requestBody: {
+      requestBody?: {
         content: {
           'application/json': {
             name?: string;
@@ -667,7 +672,7 @@ export interface paths {
             category_id?: string;
             description?: string;
             subImageUrls?: string[];
-            discount: number;
+            discount?: number;
           };
         };
       };
@@ -706,6 +711,48 @@ export interface paths {
         };
       };
     };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/model/{id}/toggle-like': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Toggle the `like` status of a customer for a model. The current user is inferred based on jwt */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              userId: string;
+              modelId: string;
+              liked: boolean;
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
     options?: never;
     head?: never;
     patch?: never;
