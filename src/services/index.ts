@@ -3,9 +3,9 @@
  */
 
 export * from './auth.service';
-export * from './category';
-export * from './checkout';
+export * from './cart.service';
+export * from './checkout.service';
 export * from './common';
-export * from './home';
-export * from './model';
+export * from './home.service';
+export * from './model.service';
 export * from './user.service';

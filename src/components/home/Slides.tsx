@@ -1,6 +1,11 @@
 import { Carousel, Button, Typography } from '@material-tailwind/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
+type SlideData = {
+  src: string;
+  alt: string;
+};
+
 export const Slides: Component<{ slides: SlideData[] }> = ({ slides }) => {
   return (
     <Carousel

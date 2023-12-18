@@ -1,6 +1,18 @@
 import { useNavigate, NavigateFunction } from 'react-router-dom';
 import { Button, Card, CardBody, Chip, Typography } from '@material-tailwind/react';
 
+type ItemData = {
+  id: string;
+  image: string;
+  subImage1: string;
+  subImage2: string;
+  name: string;
+  discount: number;
+  price: number;
+  description: string;
+  numberBought: number;
+};
+
 export const Items: Component<{ items: ItemData[] }> = ({ items }) => {
   const navigate: NavigateFunction = useNavigate();
 
