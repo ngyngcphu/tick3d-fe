@@ -1,12 +1,20 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Card, CardBody, Input, Button, Typography } from '@material-tailwind/react';
-import { useMutation } from '@tanstack/react-query';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { authService } from '@services';
+import { useMutation } from '@tanstack/react-query';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Card, CardBody, Input, Button, Typography } from '@material-tailwind/react';
+import { useUserQuery } from '@hooks';
+import { authService } from '@services';
 
 export function LoginPage() {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const {
+    info: { refetch }
+  } = useUserQuery();
+
   const validateSchema = yup.object({
     email: yup.string().required('Vui lòng nhập email').email('Email không đúng định dạng'),
     password: yup
@@ -35,10 +43,11 @@ export function LoginPage() {
   const submit = async (data: LoginFormData) => {
     try {
       await login.mutateAsync(data);
+      await refetch();
+      navigate(state && state.from ? state.from : '/');
       toast.success('Login successfully');
     } catch (err) {
-      const error = err as Error;
-      toast.error(error.message);
+      toast.error(err as string);
     }
   };
 
