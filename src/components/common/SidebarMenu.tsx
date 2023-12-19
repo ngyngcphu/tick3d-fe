@@ -1,13 +1,17 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { List, ListItem, ListItemSuffix, Typography } from '@material-tailwind/react';
+import { Avatar, List, ListItem, ListItemSuffix, Typography } from '@material-tailwind/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { ToggleSidebarBtn } from '@components/common';
 import { MENU_BAR, CATEGORY_LIST } from '@constants';
+import { emitEvent, useUserQuery } from '@hooks';
 import { useMenuBarStore } from '@states';
 
 export function useSidebarMenu() {
+  const {
+    info: { data, isSuccess }
+  } = useUserQuery();
   const {
     selectedMenu,
     isCategoryItem,
@@ -71,10 +75,22 @@ export function useSidebarMenu() {
         return (
           <>
             <div className='p-4 flex items-center justify-between bg-gray-100 rounded-t-2xl'>
-              <div className='flex items-center gap-2'>
-                <img className='w-10 h-10' src={tick3D} alt='tick3D-logo'></img>
-                <Typography variant='h5'>Tick3D</Typography>
-              </div>
+              {isSuccess ? (
+                <div className='flex items-center gap-2'>
+                  <Avatar src='https://docs.material-tailwind.com/img/face-2.jpg' alt='avatar' />
+                  <div>
+                    <Typography variant='h6'>Tania Andrew</Typography>
+                    <Typography variant='small' color='gray' className='font-normal'>
+                      {data ? data.email : ''}
+                    </Typography>
+                  </div>
+                </div>
+              ) : (
+                <div className='flex items-center gap-2'>
+                  <img className='w-10 h-10' src={tick3D} alt='tick3D-logo'></img>
+                  <Typography variant='h5'>Tick3D</Typography>
+                </div>
+              )}
               <div
                 className='cursor-pointer opacity-40 focus:opacity-100 active:opacity-100'
                 onClick={() => setOpenSidebar(false)}
@@ -113,7 +129,17 @@ export function useSidebarMenu() {
                       );
                     }
                     return (
-                      <Link key={idx} to={menuItem.path}>
+                      <Link
+                        key={idx}
+                        to={
+                          menuItem.name !== MENU_BAR.loginOrStar &&
+                          menuItem.name !== MENU_BAR.signupOrOrder
+                            ? menuItem.path
+                            : isSuccess && menuItem.pathReplace
+                            ? menuItem.pathReplace
+                            : menuItem.path
+                        }
+                      >
                         <ListItem
                           className={
                             SIDEBAR_ITEM_CLASSNAME +
@@ -126,9 +152,26 @@ export function useSidebarMenu() {
                             setOpenSidebar(false);
                           }}
                         >
-                          {menuItem.name}
+                          {menuItem.name !== MENU_BAR.loginOrStar &&
+                            menuItem.name !== MENU_BAR.signupOrOrder &&
+                            menuItem.name}
+                          {menuItem.name === MENU_BAR.loginOrStar &&
+                            (isSuccess ? MENU_BAR.star : menuItem.name)}
+                          {menuItem.name === MENU_BAR.signupOrOrder &&
+                            (isSuccess ? MENU_BAR.order : menuItem.name)}
                         </ListItem>
                       </Link>
+                    );
+                  }
+                  if (isSuccess && menuItem.type === 'logout-btn') {
+                    return (
+                      <ListItem
+                        key={idx}
+                        className={SIDEBAR_ITEM_CLASSNAME}
+                        onClick={() => emitEvent('logout')}
+                      >
+                        {menuItem.name}
+                      </ListItem>
                     );
                   }
                 })}
@@ -137,7 +180,16 @@ export function useSidebarMenu() {
           </>
         );
       },
-    [openSidebar, selectedMenu, isCategoryItem, setSelectedMenu, setIsCategoryItem, CategoryBar]
+    [
+      openSidebar,
+      selectedMenu,
+      isCategoryItem,
+      isSuccess,
+      data,
+      setSelectedMenu,
+      setIsCategoryItem,
+      CategoryBar
+    ]
   );
 
   return {

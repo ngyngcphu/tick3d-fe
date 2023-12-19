@@ -1,3 +1,4 @@
+import { AdminProtected, ProtectedRoutes } from '@components/common';
 import { MENU_BAR } from '@constants';
 import { AppLayout } from '@layouts';
 import {
@@ -10,6 +11,7 @@ import {
   PaymentCheckoutPage,
   AdminDashboard
 } from '@pages';
+import { emitEvent } from '@hooks';
 
 export default function App() {
   return (
@@ -37,32 +39,51 @@ export default function App() {
         {
           type: 'item',
           path: '/login',
-          name: MENU_BAR.login,
+          pathReplace: '/my-stars',
+          name: MENU_BAR.loginOrStar,
           element: <LoginPage />
         },
         {
           type: 'item',
           path: '/signup',
-          name: MENU_BAR.signup,
+          pathReplace: '/my-orders',
+          name: MENU_BAR.signupOrOrder,
           element: <SignUpPage />
         },
         {
           type: 'skeleton',
           path: '/checkout',
           name: 'Checkout',
-          element: <PaymentCheckoutPage />
+          element: (
+            <ProtectedRoutes>
+              <PaymentCheckoutPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'skeleton',
           path: '/cart',
           name: MENU_BAR.cart,
-          element: <ShoppingCartPage />
+          element: (
+            <ProtectedRoutes>
+              <ShoppingCartPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'skeleton',
           path: '/admin/dashboard',
           name: MENU_BAR.cart,
-          element: <AdminDashboard />
+          element: (
+            <AdminProtected>
+              <AdminDashboard />
+            </AdminProtected>
+          )
+        },
+        {
+          type: 'logout-btn',
+          name: 'Log out',
+          onClick: () => emitEvent('logout')
         }
       ]}
       child={[

@@ -174,7 +174,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': string;
+            'application/json': {
+              message: string;
+            };
           };
         };
         /** @description Default Response */
@@ -219,7 +221,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': string;
+            'application/json': {
+              message: string;
+            };
           };
         };
         /** @description Default Response */
@@ -478,7 +482,7 @@ export interface paths {
       };
     };
     put?: never;
-    /** Add a model to the current user (based on jwt) */
+    /** Add some models to the cart of the current user (based on jwt) */
     post: {
       parameters: {
         query?: never;
@@ -490,7 +494,9 @@ export interface paths {
         content: {
           'application/json': {
             models: {
+              /** @description The id of the model to add to cart */
               id: string;
+              /** @description The number to add to cart */
               quantity: number;
             }[];
           };
@@ -503,7 +509,85 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
+            'application/json': {
+              message: string;
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
             'application/json': string;
+          };
+        };
+      };
+    };
+    /** Reset the cart of the current user (based on jwt) */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              message: string;
+            };
+          };
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/cart/delete': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Remove some models from the cart of the current user (based on jwt) */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @description A list of model ids to delete from the cart */
+            models: string[];
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              message: string;
+            };
           };
         };
         /** @description Default Response */
@@ -550,7 +634,7 @@ export interface paths {
           categoryId?: string;
           /** @description The minimum threshold for number of likes */
           likes_ge?: number;
-          /** @description For pagination purpose - the index of the start item, starting at 1 */
+          /** @description For pagination purpose - the index of the start item, starting at 0 */
           start?: number;
           /** @description For pagination purpose - the number of items to return */
           noItems?: number;
@@ -585,6 +669,7 @@ export interface paths {
               numberBought: number;
               subImages: string[];
               discount?: number;
+              isDiscontinued: boolean;
             }[];
           };
         };
@@ -637,6 +722,7 @@ export interface paths {
               numberBought: number;
               subImages: string[];
               discount?: number;
+              isDiscontinued: boolean;
             }[];
           };
         };
@@ -688,6 +774,7 @@ export interface paths {
               numberBought: number;
               subImages: string[];
               discount?: number;
+              isDiscontinued: boolean;
             };
           };
         };
@@ -726,7 +813,11 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': {
+              message: string;
+            };
+          };
         };
       };
     };
@@ -751,7 +842,11 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': {
+              message: string;
+            };
+          };
         };
       };
     };
@@ -802,6 +897,46 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/model/{id}/discontinue': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Mark Default Model as Discontinued. Also, remove it from all current user carts. */
+    patch: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: {
+            message?: string;
+          };
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': string;
+          };
+        };
+      };
+    };
+    trace?: never;
+  };
   '/api/userModel': {
     parameters: {
       query?: never;
@@ -815,7 +950,28 @@ export interface paths {
      */
     get: {
       parameters: {
-        query?: never;
+        query?: {
+          /** @description The substring that the model name should contain */
+          keyword?: string;
+          /**
+           * @description The time after which the model was uploaded, specified in ISO format
+           * @example 2023-12-18
+           */
+          uploaded_after?: string;
+          /**
+           * @description The time before which the model was uploaded, specified in ISO format
+           * @example 2023-12-25
+           */
+          uploaded_before?: string;
+          /** @description For pagination purpose - the index of the start item, starting at 0 */
+          start?: number;
+          /** @description For pagination purpose - the number of items to return */
+          noItems?: number;
+          /** @description The name of the field to order on */
+          orderBy?: 'uploadedTime' | 'price' | 'name';
+          /** @description Sort ascending or descending */
+          order?: 'asc' | 'desc';
+        };
         header?: never;
         path?: never;
         cookie?: never;
@@ -949,7 +1105,11 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': {
+              message: string;
+            };
+          };
         };
       };
     };
@@ -971,7 +1131,11 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': {
+              message: string;
+            };
+          };
         };
       };
     };
@@ -1069,7 +1233,39 @@ export interface paths {
     /** Get all orders of the current customer. For managers, return all orders */
     get: {
       parameters: {
-        query?: never;
+        query?: {
+          /**
+           * @description The time after which the order was created, specified in ISO format
+           * @example 2023-12-18
+           */
+          created_after?: string;
+          /**
+           * @description The time before which the order was created, specified in ISO format
+           * @example 2023-12-25
+           */
+          created_before?: string;
+          /** @description Filter on paid statud */
+          isPaid?: boolean;
+          /** @description Filter on order status */
+          status?:
+            | 'ORDER_PENDING'
+            | 'ORDER_PROCESSED'
+            | 'PRINT_PENDING'
+            | 'PRINTED'
+            | 'DELIVERING'
+            | 'DELIVERED'
+            | 'REJECTED';
+          /** @description Filter on user id, only meaningful for managers */
+          userId?: string;
+          /** @description For pagination purpose - the index of the start item, starting at 0 */
+          start?: number;
+          /** @description For pagination purpose - the number of items to return */
+          noItems?: number;
+          /** @description The name of the field to order on */
+          orderBy?: 'totalPrice' | 'shippingFee' | 'creationTime';
+          /** @description Sort ascending or descending */
+          order?: 'asc' | 'desc';
+        };
         header?: never;
         path?: never;
         cookie?: never;
@@ -1140,7 +1336,158 @@ export interface paths {
       parameters: {
         query?: never;
         header?: never;
-        path?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              id: string;
+              userId: string;
+              totalPrice: number;
+              shippingFee: number;
+              /** Format: date-time */
+              estimatedDeliveryTime: string;
+              status:
+                | 'ORDER_PENDING'
+                | 'ORDER_PROCESSED'
+                | 'PRINT_PENDING'
+                | 'PRINTED'
+                | 'DELIVERING'
+                | 'DELIVERED'
+                | 'REJECTED';
+              district: string;
+              ward: string;
+              street: string;
+              streetNo: string;
+              /** Format: date-time */
+              creationTime: string;
+              isPaid: boolean;
+              note?: string;
+              digitalOrderId?: string;
+              items: {
+                model_id: string;
+                gcode: string;
+                name: string;
+                quantity: number;
+                imageUrl: string;
+              }[];
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': string;
+          };
+        };
+        /** @description Default Response */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': string;
+          };
+        };
+      };
+    };
+    /** Update the info of an order. For managers only */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': {
+            /** @description Order status */
+            status?:
+              | 'ORDER_PENDING'
+              | 'ORDER_PROCESSED'
+              | 'PRINT_PENDING'
+              | 'PRINTED'
+              | 'DELIVERING'
+              | 'DELIVERED'
+              | 'REJECTED';
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              id: string;
+              userId: string;
+              totalPrice: number;
+              shippingFee: number;
+              /** Format: date-time */
+              estimatedDeliveryTime: string;
+              status:
+                | 'ORDER_PENDING'
+                | 'ORDER_PROCESSED'
+                | 'PRINT_PENDING'
+                | 'PRINTED'
+                | 'DELIVERING'
+                | 'DELIVERED'
+                | 'REJECTED';
+              district: string;
+              ward: string;
+              street: string;
+              streetNo: string;
+              /** Format: date-time */
+              creationTime: string;
+              isPaid: boolean;
+              note?: string;
+              digitalOrderId?: string;
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': string;
+          };
+        };
+      };
+    };
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /**
+     * Cancel order.
+     * @description This endpoint is used to cancel an order, but only if the status of the order is pending.
+     */
+    patch: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
         cookie?: never;
       };
       requestBody?: never;
@@ -1187,8 +1534,73 @@ export interface paths {
             'application/json': string;
           };
         };
+      };
+    };
+    trace?: never;
+  };
+  '/api/order/{id}/paid': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /**
+     * Update order payment status to true (For Managers Only).
+     * @description This endpoint is used when the customer pays with cash. Only managers are authorized to use this operation.
+     */
+    patch: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
         /** @description Default Response */
-        404: {
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              id: string;
+              userId: string;
+              totalPrice: number;
+              shippingFee: number;
+              /** Format: date-time */
+              estimatedDeliveryTime: string;
+              status:
+                | 'ORDER_PENDING'
+                | 'ORDER_PROCESSED'
+                | 'PRINT_PENDING'
+                | 'PRINTED'
+                | 'DELIVERING'
+                | 'DELIVERED'
+                | 'REJECTED';
+              district: string;
+              ward: string;
+              street: string;
+              streetNo: string;
+              /** Format: date-time */
+              creationTime: string;
+              isPaid: boolean;
+              note?: string;
+              digitalOrderId?: string;
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
           headers: {
             [name: string]: unknown;
           };
@@ -1198,12 +1610,6 @@ export interface paths {
         };
       };
     };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
     trace?: never;
   };
 }

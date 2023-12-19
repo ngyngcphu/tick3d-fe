@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-type EventKey = 'user:refetch';
+type EventKey = 'user:refetch' | 'logout';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useListenEvent(event: EventKey, listener: (...args: any[]) => void) {
