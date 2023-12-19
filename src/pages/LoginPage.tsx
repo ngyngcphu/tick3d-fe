@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -15,9 +16,15 @@ export function LoginPage() {
   const navigate = useNavigate();
 
   const {
-    info: { refetch }
+    info: { isSuccess, refetch }
   } = useUserQuery();
-  const { setSelectedMenu, setIsCategoryItem } = useMenuBarStore();
+  const { setSelectedMenu } = useMenuBarStore();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/');
+    }
+  }, [isSuccess, navigate]);
 
   const validateSchema = yup.object({
     email: yup.string().required('Vui lòng nhập email').email('Email không đúng định dạng'),
@@ -53,7 +60,6 @@ export function LoginPage() {
       } else {
         navigate('/');
         setSelectedMenu(MENU_BAR.home);
-        setIsCategoryItem(false);
       }
       toast.success('Login successfully');
     } catch (err) {

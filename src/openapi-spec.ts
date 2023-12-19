@@ -174,7 +174,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': string;
+            'application/json': {
+              message: string;
+            };
           };
         };
         /** @description Default Response */
@@ -219,7 +221,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': string;
+            'application/json': {
+              message: string;
+            };
           };
         };
         /** @description Default Response */
@@ -505,7 +509,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': string;
+            'application/json': {
+              message: string;
+            };
           };
         };
         /** @description Default Response */
@@ -535,7 +541,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': string;
+            'application/json': {
+              message: string;
+            };
           };
         };
       };
@@ -577,7 +585,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': string;
+            'application/json': {
+              message: string;
+            };
           };
         };
         /** @description Default Response */
@@ -659,6 +669,7 @@ export interface paths {
               numberBought: number;
               subImages: string[];
               discount?: number;
+              isDiscontinued: boolean;
             }[];
           };
         };
@@ -711,6 +722,7 @@ export interface paths {
               numberBought: number;
               subImages: string[];
               discount?: number;
+              isDiscontinued: boolean;
             }[];
           };
         };
@@ -762,6 +774,7 @@ export interface paths {
               numberBought: number;
               subImages: string[];
               discount?: number;
+              isDiscontinued: boolean;
             };
           };
         };
@@ -800,7 +813,11 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': {
+              message: string;
+            };
+          };
         };
       };
     };
@@ -825,7 +842,11 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': {
+              message: string;
+            };
+          };
         };
       };
     };
@@ -874,6 +895,46 @@ export interface paths {
     options?: never;
     head?: never;
     patch?: never;
+    trace?: never;
+  };
+  '/api/model/{id}/discontinue': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Mark Default Model as Discontinued. Also, remove it from all current user carts. */
+    patch: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: {
+            message?: string;
+          };
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': string;
+          };
+        };
+      };
+    };
     trace?: never;
   };
   '/api/userModel': {
@@ -1044,7 +1105,11 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': {
+              message: string;
+            };
+          };
         };
       };
     };
@@ -1066,7 +1131,11 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': {
+              message: string;
+            };
+          };
         };
       };
     };
@@ -1408,7 +1477,139 @@ export interface paths {
     delete?: never;
     options?: never;
     head?: never;
-    patch?: never;
+    /**
+     * Cancel order.
+     * @description This endpoint is used to cancel an order, but only if the status of the order is pending.
+     */
+    patch: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              id: string;
+              userId: string;
+              totalPrice: number;
+              shippingFee: number;
+              /** Format: date-time */
+              estimatedDeliveryTime: string;
+              status:
+                | 'ORDER_PENDING'
+                | 'ORDER_PROCESSED'
+                | 'PRINT_PENDING'
+                | 'PRINTED'
+                | 'DELIVERING'
+                | 'DELIVERED'
+                | 'REJECTED';
+              district: string;
+              ward: string;
+              street: string;
+              streetNo: string;
+              /** Format: date-time */
+              creationTime: string;
+              isPaid: boolean;
+              note?: string;
+              digitalOrderId?: string;
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': string;
+          };
+        };
+      };
+    };
+    trace?: never;
+  };
+  '/api/order/{id}/paid': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /**
+     * Update order payment status to true (For Managers Only).
+     * @description This endpoint is used when the customer pays with cash. Only managers are authorized to use this operation.
+     */
+    patch: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              id: string;
+              userId: string;
+              totalPrice: number;
+              shippingFee: number;
+              /** Format: date-time */
+              estimatedDeliveryTime: string;
+              status:
+                | 'ORDER_PENDING'
+                | 'ORDER_PROCESSED'
+                | 'PRINT_PENDING'
+                | 'PRINTED'
+                | 'DELIVERING'
+                | 'DELIVERED'
+                | 'REJECTED';
+              district: string;
+              ward: string;
+              street: string;
+              streetNo: string;
+              /** Format: date-time */
+              creationTime: string;
+              isPaid: boolean;
+              note?: string;
+              digitalOrderId?: string;
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': string;
+          };
+        };
+      };
+    };
     trace?: never;
   };
 }
