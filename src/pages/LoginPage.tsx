@@ -22,9 +22,13 @@ export function LoginPage() {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/');
+      if (state && state.from) {
+        navigate(state.from);
+      } else {
+        navigate('/');
+      }
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, state, navigate]);
 
   const validateSchema = yup.object({
     email: yup.string().required('Vui lòng nhập email').email('Email không đúng định dạng'),

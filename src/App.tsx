@@ -6,6 +6,8 @@ import {
   DetailModelPage,
   HomePage,
   LoginPage,
+  MyOrderPage,
+  MyStarPage,
   ShoppingCartPage,
   SignUpPage,
   PaymentCheckoutPage,
@@ -41,14 +43,24 @@ export default function App() {
           path: '/login',
           pathReplace: '/my-stars',
           name: MENU_BAR.loginOrStar,
-          element: <LoginPage />
+          element: <LoginPage />,
+          elementReplace: (
+            <ProtectedRoutes>
+              <MyStarPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'item',
           path: '/signup',
           pathReplace: '/my-orders',
           name: MENU_BAR.signupOrOrder,
-          element: <SignUpPage />
+          element: <SignUpPage />,
+          elementReplace: (
+            <ProtectedRoutes>
+              <MyOrderPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'skeleton',

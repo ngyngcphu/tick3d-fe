@@ -1,4 +1,4 @@
-import { Carousel, Button, Typography } from '@material-tailwind/react';
+import { Carousel, Button, Spinner, Typography } from '@material-tailwind/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { homeService } from '@services';
 import { retryQueryFn } from '@utils';
@@ -50,7 +50,9 @@ export function Slides() {
           </div>
         ))
       ) : (
-        <h1>Deft</h1>
+        <div className='grid justify-items-center items-center'>
+          <Spinner color='green' className='h-12 w-12' />
+        </div>
       )}
     </Carousel>
   );

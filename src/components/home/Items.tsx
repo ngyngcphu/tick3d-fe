@@ -1,19 +1,21 @@
-import { useNavigate, NavigateFunction } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Card, CardBody, Chip, Typography } from '@material-tailwind/react';
 import { homeService } from '@services';
 import { retryQueryFn } from '@utils';
 import { useQuery } from '@tanstack/react-query';
 
 export function Items() {
-  const navigate: NavigateFunction = useNavigate();
+  const navigate = useNavigate();
+
   const { data: items } = useQuery({
     queryKey: ['/api/model'],
     queryFn: () => homeService.getTopModels(8, 'numberBought'),
     retry: retryQueryFn
   });
+
   return (
     <div className='grid grid-cols-2 gap-2 lg:grid-cols-4 lg:py-6 lg:px-4 lg:gap-3'>
-      {items ? (
+      {items &&
         items.map((item, index) => (
           <Card
             key={index}
@@ -41,10 +43,7 @@ export function Items() {
               </div>
             </CardBody>
           </Card>
-        ))
-      ) : (
-        <h1>Deft1</h1>
-      )}
+        ))}
     </div>
   );
 }
