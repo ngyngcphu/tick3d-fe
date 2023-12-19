@@ -225,6 +225,47 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
               </Tooltip>
             );
           }
+          if (isSuccess && menuItem.type === 'logout-btn') {
+            return (
+              <Tooltip
+                key={idx}
+                open={openPopoverAvatar}
+                handler={setOpenPopoverAvatar}
+                {...triggersAvatar}
+                className='bg-white'
+                placement='bottom-end'
+                content={
+                  <div className='p-1 shadow-md'>
+                    <div className='flex items-center gap-2'>
+                      <Avatar
+                        src='https://docs.material-tailwind.com/img/face-2.jpg'
+                        alt='avatar'
+                      />
+                      <div>
+                        <Typography variant='h6' color='gray'>
+                          Tania Andrew
+                        </Typography>
+                        <Typography variant='small' color='gray' className='font-normal'>
+                          {data ? data.email : ''}
+                        </Typography>
+                      </div>
+                    </div>
+                    <hr className='my-1' />
+                    <List className='p-0'>
+                      <ListItem>{menuItem.name}</ListItem>
+                    </List>
+                  </div>
+                }
+              >
+                <Avatar
+                  size='sm'
+                  src='https://docs.material-tailwind.com/img/face-2.jpg'
+                  alt='avatar'
+                  className='ml-3 cursor-pointer'
+                />
+              </Tooltip>
+            );
+          }
         })}
       </List>
     </div>
