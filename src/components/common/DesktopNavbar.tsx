@@ -4,7 +4,7 @@ import { Avatar, Chip, List, ListItem, Input, Tooltip, Typography } from '@mater
 import { MagnifyingGlassIcon, ShoppingCartIcon, StarIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { CATEGORY_LIST, MENU_BAR } from '@constants';
-import { emitEvent, useUserQuery } from '@hooks';
+import { useUserQuery } from '@hooks';
 import { useMenuBarStore } from '@states';
 
 export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
@@ -211,7 +211,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
                     </div>
                     <hr className='my-1' />
                     <List className='p-0'>
-                      <ListItem onClick={() => emitEvent('logout')}>{menuItem.name}</ListItem>
+                      <ListItem>{menuItem.name}</ListItem>
                     </List>
                   </div>
                 }
@@ -252,7 +252,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
                     </div>
                     <hr className='my-1' />
                     <List className='p-0'>
-                      <ListItem>{menuItem.name}</ListItem>
+                      <ListItem onClick={menuItem.onClick}>{menuItem.name}</ListItem>
                     </List>
                   </div>
                 }

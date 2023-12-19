@@ -13,9 +13,13 @@ export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ m
     setOpenDialog(!openDialog);
   };
   const { logout } = useAuthMutation();
-  const handleLogout = () => {
-    logout.mutateAsync();
-    setOpenDialog(false);
+  const handleLogout = async () => {
+    try {
+      await logout.mutateAsync();
+      setOpenDialog(false);
+    } catch (error) {
+      throw error;
+    }
   };
   const routeItems = useMemo(() => {
     const items: { path: string; element: React.ReactElement; pathReplace?: string }[] = [];

@@ -5,7 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { ToggleSidebarBtn } from '@components/common';
 import { MENU_BAR, CATEGORY_LIST } from '@constants';
-import { emitEvent, useUserQuery } from '@hooks';
+import { useUserQuery } from '@hooks';
 import { useMenuBarStore } from '@states';
 
 export function useSidebarMenu() {
@@ -168,7 +168,7 @@ export function useSidebarMenu() {
                       <ListItem
                         key={idx}
                         className={SIDEBAR_ITEM_CLASSNAME}
-                        onClick={() => emitEvent('logout')}
+                        onClick={menuItem.onClick}
                       >
                         {menuItem.name}
                       </ListItem>
