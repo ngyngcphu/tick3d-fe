@@ -6,7 +6,7 @@ export function HomePage() {
   return (
     <>
       <div>
-        <Slides slides={[]} />
+        <Slides />
       </div>
       <div className='p-4 lg:p-16 text-center bg-white'>
         <Typography className='text-xl px-8 mb-5 lg:text-[40px] lg:mb-8 font-bold'>
@@ -40,7 +40,7 @@ export function HomePage() {
         <Typography variant='h3' className='text-center'>
           Mô hình 3D được mua nhiều tại cửa hàng
         </Typography>
-        <Items items={[]} />
+        <Items />
       </div>
     </>
   );

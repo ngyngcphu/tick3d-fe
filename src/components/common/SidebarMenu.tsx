@@ -165,7 +165,11 @@ export function useSidebarMenu() {
                   }
                   if (isSuccess && menuItem.type === 'logout-btn') {
                     return (
-                      <ListItem key={idx} className={SIDEBAR_ITEM_CLASSNAME}>
+                      <ListItem
+                        key={idx}
+                        className={SIDEBAR_ITEM_CLASSNAME}
+                        onClick={menuItem.onClick}
+                      >
                         {menuItem.name}
                       </ListItem>
                     );

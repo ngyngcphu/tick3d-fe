@@ -89,7 +89,7 @@ export function CategoryPage() {
             ))}
           </List>
         ) : (
-          <Items items={[]} />
+          <Items />
         )}
       </div>
       {screenSize <= ScreenSize.MD ? (

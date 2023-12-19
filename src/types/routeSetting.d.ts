@@ -4,6 +4,7 @@ type RouteItem = {
   path: string;
   pathReplace?: string;
   element: React.ReactElement;
+  elementReplace?: React.ReactElement;
 };
 
 type LogoutBtn = {
@@ -18,6 +19,7 @@ type RouteSkeleton = {
   path: string;
   pathReplace?: string;
   element: React.ReactElement;
+  elementReplace?: React.ReactElement;
 };
 
 type RouteMenuItem = RouteItem | RouteSkeleton | LogoutBtn | 'divider';

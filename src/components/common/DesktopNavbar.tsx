@@ -191,10 +191,10 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
                 open={openPopoverAvatar}
                 handler={setOpenPopoverAvatar}
                 {...triggersAvatar}
-                className='bg-white'
+                className='bg-white shadow-2xl'
                 placement='bottom-end'
                 content={
-                  <div className='p-1 shadow-md'>
+                  <>
                     <div className='flex items-center gap-2'>
                       <Avatar
                         src='https://docs.material-tailwind.com/img/face-2.jpg'
@@ -211,9 +211,9 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
                     </div>
                     <hr className='my-1' />
                     <List className='p-0'>
-                      <ListItem>{menuItem.name}</ListItem>
+                      <ListItem onClick={menuItem.onClick}>{menuItem.name}</ListItem>
                     </List>
-                  </div>
+                  </>
                 }
               >
                 <Avatar

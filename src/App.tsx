@@ -6,11 +6,14 @@ import {
   DetailModelPage,
   HomePage,
   LoginPage,
+  MyOrderPage,
+  MyStarPage,
   ShoppingCartPage,
   SignUpPage,
   PaymentCheckoutPage,
   AdminDashboard
 } from '@pages';
+import { emitEvent } from '@hooks';
 
 export default function App() {
   return (
@@ -40,14 +43,24 @@ export default function App() {
           path: '/login',
           pathReplace: '/my-stars',
           name: MENU_BAR.loginOrStar,
-          element: <LoginPage />
+          element: <LoginPage />,
+          elementReplace: (
+            <ProtectedRoutes>
+              <MyStarPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'item',
           path: '/signup',
           pathReplace: '/my-orders',
           name: MENU_BAR.signupOrOrder,
-          element: <SignUpPage />
+          element: <SignUpPage />,
+          elementReplace: (
+            <ProtectedRoutes>
+              <MyOrderPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'skeleton',
@@ -82,7 +95,7 @@ export default function App() {
         {
           type: 'logout-btn',
           name: 'Log out',
-          onClick: () => null
+          onClick: () => emitEvent('logout')
         }
       ]}
       child={[
