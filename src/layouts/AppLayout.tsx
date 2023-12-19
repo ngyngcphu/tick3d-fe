@@ -4,11 +4,15 @@ import { AppNavigation, Footer } from '@components/common';
 
 export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ menu, child }) => {
   const routeItems = useMemo(() => {
-    const items: { path: string; element: React.ReactElement }[] = [];
+    const items: { path: string; element: React.ReactElement; pathReplace?: string }[] = [];
 
     for (const menuItem of menu) {
       if (menuItem === 'divider' || menuItem.type === 'logout-btn') continue;
-      items.push({ path: menuItem.path, element: menuItem.element });
+      items.push({
+        path: menuItem.path,
+        element: menuItem.element,
+        pathReplace: menuItem.pathReplace
+      });
     }
     for (const childItem of child) {
       items.push({ path: childItem.path, element: childItem.element });

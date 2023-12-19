@@ -38,13 +38,15 @@ export default function App() {
         {
           type: 'item',
           path: '/login',
-          name: MENU_BAR.login,
+          pathReplace: '/my-stars',
+          name: MENU_BAR.loginOrStar,
           element: <LoginPage />
         },
         {
           type: 'item',
           path: '/signup',
-          name: MENU_BAR.signup,
+          pathReplace: '/my-orders',
+          name: MENU_BAR.signupOrOrder,
           element: <SignUpPage />
         },
         {
@@ -76,6 +78,11 @@ export default function App() {
               <AdminDashboard />
             </AdminProtected>
           )
+        },
+        {
+          type: 'logout-btn',
+          name: 'Log out',
+          onClick: () => null
         }
       ]}
       child={[

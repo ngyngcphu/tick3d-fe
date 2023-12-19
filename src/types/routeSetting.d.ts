@@ -2,6 +2,7 @@ type RouteItem = {
   name: string;
   type: 'item';
   path: string;
+  pathReplace?: string;
   element: React.ReactElement;
 };
 
@@ -15,6 +16,7 @@ type RouteSkeleton = {
   name: string;
   type: 'skeleton';
   path: string;
+  pathReplace?: string;
   element: React.ReactElement;
 };
 
