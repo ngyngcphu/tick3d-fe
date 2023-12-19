@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Chip, List, ListItem, Input, Tooltip } from '@material-tailwind/react';
-import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { Avatar, Chip, List, ListItem, Input, Tooltip, Typography } from '@material-tailwind/react';
+import { MagnifyingGlassIcon, ShoppingCartIcon, StarIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { CATEGORY_LIST, MENU_BAR } from '@constants';
+import { useUserQuery } from '@hooks';
 import { useMenuBarStore } from '@states';
 
 export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
+  const {
+    info: { data, isSuccess }
+  } = useUserQuery();
   const {
     selectedMenu,
     selectedCategoryItem,
@@ -15,10 +19,16 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
     setIsCategoryItem
   } = useMenuBarStore();
 
-  const [openPopover, setOpenPopover] = useState<boolean>(false);
-  const triggers = {
-    onMouseEnter: () => setOpenPopover(true),
-    onMouseLeave: () => setOpenPopover(false)
+  const [openPopoverCategory, setOpenPopoverCategory] = useState<boolean>(false);
+  const [openPopoverAvatar, setOpenPopoverAvatar] = useState<boolean>(false);
+
+  const triggersCategory = {
+    onMouseEnter: () => setOpenPopoverCategory(true),
+    onMouseLeave: () => setOpenPopoverCategory(false)
+  };
+  const triggersAvatar = {
+    onMouseEnter: () => setOpenPopoverAvatar(true),
+    onMouseLeave: () => setOpenPopoverAvatar(false)
   };
 
   const NAVBAR_ITEM_CLASSNAME =
@@ -39,9 +49,9 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
               return (
                 <Tooltip
                   key={idx}
-                  open={openPopover}
-                  handler={setOpenPopover}
-                  {...triggers}
+                  open={openPopoverCategory}
+                  handler={setOpenPopoverCategory}
+                  {...triggersCategory}
                   className='bg-white'
                   content={
                     <List className='p-0'>
@@ -80,7 +90,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
                   </Link>
                 </Tooltip>
               );
-            if (idx === 2)
+            if (menuItem.name === MENU_BAR.upload)
               return (
                 <div key={idx} className='flex items-center gap-4'>
                   <div className='text-center min-w-[350px] xl:min-w-[500px]'>
@@ -104,16 +114,38 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
                         setIsCategoryItem(false);
                       }}
                     >
-                      {menuItem.name}
+                      <span className='truncate'>{menuItem.name}</span>
                     </ListItem>
                   </Link>
                   <Link to='/cart'>
-                    <ShoppingCartIcon strokeWidth={2} className='w-6 h-6 cursor-pointer' />
+                    <ListItem
+                      className={
+                        NAVBAR_ITEM_CLASSNAME +
+                        (selectedMenu === MENU_BAR.cart
+                          ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
+                          : '')
+                      }
+                      onClick={() => {
+                        setSelectedMenu(MENU_BAR.cart);
+                        setIsCategoryItem(false);
+                      }}
+                    >
+                      <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+                    </ListItem>
                   </Link>
                 </div>
               );
             return (
-              <Link key={idx} to={menuItem.path}>
+              <Link
+                key={idx}
+                to={
+                  menuItem.name !== MENU_BAR.loginOrStar && menuItem.name !== MENU_BAR.signupOrOrder
+                    ? menuItem.path
+                    : isSuccess && menuItem.pathReplace
+                    ? menuItem.pathReplace
+                    : menuItem.path
+                }
+              >
                 <ListItem
                   className={
                     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold text-gray/4 font-medium rounded-lg text-lg w-fit text-center' +
@@ -126,26 +158,69 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
                     setIsCategoryItem(false);
                   }}
                 >
-                  {idx < menu.length - 2 && menuItem.name}
-                  {idx === menu.length - 2 && (
-                    <Chip
-                      variant='outlined'
-                      size='lg'
-                      value={<span className='normal-case text-sm'>{menuItem.name}</span>}
-                    />
-                  )}
-                  {idx === menu.length - 1 && (
-                    <Chip
-                      size='lg'
-                      value={<span className='normal-case text-sm'>{menuItem.name}</span>}
-                    />
-                  )}
+                  {menuItem.name !== MENU_BAR.loginOrStar &&
+                    menuItem.name !== MENU_BAR.signupOrOrder &&
+                    menuItem.name}
+                  {menuItem.name === MENU_BAR.loginOrStar &&
+                    (isSuccess ? (
+                      <StarIcon strokeWidth={2} className='w-6 h-6 cursor-pointer' />
+                    ) : (
+                      <Chip
+                        variant='outlined'
+                        size='lg'
+                        value={<span className='normal-case text-sm'>{menuItem.name}</span>}
+                      />
+                    ))}
+                  {menuItem.name === MENU_BAR.signupOrOrder &&
+                    (isSuccess ? (
+                      <span className='truncate'>{MENU_BAR.order}</span>
+                    ) : (
+                      <Chip
+                        size='lg'
+                        value={<span className='normal-case text-sm'>{menuItem.name}</span>}
+                      />
+                    ))}
                 </ListItem>
               </Link>
             );
           }
         })}
       </List>
+      {isSuccess && (
+        <Tooltip
+          open={openPopoverAvatar}
+          handler={setOpenPopoverAvatar}
+          {...triggersAvatar}
+          className='bg-white'
+          placement='bottom-end'
+          content={
+            <>
+              <div className='flex items-center gap-2'>
+                <Avatar src='https://docs.material-tailwind.com/img/face-2.jpg' alt='avatar' />
+                <div>
+                  <Typography variant='h6' color='gray'>
+                    Tania Andrew
+                  </Typography>
+                  <Typography variant='small' color='gray' className='font-normal'>
+                    {data ? data.email : ''}
+                  </Typography>
+                </div>
+              </div>
+              <hr className='my-1' />
+              <List className='p-0'>
+                <ListItem>Log out</ListItem>
+              </List>
+            </>
+          }
+        >
+          <Avatar
+            size='sm'
+            src='https://docs.material-tailwind.com/img/face-2.jpg'
+            alt='avatar'
+            className='ml-3 cursor-pointer'
+          />
+        </Tooltip>
+      )}
     </div>
   );
 };

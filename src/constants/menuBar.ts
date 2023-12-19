@@ -3,9 +3,10 @@ export const MENU_BAR = {
   category: 'Categories',
   upload: 'Upload & print',
   cart: 'Shopping Cart',
-  login: 'Log in',
-  signup: 'Sign up',
-  checkout: 'Check out'
+  loginOrStar: 'Log in',
+  signupOrOrder: 'Sign up',
+  star: 'Stars',
+  order: 'My order'
 };
 
 export const CATEGORY_LIST = [
