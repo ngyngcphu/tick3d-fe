@@ -3,6 +3,7 @@
  */
 
 export * from './useAuthMutation.hook';
+export * from './useCategoryQuery.hook';
 export * from './useEvent';
 export * from './useScreenSize';
 export * from './useUserQuery.hook';

@@ -8,14 +8,3 @@ export const MENU_BAR = {
   star: 'Stars',
   order: 'My order'
 };
-
-export const CATEGORY_LIST = [
-  'All things',
-  'Fashion',
-  'Hobby',
-  'Learning',
-  'Tools',
-  'Toys & Games',
-  'Art',
-  'Household'
-];

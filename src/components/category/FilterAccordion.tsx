@@ -4,22 +4,24 @@ import {
   AccordionBody,
   AccordionHeader,
   List,
-  ListItem
+  ListItem,
+  Spinner
 } from '@material-tailwind/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { CATEGORY_LIST } from '@constants';
+import { useCategoryQuery } from '@hooks';
 import { useMenuBarStore } from '@states';
 
 export const FilterAccordion: Component<{
   closeDrawer?: () => void;
 }> = ({ closeDrawer }) => {
-  const [open, setOpen] = useState<number>(0);
+  const {
+    listCategories: { data: listCategories }
+  } = useCategoryQuery();
   const { selectedCategoryItem, setSelectedCategoryItem } = useMenuBarStore();
 
-  const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
+  const [open, setOpen] = useState<number>(0);
 
-  const CATEGORYBAR_ITEM_CLASSNAME =
-    'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold px-6 rounded-none text-gray/4 font-medium';
+  const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
 
   return (
     <div className='w-full'>
@@ -37,23 +39,29 @@ export const FilterAccordion: Component<{
         <AccordionBody>
           <div className='flex flex-col'>
             <List className='p-0'>
-              {CATEGORY_LIST.map((item, idx) => (
-                <ListItem
-                  key={idx}
-                  className={
-                    CATEGORYBAR_ITEM_CLASSNAME +
-                    (selectedCategoryItem === item
-                      ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
-                      : '')
-                  }
-                  onClick={() => {
-                    setSelectedCategoryItem(item);
-                    closeDrawer?.();
-                  }}
-                >
-                  {item}
-                </ListItem>
-              ))}
+              {listCategories ? (
+                listCategories.map((item, idx) => (
+                  <ListItem
+                    key={idx}
+                    className={
+                      'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold px-6 rounded-none text-gray/4 font-medium' +
+                      (selectedCategoryItem === item.name
+                        ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
+                        : '')
+                    }
+                    onClick={() => {
+                      setSelectedCategoryItem(item.name);
+                      closeDrawer?.();
+                    }}
+                  >
+                    {item.name}
+                  </ListItem>
+                ))
+              ) : (
+                <div className='grid justify-items-center items-center'>
+                  <Spinner color='green' className='h-12 w-12' />
+                </div>
+              )}
             </List>
           </div>
         </AccordionBody>
