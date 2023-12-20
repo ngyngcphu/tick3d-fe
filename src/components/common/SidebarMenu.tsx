@@ -66,10 +66,10 @@ export function useSidebarMenu() {
     [selectedCategoryItem, setSelectedCategoryItem, setIsCategoryItem]
   );
 
-  const SidebarMenu: Component<{ menu: RouteMenu; listCategories?: Category[] }> = useMemo(
+  const SidebarMenu: Component<{ menu: RouteMenu; listCategories: Category[] }> = useMemo(
     () =>
       ({ menu, listCategories }) => {
-        if (isCategoryItem === true && listCategories !== undefined) {
+        if (isCategoryItem === true) {
           return <CategoryBar listCategories={listCategories} />;
         }
 
@@ -119,6 +119,7 @@ export function useSidebarMenu() {
                             onClick={() => {
                               setSelectedMenu(menuItem.name);
                               setIsCategoryItem(true);
+                              setSelectedCategoryItem('All things');
                             }}
                           >
                             {menuItem.name}
@@ -151,6 +152,7 @@ export function useSidebarMenu() {
                           onClick={() => {
                             setSelectedMenu(menuItem.name);
                             setOpenSidebar(false);
+                            setSelectedCategoryItem('');
                           }}
                         >
                           {menuItem.name !== MENU_BAR.loginOrStar &&
@@ -187,9 +189,10 @@ export function useSidebarMenu() {
       isCategoryItem,
       isSuccess,
       data,
+      CategoryBar,
       setSelectedMenu,
       setIsCategoryItem,
-      CategoryBar
+      setSelectedCategoryItem
     ]
   );
 

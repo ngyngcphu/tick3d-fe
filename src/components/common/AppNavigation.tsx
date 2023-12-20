@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { AppDrawer, DesktopNavbar, ToggleSidebarBtn, useSidebarMenu } from '@components/common';
@@ -11,6 +12,11 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
     listCategories: { data: listCategories }
   } = useCategoryQuery();
   const { openSidebar, handleOpenSidebar, SidebarMenu } = useSidebarMenu();
+
+  const extraListCategories = useMemo(
+    () => [{ id: '', name: 'All things' }, ...(listCategories ?? [])],
+    [listCategories]
+  );
 
   return (
     <div className='w-full max-h-[768px] px-6 lg:px-9 py-3 shadow-md z-10'>
@@ -29,10 +35,10 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
         </div>
         {screenSize < ScreenSize.LG ? (
           <AppDrawer open={openSidebar} onClose={handleOpenSidebar}>
-            <SidebarMenu menu={menu} listCategories={listCategories} />
+            <SidebarMenu menu={menu} listCategories={extraListCategories} />
           </AppDrawer>
         ) : (
-          <DesktopNavbar menu={menu} listCategories={listCategories} />
+          <DesktopNavbar menu={menu} listCategories={extraListCategories} />
         )}
       </div>
     </div>

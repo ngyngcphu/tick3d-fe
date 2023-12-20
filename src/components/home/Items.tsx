@@ -8,8 +8,8 @@ export function Items() {
   const navigate = useNavigate();
 
   const { data: items } = useQuery({
-    queryKey: ['/api/model'],
-    queryFn: () => homeService.getTopModels(8, 'numberBought'),
+    queryKey: ['topModels'],
+    queryFn: () => homeService.getTopModels(8, 'numberBought', 'desc'),
     retry: retryQueryFn
   });
 

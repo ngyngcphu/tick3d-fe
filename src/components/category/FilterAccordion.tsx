@@ -4,8 +4,7 @@ import {
   AccordionBody,
   AccordionHeader,
   List,
-  ListItem,
-  Spinner
+  ListItem
 } from '@material-tailwind/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useCategoryQuery } from '@hooks';
@@ -18,7 +17,6 @@ export const FilterAccordion: Component<{
     listCategories: { data: listCategories }
   } = useCategoryQuery();
   const { selectedCategoryItem, setSelectedCategoryItem } = useMenuBarStore();
-
   const [open, setOpen] = useState<number>(0);
 
   const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
@@ -39,29 +37,23 @@ export const FilterAccordion: Component<{
         <AccordionBody>
           <div className='flex flex-col'>
             <List className='p-0'>
-              {listCategories ? (
-                listCategories.map((item, idx) => (
-                  <ListItem
-                    key={idx}
-                    className={
-                      'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold px-6 rounded-none text-gray/4 font-medium' +
-                      (selectedCategoryItem === item.name
-                        ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
-                        : '')
-                    }
-                    onClick={() => {
-                      setSelectedCategoryItem(item.name);
-                      closeDrawer?.();
-                    }}
-                  >
-                    {item.name}
-                  </ListItem>
-                ))
-              ) : (
-                <div className='grid justify-items-center items-center'>
-                  <Spinner color='green' className='h-12 w-12' />
-                </div>
-              )}
+              {[{ id: '', name: 'All things' }, ...(listCategories ?? [])].map((item, idx) => (
+                <ListItem
+                  key={idx}
+                  className={
+                    'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold px-6 rounded-none text-gray/4 font-medium' +
+                    (selectedCategoryItem === item.name
+                      ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
+                      : '')
+                  }
+                  onClick={() => {
+                    setSelectedCategoryItem(item.name);
+                    closeDrawer?.();
+                  }}
+                >
+                  {item.name}
+                </ListItem>
+              ))}
             </List>
           </div>
         </AccordionBody>
@@ -76,7 +68,7 @@ export const FilterAccordion: Component<{
           )
         }
       >
-        <AccordionHeader onClick={() => handleOpen(2)}>Price Range</AccordionHeader>
+        <AccordionHeader onClick={() => handleOpen(2)}>Stars</AccordionHeader>
         <AccordionBody>price</AccordionBody>
       </Accordion>
       <Accordion

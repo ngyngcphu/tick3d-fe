@@ -1,14 +1,32 @@
 import { useState } from 'react';
-import { Button, Chip, List, ListItem, Select, Option, Typography } from '@material-tailwind/react';
+import { useQuery } from '@tanstack/react-query';
+import {
+  Button,
+  Card,
+  CardBody,
+  Chip,
+  List,
+  ListItem,
+  Select,
+  Option,
+  Typography
+} from '@material-tailwind/react';
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
-import { Items } from '@components/home';
 import { FilterDrawer, FilterAccordion } from '@components/category';
 import { ScreenSize } from '@constants';
 import { useScreenSize } from '@hooks';
+import { defaultModelService } from '@services';
+import { retryQueryFn } from '@utils';
 
 export function CategoryPage() {
-  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const { data: listModels } = useQuery({
+    queryKey: ['/api/model'],
+    queryFn: () => defaultModelService.getAll(),
+    retry: retryQueryFn
+  });
+
   const { screenSize } = useScreenSize();
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
   const mockData = [
     {
@@ -26,7 +44,7 @@ export function CategoryPage() {
 
   return (
     <>
-      <div className='flex justify-between items-center pe-6'>
+      <div className='flex md:justify-between items-center md:pe-6'>
         <div className='flex gap-10 justify-center md:justify-start items-center m-5'>
           <Button
             onClick={() => setOpenDrawer(!openDrawer)}
@@ -37,10 +55,10 @@ export function CategoryPage() {
             <AdjustmentsHorizontalIcon className='w-5 h-5' />
             Filter
           </Button>
-          <div className='md:w-72 w-fit'>
+          <div className='w-fit'>
             <Select
               label='Sort by'
-              size='lg'
+              size='md'
               color='blue-gray'
               labelProps={{ className: 'text-black' }}
             >
@@ -89,7 +107,36 @@ export function CategoryPage() {
             ))}
           </List>
         ) : (
-          <Items />
+          <div className='grid grid-cols-2 gap-2 lg:grid-cols-4 lg:py-6 lg:px-4 lg:gap-3'>
+            {listModels &&
+              listModels.map((item, index) => (
+                <Card
+                  key={index}
+                  className='border-2 border-gray-400 hover:border-gray-600 cursor-pointer rounded-lg'
+                >
+                  <CardBody className='flex flex-col justify-between h-[500px]'>
+                    <div className='line-clamp-4'>
+                      <img src={item.imageUrl} />
+                      <Typography variant='lead' className='font-bold'>
+                        {item.name}
+                      </Typography>
+                      <Chip
+                        color='amber'
+                        value={`${item.price.toLocaleString('en-US')} VNĐ`}
+                        className='w-fit'
+                      />
+                      <Typography variant='paragraph'>{item.description}</Typography>
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                      <Typography variant='h6' className='font-bold'>
+                        {`Đã mua: ${item.numberBought}`}
+                      </Typography>
+                      <Button className='bg-red-500 text-white'>Đặt hàng</Button>
+                    </div>
+                  </CardBody>
+                </Card>
+              ))}
+          </div>
         )}
       </div>
       {screenSize <= ScreenSize.MD ? (

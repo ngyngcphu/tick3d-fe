@@ -1,3 +1,46 @@
+type ModelOption = {
+  /**
+   * The substring that the model name should contain
+   */
+  keyword?: string;
+  /**
+   * The time after which the model was uploaded, specified in ISO format.
+   * Example: `2023-12-18T00:00:00.000Z`
+   */
+  uploaded_after?: string;
+  /**
+   * The time before which the model was uploaded, specified in ISO format
+   * Example: `2023-12-25T00:00:00.000Z`
+   */
+  uploaded_before?: string;
+  /**
+   * The category id
+   */
+  categoryId?: string;
+  /**
+   * The minimum threshold for number of likes
+   */
+  likes_ge?: number;
+  /**
+   * For pagination purpose - the index of the start item, starting at 0
+   */
+  start?: number;
+  /**
+   * For pagination purpose - the number of items to return
+   */
+  noItems?: number;
+  /**
+   * The name of the field to order on.
+   * Include: `likesNo`, `uploadedTime`, `price`, `name`, `numberBought`.
+   */
+  orderBy?: string;
+  /**
+   * Sort ascending or descending.
+   * Include: `asc` and `desc`.
+   */
+  order?: string;
+};
+
 type CartItem = {
   id: string;
   quantity: number;
