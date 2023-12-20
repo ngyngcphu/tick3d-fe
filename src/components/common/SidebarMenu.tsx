@@ -4,7 +4,7 @@ import { Avatar, List, ListItem, ListItemSuffix, Typography } from '@material-ta
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { ToggleSidebarBtn } from '@components/common';
-import { MENU_BAR, CATEGORY_LIST } from '@constants';
+import { MENU_BAR } from '@constants';
 import { useUserQuery } from '@hooks';
 import { useMenuBarStore } from '@states';
 
@@ -27,49 +27,50 @@ export function useSidebarMenu() {
   const CATEGORYBAR_ITEM_CLASSNAME =
     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold px-6 rounded-none text-gray/4 font-medium';
 
-  const CategoryBar = useMemo(
-    () => () => {
-      return (
-        <>
-          <div
-            className='flex items-center gap-2 p-4 bg-gray-100 rounded-t-2xl cursor-pointer'
-            onClick={() => setIsCategoryItem(false)}
-          >
-            <ChevronLeftIcon className='w-5 h-5' />
-            <Typography variant='h6'>{MENU_BAR.category}</Typography>
-          </div>
-          <div className='flex flex-col'>
-            <List className='p-0'>
-              {CATEGORY_LIST.map((item, idx) => (
-                <ListItem
-                  key={idx}
-                  className={
-                    CATEGORYBAR_ITEM_CLASSNAME +
-                    (selectedCategoryItem === item
-                      ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
-                      : '')
-                  }
-                  onClick={() => {
-                    setSelectedCategoryItem(item);
-                    setOpenSidebar(false);
-                  }}
-                >
-                  {item}
-                </ListItem>
-              ))}
-            </List>
-          </div>
-        </>
-      );
-    },
+  const CategoryBar: Component<{ listCategories: Category[] }> = useMemo(
+    () =>
+      ({ listCategories }) => {
+        return (
+          <>
+            <div
+              className='flex items-center gap-2 p-4 bg-gray-100 rounded-t-2xl cursor-pointer'
+              onClick={() => setIsCategoryItem(false)}
+            >
+              <ChevronLeftIcon className='w-5 h-5' />
+              <Typography variant='h6'>{MENU_BAR.category}</Typography>
+            </div>
+            <div className='flex flex-col'>
+              <List className='p-0'>
+                {listCategories.map((item, idx) => (
+                  <ListItem
+                    key={idx}
+                    className={
+                      CATEGORYBAR_ITEM_CLASSNAME +
+                      (selectedCategoryItem === item.name
+                        ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
+                        : '')
+                    }
+                    onClick={() => {
+                      setSelectedCategoryItem(item.name);
+                      setOpenSidebar(false);
+                    }}
+                  >
+                    {item.name}
+                  </ListItem>
+                ))}
+              </List>
+            </div>
+          </>
+        );
+      },
     [selectedCategoryItem, setSelectedCategoryItem, setIsCategoryItem]
   );
 
-  const SidebarMenu: Component<{ menu: RouteMenu }> = useMemo(
+  const SidebarMenu: Component<{ menu: RouteMenu; listCategories?: Category[] }> = useMemo(
     () =>
-      ({ menu }) => {
-        if (isCategoryItem === true) {
-          return <CategoryBar />;
+      ({ menu, listCategories }) => {
+        if (isCategoryItem === true && listCategories !== undefined) {
+          return <CategoryBar listCategories={listCategories} />;
         }
 
         return (

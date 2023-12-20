@@ -4,6 +4,7 @@
 
 export * from './auth.service';
 export * from './cart.service';
+export * from './category.service';
 export * from './checkout.service';
 export * from './common';
 export * from './home.service';

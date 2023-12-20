@@ -1,13 +1,25 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Chip, List, ListItem, Input, Tooltip, Typography } from '@material-tailwind/react';
+import {
+  Avatar,
+  Chip,
+  List,
+  ListItem,
+  Input,
+  Spinner,
+  Tooltip,
+  Typography
+} from '@material-tailwind/react';
 import { MagnifyingGlassIcon, ShoppingCartIcon, StarIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
-import { CATEGORY_LIST, MENU_BAR } from '@constants';
+import { MENU_BAR } from '@constants';
 import { useUserQuery } from '@hooks';
 import { useMenuBarStore } from '@states';
 
-export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
+export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories?: Category[] }> = ({
+  menu,
+  listCategories
+}) => {
   const {
     info: { data, isSuccess }
   } = useUserQuery();
@@ -55,23 +67,29 @@ export const DesktopNavbar: Component<{ menu: RouteMenu }> = ({ menu }) => {
                   className='bg-white'
                   content={
                     <List className='p-0'>
-                      {CATEGORY_LIST.map((item, idx) => (
-                        <ListItem
-                          key={idx}
-                          className={
-                            CATEGORYLIST_ITEM_CLASSNAME +
-                            (selectedCategoryItem === item
-                              ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
-                              : '')
-                          }
-                          onClick={() => {
-                            setSelectedMenu(menuItem.name);
-                            setSelectedCategoryItem(item);
-                          }}
-                        >
-                          {item}
-                        </ListItem>
-                      ))}
+                      {listCategories ? (
+                        listCategories.map((item, idx) => (
+                          <ListItem
+                            key={idx}
+                            className={
+                              CATEGORYLIST_ITEM_CLASSNAME +
+                              (selectedCategoryItem === item.name
+                                ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
+                                : '')
+                            }
+                            onClick={() => {
+                              setSelectedMenu(menuItem.name);
+                              setSelectedCategoryItem(item.name);
+                            }}
+                          >
+                            {item.name}
+                          </ListItem>
+                        ))
+                      ) : (
+                        <div className='grid justify-items-center items-center'>
+                          <Spinner color='green' className='h-12 w-12' />
+                        </div>
+                      )}
                     </List>
                   }
                 >

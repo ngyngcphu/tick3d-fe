@@ -2,11 +2,14 @@ import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outli
 import tick3D from '@assets/tick3D-logo.svg';
 import { AppDrawer, DesktopNavbar, ToggleSidebarBtn, useSidebarMenu } from '@components/common';
 import { ScreenSize } from '@constants';
-import { useScreenSize } from '@hooks';
+import { useScreenSize, useCategoryQuery } from '@hooks';
 import { Link } from 'react-router-dom';
 
 export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
   const { screenSize } = useScreenSize();
+  const {
+    listCategories: { data: listCategories }
+  } = useCategoryQuery();
   const { openSidebar, handleOpenSidebar, SidebarMenu } = useSidebarMenu();
 
   return (
@@ -26,10 +29,10 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
         </div>
         {screenSize < ScreenSize.LG ? (
           <AppDrawer open={openSidebar} onClose={handleOpenSidebar}>
-            <SidebarMenu menu={menu} />
+            <SidebarMenu menu={menu} listCategories={listCategories} />
           </AppDrawer>
         ) : (
-          <DesktopNavbar menu={menu} />
+          <DesktopNavbar menu={menu} listCategories={listCategories} />
         )}
       </div>
     </div>
