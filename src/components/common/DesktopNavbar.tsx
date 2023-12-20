@@ -63,13 +63,13 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                           key={idx}
                           className={
                             CATEGORYLIST_ITEM_CLASSNAME +
-                            (selectedCategoryItem === item.name
+                            (selectedCategoryItem.name === item.name
                               ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
                               : '')
                           }
                           onClick={() => {
                             setSelectedMenu(menuItem.name);
-                            setSelectedCategoryItem(item.name);
+                            setSelectedCategoryItem(item);
                           }}
                         >
                           {item.name}
@@ -87,7 +87,10 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                       onClick={() => {
                         setSelectedMenu(menuItem.name);
                         setIsCategoryItem(true);
-                        setSelectedCategoryItem('All things');
+                        setSelectedCategoryItem({
+                          id: '',
+                          name: 'All things'
+                        });
                       }}
                     >
                       {menuItem.name}
@@ -117,7 +120,10 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                       onClick={() => {
                         setSelectedMenu(menuItem.name);
                         setIsCategoryItem(false);
-                        setSelectedCategoryItem('');
+                        setSelectedCategoryItem({
+                          id: '',
+                          name: ''
+                        });
                       }}
                     >
                       <span className='truncate'>{menuItem.name}</span>
@@ -134,7 +140,10 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                       onClick={() => {
                         setSelectedMenu(MENU_BAR.cart);
                         setIsCategoryItem(false);
-                        setSelectedCategoryItem('');
+                        setSelectedCategoryItem({
+                          id: '',
+                          name: ''
+                        });
                       }}
                     >
                       <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
@@ -163,7 +172,10 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                   onClick={() => {
                     setSelectedMenu(menuItem.name);
                     setIsCategoryItem(false);
-                    setSelectedCategoryItem('');
+                    setSelectedCategoryItem({
+                      id: '',
+                      name: ''
+                    });
                   }}
                 >
                   {menuItem.name !== MENU_BAR.loginOrStar &&

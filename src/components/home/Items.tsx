@@ -16,7 +16,7 @@ export function Items() {
   return (
     <div className='grid grid-cols-2 gap-2 lg:grid-cols-4 lg:py-6 lg:px-4 lg:gap-3'>
       {items &&
-        items.map((item, index) => (
+        items.models.map((item, index) => (
           <Card
             key={index}
             className='border-2 border-gray-400 hover:border-gray-600 cursor-pointer rounded-lg'

@@ -46,12 +46,12 @@ export function useSidebarMenu() {
                     key={idx}
                     className={
                       CATEGORYBAR_ITEM_CLASSNAME +
-                      (selectedCategoryItem === item.name
+                      (selectedCategoryItem.name === item.name
                         ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
                         : '')
                     }
                     onClick={() => {
-                      setSelectedCategoryItem(item.name);
+                      setSelectedCategoryItem(item);
                       setOpenSidebar(false);
                     }}
                   >
@@ -119,7 +119,10 @@ export function useSidebarMenu() {
                             onClick={() => {
                               setSelectedMenu(menuItem.name);
                               setIsCategoryItem(true);
-                              setSelectedCategoryItem('All things');
+                              setSelectedCategoryItem({
+                                id: '',
+                                name: 'All things'
+                              });
                             }}
                           >
                             {menuItem.name}
@@ -152,7 +155,10 @@ export function useSidebarMenu() {
                           onClick={() => {
                             setSelectedMenu(menuItem.name);
                             setOpenSidebar(false);
-                            setSelectedCategoryItem('');
+                            setSelectedCategoryItem({
+                              id: '',
+                              name: ''
+                            });
                           }}
                         >
                           {menuItem.name !== MENU_BAR.loginOrStar &&

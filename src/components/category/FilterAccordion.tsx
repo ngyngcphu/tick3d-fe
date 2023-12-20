@@ -42,12 +42,12 @@ export const FilterAccordion: Component<{
                   key={idx}
                   className={
                     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold px-6 rounded-none text-gray/4 font-medium' +
-                    (selectedCategoryItem === item.name
+                    (selectedCategoryItem.name === item.name
                       ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
                       : '')
                   }
                   onClick={() => {
-                    setSelectedCategoryItem(item.name);
+                    setSelectedCategoryItem(item);
                     closeDrawer?.();
                   }}
                 >

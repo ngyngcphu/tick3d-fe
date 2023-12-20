@@ -621,12 +621,12 @@ export interface paths {
           /** @description The substring that the model name should contain */
           keyword?: string;
           /**
-           * @description The time after which the model was uploaded, specified in ISO format
+           * @description The date after which the model was uploaded, specified in ISO format
            * @example 2023-12-18
            */
           uploaded_after?: string;
           /**
-           * @description The time before which the model was uploaded, specified in ISO format
+           * @description The date before which the model was uploaded, specified in ISO format
            * @example 2023-12-25
            */
           uploaded_before?: string;
@@ -656,21 +656,23 @@ export interface paths {
           };
           content: {
             'application/json': {
-              id: string;
-              name: string;
-              price: number;
-              imageUrl: string;
-              category_id: string;
-              category: string;
-              likesNo: number;
-              /** Format: date-time */
-              uploadTime: string;
-              description: string;
-              numberBought: number;
-              subImages: string[];
-              discount?: number;
-              isDiscontinued: boolean;
-            }[];
+              total: number;
+              models: {
+                id: string;
+                name: string;
+                price: number;
+                imageUrl: string;
+                category_id: string;
+                category: string;
+                likesNo: number;
+                /** Format: date-time */
+                uploadTime: string;
+                description: string;
+                numberBought: number;
+                subImages: string[];
+                discount?: number;
+              }[];
+            };
           };
         };
       };
@@ -709,21 +711,23 @@ export interface paths {
           };
           content: {
             'application/json': {
-              id: string;
-              name: string;
-              price: number;
-              imageUrl: string;
-              category_id: string;
-              category: string;
-              likesNo: number;
-              /** Format: date-time */
-              uploadTime: string;
-              description: string;
-              numberBought: number;
-              subImages: string[];
-              discount?: number;
-              isDiscontinued: boolean;
-            }[];
+              total: number;
+              models: {
+                id: string;
+                name: string;
+                price: number;
+                imageUrl: string;
+                category_id: string;
+                category: string;
+                likesNo: number;
+                /** Format: date-time */
+                uploadTime: string;
+                description: string;
+                numberBought: number;
+                subImages: string[];
+                discount?: number;
+              }[];
+            };
           };
         };
       };
@@ -954,12 +958,12 @@ export interface paths {
           /** @description The substring that the model name should contain */
           keyword?: string;
           /**
-           * @description The time after which the model was uploaded, specified in ISO format
+           * @description The date after which the model was uploaded, specified in ISO format
            * @example 2023-12-18
            */
           uploaded_after?: string;
           /**
-           * @description The time before which the model was uploaded, specified in ISO format
+           * @description The date before which the model was uploaded, specified in ISO format
            * @example 2023-12-25
            */
           uploaded_before?: string;
@@ -985,12 +989,15 @@ export interface paths {
           };
           content: {
             'application/json': {
-              id: string;
-              name: string;
-              price: number;
-              /** Format: date-time */
-              uploadTime: string;
-            }[];
+              total: number;
+              models: {
+                id: string;
+                name: string;
+                price: number;
+                /** Format: date-time */
+                uploadTime: string;
+              }[];
+            };
           };
         };
       };
@@ -1021,12 +1028,15 @@ export interface paths {
           };
           content: {
             'application/json': {
-              id: string;
-              name: string;
-              price: number;
-              /** Format: date-time */
-              uploadTime: string;
-            }[];
+              total: number;
+              models: {
+                id: string;
+                name: string;
+                price: number;
+                /** Format: date-time */
+                uploadTime: string;
+              }[];
+            };
           };
         };
       };
@@ -1235,12 +1245,12 @@ export interface paths {
       parameters: {
         query?: {
           /**
-           * @description The time after which the order was created, specified in ISO format
+           * @description The date after which the order was created, specified in ISO format
            * @example 2023-12-18
            */
           created_after?: string;
           /**
-           * @description The time before which the order was created, specified in ISO format
+           * @description The date before which the order was created, specified in ISO format
            * @example 2023-12-25
            */
           created_before?: string;
@@ -1279,30 +1289,33 @@ export interface paths {
           };
           content: {
             'application/json': {
-              id: string;
-              userId: string;
-              totalPrice: number;
-              shippingFee: number;
-              /** Format: date-time */
-              estimatedDeliveryTime: string;
-              status:
-                | 'ORDER_PENDING'
-                | 'ORDER_PROCESSED'
-                | 'PRINT_PENDING'
-                | 'PRINTED'
-                | 'DELIVERING'
-                | 'DELIVERED'
-                | 'REJECTED';
-              district: string;
-              ward: string;
-              street: string;
-              streetNo: string;
-              /** Format: date-time */
-              creationTime: string;
-              isPaid: boolean;
-              note?: string;
-              digitalOrderId?: string;
-            }[];
+              total: number;
+              orders: {
+                id: string;
+                userId: string;
+                totalPrice: number;
+                shippingFee: number;
+                /** Format: date-time */
+                estimatedDeliveryTime: string;
+                status:
+                  | 'ORDER_PENDING'
+                  | 'ORDER_PROCESSED'
+                  | 'PRINT_PENDING'
+                  | 'PRINTED'
+                  | 'DELIVERING'
+                  | 'DELIVERED'
+                  | 'REJECTED';
+                district: string;
+                ward: string;
+                street: string;
+                streetNo: string;
+                /** Format: date-time */
+                creationTime: string;
+                isPaid: boolean;
+                note?: string;
+                digitalOrderId?: string;
+              }[];
+            };
           };
         };
         /** @description Default Response */

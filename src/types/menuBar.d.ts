@@ -1,3 +1,8 @@
+type Category = {
+  id: string;
+  name: string;
+};
+
 type MenuBarStore = {
   /**
    * The currently selected menu.
@@ -12,7 +17,7 @@ type MenuBarStore = {
    * The selected category item.
    * Category items include: `All things`, `Fashion`, `Hobby`, `Learning`, `Tools`, `Toys & Games`, `Art`, `Household`
    */
-  selectedCategoryItem: string;
+  selectedCategoryItem: Category;
   /**
    * Set the selected menu.
    */
@@ -24,5 +29,5 @@ type MenuBarStore = {
   /**
    * Set the selected category item.
    */
-  setSelectedCategoryItem: (payload: string) => void;
+  setSelectedCategoryItem: (payload: Category) => void;
 };

@@ -4,7 +4,10 @@ import { MENU_BAR } from '@constants';
 export const useMenuBarStore = create<MenuBarStore>()((set) => ({
   selectedMenu: MENU_BAR.home,
   isCategoryItem: false,
-  selectedCategoryItem: '',
+  selectedCategoryItem: {
+    id: '',
+    name: ''
+  },
   setSelectedMenu: (selectedMenu) => {
     set({ selectedMenu: selectedMenu });
   },
