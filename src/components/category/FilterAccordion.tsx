@@ -8,7 +8,7 @@ import {
 } from '@material-tailwind/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useCategoryQuery } from '@hooks';
-import { useMenuBarStore } from '@states';
+import { useMenuBarStore, usePaginationStore } from '@states';
 
 export const FilterAccordion: Component<{
   closeDrawer?: () => void;
@@ -16,7 +16,9 @@ export const FilterAccordion: Component<{
   const {
     listCategories: { data: listCategories }
   } = useCategoryQuery();
+
   const { selectedCategoryItem, setSelectedCategoryItem } = useMenuBarStore();
+  const { setActivePage } = usePaginationStore();
   const [open, setOpen] = useState<number>(0);
 
   const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
@@ -48,6 +50,7 @@ export const FilterAccordion: Component<{
                   }
                   onClick={() => {
                     setSelectedCategoryItem(item);
+                    setActivePage(1);
                     closeDrawer?.();
                   }}
                 >

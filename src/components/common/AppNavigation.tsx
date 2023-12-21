@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { AppDrawer, DesktopNavbar, ToggleSidebarBtn, useSidebarMenu } from '@components/common';
-import { ScreenSize } from '@constants';
+import { ScreenSize, MENU_BAR } from '@constants';
 import { useScreenSize, useCategoryQuery } from '@hooks';
-import { Link } from 'react-router-dom';
+import { useMenuBarStore, usePaginationStore } from '@states';
 
 export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
   const { screenSize } = useScreenSize();
@@ -18,6 +19,35 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
     [listCategories]
   );
 
+  const ShoppingCart: Component = () => {
+    const { selectedMenu, setSelectedMenu, setIsCategoryItem, setSelectedCategoryItem } =
+      useMenuBarStore();
+    const { setActivePage } = usePaginationStore();
+
+    return (
+      <Link
+        to='/cart'
+        className={
+          'focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold rounded-lg text-lg w-fit text-center' +
+          (selectedMenu === MENU_BAR.cart
+            ? ' bg-blue-100 text-blue/1 font-bold p-2 cursor-pointer'
+            : '')
+        }
+        onClick={() => {
+          setSelectedMenu(MENU_BAR.cart);
+          setIsCategoryItem(false);
+          setSelectedCategoryItem({
+            id: '',
+            name: ''
+          });
+          setActivePage(1);
+        }}
+      >
+        <ShoppingCartIcon strokeWidth={2} className='w-6 h-6 ' />
+      </Link>
+    );
+  };
+
   return (
     <div className='w-full max-h-[768px] px-6 lg:px-9 py-3 shadow-md z-10'>
       <div className='flex items-center justify-between h-full'>
@@ -28,9 +58,7 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           <img className='w-12 h-12' src={tick3D} alt='tick3D-logo' />
           <div className='flex items-center gap-8'>
             <MagnifyingGlassIcon strokeWidth={2} className='w-6 h-6 cursor-pointer' />
-            <Link to='/cart' className='cursor-pointer'>
-              <ShoppingCartIcon strokeWidth={2} className='w-6 h-6 ' />
-            </Link>
+            <ShoppingCart />
           </div>
         </div>
         {screenSize < ScreenSize.LG ? (

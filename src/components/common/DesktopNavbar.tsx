@@ -5,7 +5,7 @@ import { MagnifyingGlassIcon, ShoppingCartIcon, StarIcon } from '@heroicons/reac
 import tick3D from '@assets/tick3D-logo.svg';
 import { MENU_BAR } from '@constants';
 import { useUserQuery } from '@hooks';
-import { useMenuBarStore } from '@states';
+import { useMenuBarStore, usePaginationStore } from '@states';
 
 export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Category[] }> = ({
   menu,
@@ -14,6 +14,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
   const {
     info: { data, isSuccess }
   } = useUserQuery();
+
   const {
     selectedMenu,
     selectedCategoryItem,
@@ -21,6 +22,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
     setSelectedCategoryItem,
     setIsCategoryItem
   } = useMenuBarStore();
+  const { setActivePage } = usePaginationStore();
 
   const [openPopoverCategory, setOpenPopoverCategory] = useState<boolean>(false);
   const [openPopoverAvatar, setOpenPopoverAvatar] = useState<boolean>(false);
@@ -70,6 +72,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                           onClick={() => {
                             setSelectedMenu(menuItem.name);
                             setSelectedCategoryItem(item);
+                            setActivePage(1);
                           }}
                         >
                           {item.name}
@@ -91,6 +94,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                           id: '',
                           name: 'All things'
                         });
+                        setActivePage(1);
                       }}
                     >
                       {menuItem.name}
@@ -124,6 +128,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                           id: '',
                           name: ''
                         });
+                        setActivePage(1);
                       }}
                     >
                       <span className='truncate'>{menuItem.name}</span>
@@ -144,6 +149,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                           id: '',
                           name: ''
                         });
+                        setActivePage(1);
                       }}
                     >
                       <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
@@ -176,6 +182,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                       id: '',
                       name: ''
                     });
+                    setActivePage(1);
                   }}
                 >
                   {menuItem.name !== MENU_BAR.loginOrStar &&

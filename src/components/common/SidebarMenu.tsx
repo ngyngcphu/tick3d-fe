@@ -6,12 +6,13 @@ import tick3D from '@assets/tick3D-logo.svg';
 import { ToggleSidebarBtn } from '@components/common';
 import { MENU_BAR } from '@constants';
 import { useUserQuery } from '@hooks';
-import { useMenuBarStore } from '@states';
+import { useMenuBarStore, usePaginationStore } from '@states';
 
 export function useSidebarMenu() {
   const {
     info: { data, isSuccess }
   } = useUserQuery();
+
   const {
     selectedMenu,
     isCategoryItem,
@@ -20,6 +21,7 @@ export function useSidebarMenu() {
     setIsCategoryItem,
     setSelectedCategoryItem
   } = useMenuBarStore();
+  const { setActivePage } = usePaginationStore();
 
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
   const SIDEBAR_ITEM_CLASSNAME =
@@ -52,6 +54,7 @@ export function useSidebarMenu() {
                     }
                     onClick={() => {
                       setSelectedCategoryItem(item);
+                      setActivePage(1);
                       setOpenSidebar(false);
                     }}
                   >
@@ -63,7 +66,7 @@ export function useSidebarMenu() {
           </>
         );
       },
-    [selectedCategoryItem, setSelectedCategoryItem, setIsCategoryItem]
+    [selectedCategoryItem, setSelectedCategoryItem, setIsCategoryItem, setActivePage]
   );
 
   const SidebarMenu: Component<{ menu: RouteMenu; listCategories: Category[] }> = useMemo(
@@ -123,6 +126,7 @@ export function useSidebarMenu() {
                                 id: '',
                                 name: 'All things'
                               });
+                              setActivePage(1);
                             }}
                           >
                             {menuItem.name}
@@ -159,6 +163,7 @@ export function useSidebarMenu() {
                               id: '',
                               name: ''
                             });
+                            setActivePage(1);
                           }}
                         >
                           {menuItem.name !== MENU_BAR.loginOrStar &&
@@ -198,7 +203,8 @@ export function useSidebarMenu() {
       CategoryBar,
       setSelectedMenu,
       setIsCategoryItem,
-      setSelectedCategoryItem
+      setSelectedCategoryItem,
+      setActivePage
     ]
   );
 

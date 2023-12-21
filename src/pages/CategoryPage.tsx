@@ -23,25 +23,24 @@ import { FilterDrawer, FilterAccordion } from '@components/category';
 import { ScreenSize } from '@constants';
 import { useScreenSize } from '@hooks';
 import { defaultModelService } from '@services';
-import { useMenuBarStore } from '@states';
+import { useMenuBarStore, usePaginationStore } from '@states';
 import { retryQueryFn } from '@utils';
 import type { colors } from '@material-tailwind/react/types/generic';
 import type { variant } from '@material-tailwind/react/types/components/button';
 
 export function CategoryPage() {
   const NUMBER_ITEMS_PER_PAGE = 8;
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
   const { screenSize } = useScreenSize();
   const { selectedCategoryItem } = useMenuBarStore();
-
-  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-  const [active, setActive] = useState<number>(1);
+  const { activePage, setActivePage } = usePaginationStore();
 
   const { data: listModels } = useQuery({
-    queryKey: ['/api/model', active, NUMBER_ITEMS_PER_PAGE, selectedCategoryItem.id],
+    queryKey: ['/api/model', activePage, NUMBER_ITEMS_PER_PAGE, selectedCategoryItem.id],
     queryFn: () =>
       defaultModelService.getAll({
-        start: (active - 1) * NUMBER_ITEMS_PER_PAGE,
+        start: (activePage - 1) * NUMBER_ITEMS_PER_PAGE,
         noItems: NUMBER_ITEMS_PER_PAGE,
         categoryId: selectedCategoryItem.id ? selectedCategoryItem.id : undefined
       }),
@@ -54,21 +53,21 @@ export function CategoryPage() {
   );
 
   const getItemProps = (index: number) => ({
-    variant: active === index ? 'filled' : ('text' as variant),
+    variant: activePage === index ? 'filled' : ('text' as variant),
     color: 'gray' as colors,
-    onClick: () => setActive(index)
+    onClick: () => setActivePage(index)
   });
 
   const next = () => {
-    if (active === numPages) return;
+    if (activePage === numPages) return;
 
-    setActive(active + 1);
+    setActivePage(activePage + 1);
   };
 
   const prev = () => {
-    if (active === 1) return;
+    if (activePage === 1) return;
 
-    setActive(active - 1);
+    setActivePage(activePage - 1);
   };
 
   return (
@@ -186,12 +185,12 @@ export function CategoryPage() {
           variant='text'
           className='flex items-center gap-2'
           onClick={prev}
-          disabled={active === 1}
+          disabled={activePage === 1}
         >
           <ArrowLeftIcon strokeWidth={2} className='h-5 w-5' /> Previous
         </Button>
         <div className='flex items-center gap-2'>
-          {numPages >= 6 && active > 3 && (
+          {numPages >= 6 && activePage > 3 && (
             <>
               <IconButton {...getItemProps(1)}>1</IconButton>
               <EllipsisHorizontalIcon className='w-6 h-6' />
@@ -203,14 +202,14 @@ export function CategoryPage() {
                 {pageNumber + 1}
               </IconButton>
             ))
-          ) : active <= 3 ? (
+          ) : activePage <= 3 ? (
             [...Array(numPages).keys()].slice(0, 3).map((pageNumber) => (
               <IconButton key={pageNumber} {...getItemProps(pageNumber + 1)}>
                 {pageNumber + 1}
               </IconButton>
             ))
-          ) : active > 3 && active <= numPages - 3 ? (
-            <IconButton {...getItemProps(active)}>{active}</IconButton>
+          ) : activePage > 3 && activePage <= numPages - 3 ? (
+            <IconButton {...getItemProps(activePage)}>{activePage}</IconButton>
           ) : (
             [...Array(numPages).keys()].slice(numPages - 3).map((pageNumber) => (
               <IconButton key={pageNumber} {...getItemProps(pageNumber + 1)}>
@@ -218,7 +217,7 @@ export function CategoryPage() {
               </IconButton>
             ))
           )}
-          {numPages >= 6 && active <= numPages - 3 && (
+          {numPages >= 6 && activePage <= numPages - 3 && (
             <>
               <EllipsisHorizontalIcon className='w-6 h-6' />
               <IconButton {...getItemProps(numPages)}>{numPages}</IconButton>
@@ -229,7 +228,7 @@ export function CategoryPage() {
           variant='text'
           className='flex items-center gap-2'
           onClick={next}
-          disabled={active === numPages}
+          disabled={activePage === numPages}
         >
           Next
           <ArrowRightIcon strokeWidth={2} className='h-5 w-5' />
