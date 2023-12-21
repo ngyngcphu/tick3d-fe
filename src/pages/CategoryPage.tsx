@@ -13,6 +13,7 @@ import {
   Spinner,
   Typography
 } from '@material-tailwind/react';
+import { formatISO } from 'date-fns';
 import {
   AdjustmentsHorizontalIcon,
   ArrowLeftIcon,
@@ -20,7 +21,7 @@ import {
   EllipsisHorizontalIcon
 } from '@heroicons/react/24/solid';
 import { FilterDrawer, FilterAccordion } from '@components/category';
-import { ScreenSize } from '@constants';
+import { ScreenSize, SORT_CRITERIA, SORT_ORDER } from '@constants';
 import { useScreenSize } from '@hooks';
 import { defaultModelService } from '@services';
 import { useMenuBarStore, usePaginationStore, useFilterStore } from '@states';
@@ -31,11 +32,14 @@ import type { variant } from '@material-tailwind/react/types/components/button';
 export function CategoryPage() {
   const NUMBER_ITEMS_PER_PAGE = 8;
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [criteriaSort, setCriteriaSort] = useState<Partial<Record<OrderBy, string>>>({
+    uploadedTime: SORT_CRITERIA['uploadedTime']
+  });
 
   const { screenSize } = useScreenSize();
-  const { selectedCategoryItem } = useMenuBarStore();
+  const { selectedCategoryItem, setSelectedCategoryItem } = useMenuBarStore();
   const { activePage, setActivePage } = usePaginationStore();
-  const { selectedStar } = useFilterStore();
+  const { selectedStar, fromDay, toDay, setSelectedStar, setFromDay, setToDay } = useFilterStore();
 
   const { data: listModels } = useQuery({
     queryKey: [
@@ -43,15 +47,21 @@ export function CategoryPage() {
       activePage,
       NUMBER_ITEMS_PER_PAGE,
       selectedCategoryItem.id,
-      selectedStar
+      selectedStar,
+      fromDay,
+      toDay,
+      criteriaSort
     ],
     queryFn: () =>
       defaultModelService.getAll({
-        orderBy: 'uploadedTime',
+        orderBy: Object.keys(criteriaSort)[0] as OrderBy,
+        order: SORT_ORDER[Object.keys(criteriaSort)[0] as OrderBy],
         start: (activePage - 1) * NUMBER_ITEMS_PER_PAGE,
         noItems: NUMBER_ITEMS_PER_PAGE,
         categoryId: selectedCategoryItem.id ? selectedCategoryItem.id : undefined,
-        likes_ge: selectedStar
+        likes_ge: selectedStar,
+        uploaded_after: fromDay ? formatISO(fromDay, { representation: 'date' }) : undefined,
+        uploaded_before: toDay ? formatISO(toDay, { representation: 'date' }) : undefined
       }),
     retry: retryQueryFn
   });
@@ -77,10 +87,21 @@ export function CategoryPage() {
     setActivePage(activePage - 1);
   };
 
+  const handleClearFilters = () => {
+    setSelectedCategoryItem({
+      id: '',
+      name: 'All things'
+    });
+    setSelectedStar(0);
+    setFromDay(undefined);
+    setToDay(undefined);
+    setActivePage(1);
+  };
+
   return (
     <>
       <div className='flex md:justify-between items-center md:pe-8'>
-        <div className='flex gap-10 justify-center md:justify-start items-center m-5'>
+        <div className='flex gap-5 justify-center md:justify-start items-center m-5'>
           <Button
             onClick={() => setOpenDrawer(!openDrawer)}
             variant='outlined'
@@ -92,22 +113,38 @@ export function CategoryPage() {
           </Button>
           <div className='w-fit'>
             <Select
-              label='Sort by'
+              label={`Sort by: ${criteriaSort[Object.keys(criteriaSort)[0] as OrderBy]}`}
               size='md'
               color='blue-gray'
+              className='text-base font-medium'
+              value={Object.keys(criteriaSort)[0]}
+              onChange={(value) => {
+                if (value) {
+                  const selectedKey = value as OrderBy;
+                  setCriteriaSort({ [selectedKey]: SORT_CRITERIA[selectedKey] });
+                  setActivePage(1);
+                }
+              }}
               labelProps={{ className: 'text-black' }}
             >
-              <Option>Most Popular</Option>
-              <Option>Price</Option>
-              <Option>Like</Option>
-              <Option>Upload Time</Option>
+              {Object.entries(SORT_CRITERIA).map(([value, label], index) => (
+                <Option key={index} value={value}>
+                  {label}
+                </Option>
+              ))}
             </Select>
           </div>
+          {(selectedCategoryItem.id || selectedStar || fromDay || toDay) && (
+            <div
+              className='cursor-pointer hover:bg-gray-500 rounded-lg'
+              onClick={handleClearFilters}
+            >
+              <Chip variant='ghost' value={<span className='normal-case'>Clear filters</span>} />
+            </div>
+          )}
         </div>
         {screenSize > ScreenSize.MD && (
-          <Chip
-            value={<span className='normal-case'>{listModels?.total ?? 0} results</span>}
-          ></Chip>
+          <Chip value={<span className='normal-case'>{listModels?.total ?? 0} results</span>} />
         )}
       </div>
       <div className='flex mx-5'>

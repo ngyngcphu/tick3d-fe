@@ -1,7 +1,6 @@
 import { ChangeEvent, useMemo, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { format } from 'date-fns';
-import { vi } from 'date-fns/locale';
 import {
   Accordion,
   AccordionBody,
@@ -46,8 +45,6 @@ export const FilterAccordion: Component<{
     closeDrawer?.();
   };
 
-  //console.log((fromDay ? formatISO(fromDay, { representation: 'date' }) : undefined) + ' --- ' + (toDay ? formatISO(toDay, { representation: 'date' }) : undefined));
-
   const CalendarPicker: Component<{
     date: Date | undefined;
     setDate: (date: Date | undefined) => void;
@@ -64,20 +61,19 @@ export const FilterAccordion: Component<{
                 crossOrigin=''
               />
             </PopoverHandler>
-            <PopoverContent className='z-50'>
+            <PopoverContent className='z-[10000]'>
               <DayPicker
-                locale={vi}
                 mode='single'
                 selected={date}
                 onSelect={setDate}
                 showOutsideDays
                 className='border-0'
                 classNames={{
-                  caption: 'flex justify-center py-2 mb-4 relative items-center',
-                  caption_label: 'text-sm font-medium text-gray-900',
-                  nav: 'flex items-center',
+                  caption: 'flex justify-between py-2 mb-4 relative items-center',
+                  caption_label: 'text-base font-medium text-gray-900',
+                  nav: 'flex items-center gap-8',
                   nav_button:
-                    'h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300',
+                    'h-8 w-8 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300',
                   nav_button_previous: 'absolute left-1.5',
                   nav_button_next: 'absolute right-1.5',
                   table: 'w-full border-collapse',
@@ -97,10 +93,10 @@ export const FilterAccordion: Component<{
                 }}
                 components={{
                   IconLeft: ({ ...props }) => (
-                    <ChevronLeftIcon {...props} className='h-4 w-4 stroke-2' />
+                    <ChevronLeftIcon {...props} className='h-6 w-6 stroke-2' />
                   ),
                   IconRight: ({ ...props }) => (
-                    <ChevronRightIcon {...props} className='h-4 w-4 stroke-2' />
+                    <ChevronRightIcon {...props} className='h-6 w-6 stroke-2' />
                   )
                 }}
               />
