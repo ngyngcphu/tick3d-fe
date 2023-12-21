@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
   Button,
@@ -31,6 +32,8 @@ import type { variant } from '@material-tailwind/react/types/components/button';
 
 export function CategoryPage() {
   const NUMBER_ITEMS_PER_PAGE = 8;
+  const navigate = useNavigate();
+
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [criteriaSort, setCriteriaSort] = useState<Partial<Record<OrderBy, string>>>({
     uploadedTime: SORT_CRITERIA['uploadedTime']
@@ -161,6 +164,7 @@ export function CategoryPage() {
                   <ListItem
                     key={index}
                     className='flex gap-5 border-2 border-b-gray-400 cursor-pointer rounded-lg p-4'
+                    onClick={() => navigate(`/category/${item.id}`)}
                   >
                     <img
                       src={item.imageUrl}
@@ -182,8 +186,11 @@ export function CategoryPage() {
                         <Typography variant='h6' className='font-bold'>
                           {`Đã mua: ${item.numberBought}`}
                         </Typography>
-                        <Button className='bg-red-500 text-white normal-case truncate p-4'>
-                          Đặt hàng
+                        <Button
+                          className='bg-red-500 text-white normal-case text-sm truncate p-4'
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          Thêm vào giỏ
                         </Button>
                       </div>
                     </div>
@@ -207,6 +214,7 @@ export function CategoryPage() {
                 <Card
                   key={index}
                   className='border-2 border-gray-400 hover:border-gray-600 cursor-pointer rounded-lg'
+                  onClick={() => navigate(`/category/${item.id}`)}
                 >
                   <CardBody className='flex flex-col justify-between h-[500px]'>
                     <div className='line-clamp-4'>
@@ -225,7 +233,12 @@ export function CategoryPage() {
                       <Typography variant='h6' className='font-bold'>
                         {`Đã mua: ${item.numberBought}`}
                       </Typography>
-                      <Button className='bg-red-500 text-white'>Đặt hàng</Button>
+                      <Button
+                        className='bg-red-500 text-white normal-case text-base'
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        Thêm vào giỏ
+                      </Button>
                     </div>
                   </CardBody>
                 </Card>
