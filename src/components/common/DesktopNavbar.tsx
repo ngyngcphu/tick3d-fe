@@ -1,28 +1,20 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Avatar,
-  Chip,
-  List,
-  ListItem,
-  Input,
-  Spinner,
-  Tooltip,
-  Typography
-} from '@material-tailwind/react';
+import { Avatar, Chip, List, ListItem, Input, Tooltip, Typography } from '@material-tailwind/react';
 import { MagnifyingGlassIcon, ShoppingCartIcon, StarIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { MENU_BAR } from '@constants';
 import { useUserQuery } from '@hooks';
-import { useMenuBarStore } from '@states';
+import { useMenuBarStore, usePaginationStore } from '@states';
 
-export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories?: Category[] }> = ({
+export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Category[] }> = ({
   menu,
   listCategories
 }) => {
   const {
     info: { data, isSuccess }
   } = useUserQuery();
+
   const {
     selectedMenu,
     selectedCategoryItem,
@@ -30,6 +22,7 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories?: Catego
     setSelectedCategoryItem,
     setIsCategoryItem
   } = useMenuBarStore();
+  const { setActivePage } = usePaginationStore();
 
   const [openPopoverCategory, setOpenPopoverCategory] = useState<boolean>(false);
   const [openPopoverAvatar, setOpenPopoverAvatar] = useState<boolean>(false);
@@ -67,29 +60,24 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories?: Catego
                   className='bg-white'
                   content={
                     <List className='p-0'>
-                      {listCategories ? (
-                        listCategories.map((item, idx) => (
-                          <ListItem
-                            key={idx}
-                            className={
-                              CATEGORYLIST_ITEM_CLASSNAME +
-                              (selectedCategoryItem === item.name
-                                ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
-                                : '')
-                            }
-                            onClick={() => {
-                              setSelectedMenu(menuItem.name);
-                              setSelectedCategoryItem(item.name);
-                            }}
-                          >
-                            {item.name}
-                          </ListItem>
-                        ))
-                      ) : (
-                        <div className='grid justify-items-center items-center'>
-                          <Spinner color='green' className='h-12 w-12' />
-                        </div>
-                      )}
+                      {listCategories.map((item, idx) => (
+                        <ListItem
+                          key={idx}
+                          className={
+                            CATEGORYLIST_ITEM_CLASSNAME +
+                            (selectedCategoryItem.name === item.name
+                              ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
+                              : '')
+                          }
+                          onClick={() => {
+                            setSelectedMenu(menuItem.name);
+                            setSelectedCategoryItem(item);
+                            setActivePage(1);
+                          }}
+                        >
+                          {item.name}
+                        </ListItem>
+                      ))}
                     </List>
                   }
                 >
@@ -101,6 +89,12 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories?: Catego
                       }
                       onClick={() => {
                         setSelectedMenu(menuItem.name);
+                        setIsCategoryItem(true);
+                        setSelectedCategoryItem({
+                          id: '',
+                          name: 'All things'
+                        });
+                        setActivePage(1);
                       }}
                     >
                       {menuItem.name}
@@ -130,6 +124,11 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories?: Catego
                       onClick={() => {
                         setSelectedMenu(menuItem.name);
                         setIsCategoryItem(false);
+                        setSelectedCategoryItem({
+                          id: '',
+                          name: ''
+                        });
+                        setActivePage(1);
                       }}
                     >
                       <span className='truncate'>{menuItem.name}</span>
@@ -146,6 +145,11 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories?: Catego
                       onClick={() => {
                         setSelectedMenu(MENU_BAR.cart);
                         setIsCategoryItem(false);
+                        setSelectedCategoryItem({
+                          id: '',
+                          name: ''
+                        });
+                        setActivePage(1);
                       }}
                     >
                       <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
@@ -174,6 +178,11 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories?: Catego
                   onClick={() => {
                     setSelectedMenu(menuItem.name);
                     setIsCategoryItem(false);
+                    setSelectedCategoryItem({
+                      id: '',
+                      name: ''
+                    });
+                    setActivePage(1);
                   }}
                 >
                   {menuItem.name !== MENU_BAR.loginOrStar &&

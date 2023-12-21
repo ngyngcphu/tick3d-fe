@@ -1,8 +1,33 @@
+type Category = {
+  id: string;
+  name: string;
+};
+
 type MenuBarStore = {
+  /**
+   * The currently selected menu.
+   * Menu includes: `Home`, `Categories`, `Upload & print`, `Shopping Cart`, `Log in`, `Sign up`, `Stars`, `My order`.
+   */
   selectedMenu: string;
+  /**
+   * A flag indicating whether an item is a category.
+   */
   isCategoryItem: boolean;
-  selectedCategoryItem: string;
+  /**
+   * The selected category item.
+   * Category items include: `All things`, `Fashion`, `Hobby`, `Learning`, `Tools`, `Toys & Games`, `Art`, `Household`
+   */
+  selectedCategoryItem: Category;
+  /**
+   * Set the selected menu.
+   */
   setSelectedMenu: (selectedMenu: string) => void;
+  /**
+   * Sets the flag for category items.
+   */
   setIsCategoryItem: (payload: boolean) => void;
-  setSelectedCategoryItem: (payload: string) => void;
+  /**
+   * Set the selected category item.
+   */
+  setSelectedCategoryItem: (payload: Category) => void;
 };

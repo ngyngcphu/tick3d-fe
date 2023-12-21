@@ -6,12 +6,13 @@ import tick3D from '@assets/tick3D-logo.svg';
 import { ToggleSidebarBtn } from '@components/common';
 import { MENU_BAR } from '@constants';
 import { useUserQuery } from '@hooks';
-import { useMenuBarStore } from '@states';
+import { useMenuBarStore, usePaginationStore } from '@states';
 
 export function useSidebarMenu() {
   const {
     info: { data, isSuccess }
   } = useUserQuery();
+
   const {
     selectedMenu,
     isCategoryItem,
@@ -20,6 +21,7 @@ export function useSidebarMenu() {
     setIsCategoryItem,
     setSelectedCategoryItem
   } = useMenuBarStore();
+  const { setActivePage } = usePaginationStore();
 
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
   const SIDEBAR_ITEM_CLASSNAME =
@@ -46,12 +48,13 @@ export function useSidebarMenu() {
                     key={idx}
                     className={
                       CATEGORYBAR_ITEM_CLASSNAME +
-                      (selectedCategoryItem === item.name
+                      (selectedCategoryItem.name === item.name
                         ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
                         : '')
                     }
                     onClick={() => {
-                      setSelectedCategoryItem(item.name);
+                      setSelectedCategoryItem(item);
+                      setActivePage(1);
                       setOpenSidebar(false);
                     }}
                   >
@@ -63,13 +66,13 @@ export function useSidebarMenu() {
           </>
         );
       },
-    [selectedCategoryItem, setSelectedCategoryItem, setIsCategoryItem]
+    [selectedCategoryItem, setSelectedCategoryItem, setIsCategoryItem, setActivePage]
   );
 
-  const SidebarMenu: Component<{ menu: RouteMenu; listCategories?: Category[] }> = useMemo(
+  const SidebarMenu: Component<{ menu: RouteMenu; listCategories: Category[] }> = useMemo(
     () =>
       ({ menu, listCategories }) => {
-        if (isCategoryItem === true && listCategories !== undefined) {
+        if (isCategoryItem === true) {
           return <CategoryBar listCategories={listCategories} />;
         }
 
@@ -119,6 +122,11 @@ export function useSidebarMenu() {
                             onClick={() => {
                               setSelectedMenu(menuItem.name);
                               setIsCategoryItem(true);
+                              setSelectedCategoryItem({
+                                id: '',
+                                name: 'All things'
+                              });
+                              setActivePage(1);
                             }}
                           >
                             {menuItem.name}
@@ -151,6 +159,11 @@ export function useSidebarMenu() {
                           onClick={() => {
                             setSelectedMenu(menuItem.name);
                             setOpenSidebar(false);
+                            setSelectedCategoryItem({
+                              id: '',
+                              name: ''
+                            });
+                            setActivePage(1);
                           }}
                         >
                           {menuItem.name !== MENU_BAR.loginOrStar &&
@@ -187,9 +200,11 @@ export function useSidebarMenu() {
       isCategoryItem,
       isSuccess,
       data,
+      CategoryBar,
       setSelectedMenu,
       setIsCategoryItem,
-      CategoryBar
+      setSelectedCategoryItem,
+      setActivePage
     ]
   );
 
