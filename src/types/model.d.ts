@@ -1,3 +1,6 @@
+type OrderBy = 'likesNo' | 'uploadedTime' | 'price' | 'name' | 'numberBought';
+type Order = 'asc' | 'desc';
+
 type ModelOption = {
   /**
    * The substring that the model name should contain
@@ -5,12 +8,12 @@ type ModelOption = {
   keyword?: string;
   /**
    * The time after which the model was uploaded, specified in ISO format.
-   * Example: `2023-12-18T00:00:00.000Z`
+   * Example: `2023-12-18`
    */
   uploaded_after?: string;
   /**
    * The time before which the model was uploaded, specified in ISO format
-   * Example: `2023-12-25T00:00:00.000Z`
+   * Example: `2023-12-25`
    */
   uploaded_before?: string;
   /**
@@ -33,12 +36,12 @@ type ModelOption = {
    * The name of the field to order on.
    * Include: `likesNo`, `uploadedTime`, `price`, `name`, `numberBought`.
    */
-  orderBy?: string;
+  orderBy?: OrderBy;
   /**
    * Sort ascending or descending.
    * Include: `asc` and `desc`.
    */
-  order?: string;
+  order?: Order;
 };
 
 type CartItem = {
