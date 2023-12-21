@@ -5,8 +5,7 @@ export const defaultModelService = {
     invoke(apiClient.GET('/api/model', { params: { query: option } })),
   uploadDefaultModel: (data: DefaultModel[]) =>
     invoke(apiClient.POST('/api/model', { body: data })),
-  getDefaultModelById: (id: string) =>
-    invoke(apiClient.GET(`/api/model/{id}`, { params: { path: { id } } })),
+  getById: (id: string) => invoke(apiClient.GET(`/api/model/{id}`, { params: { path: { id } } })),
   deleteDefaultModel: (id: string) =>
     invoke(apiClient.DELETE(`/api/model/{id}`, { params: { path: { id } } })),
   updateDefaultModel: (id: string) =>

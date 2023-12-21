@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, NavigateFunction } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Chip, Typography } from '@material-tailwind/react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { ImageSlider } from '@components/model';
@@ -9,12 +9,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
 export function DetailModelPage() {
-  const navigate: NavigateFunction = useNavigate();
-  const params = useParams<string>();
-  const id = params.id;
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   const { data: modelData } = useQuery({
     queryKey: [`/api/model/{id}`, id],
-    queryFn: () => (id ? defaultModelService.getDefaultModelById(id) : null),
+    queryFn: () => (id ? defaultModelService.getById(id) : null),
     retry: retryQueryFn
   });
   const [numberModel, setNumberModel] = useState<number>(1);

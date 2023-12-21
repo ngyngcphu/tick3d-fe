@@ -39,7 +39,12 @@ export function Items() {
                 <Typography variant='h6' className='font-bold'>
                   {`Đã mua: ${item.numberBought}`}
                 </Typography>
-                <Button className='bg-red-500 text-white'>Đặt hàng</Button>
+                <Button
+                  className='bg-red-500 text-white normal-case text-sm md:text-base'
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  Thêm vào giỏ
+                </Button>
               </div>
             </CardBody>
           </Card>
