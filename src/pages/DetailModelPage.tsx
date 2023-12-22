@@ -8,10 +8,12 @@ import { retryQueryFn } from '@utils';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useCartStore } from '@states';
+import { useCartStore, useMenuBarStore } from '@states';
 import { useUserQuery } from '@hooks';
+import { MENU_BAR } from '@constants';
 
 export function DetailModelPage() {
+  const { setSelectedMenu } = useMenuBarStore();
   const navigate = useNavigate();
   const { id } = useParams();
   const {
@@ -22,6 +24,15 @@ export function DetailModelPage() {
     queryFn: () => (id ? defaultModelService.getById(id) : null),
     retry: retryQueryFn
   });
+  const { data: modelCartList } = useQuery({
+    queryKey: ['/api/cart'],
+    queryFn: () => cartService.getCart(),
+    retry: retryQueryFn,
+    enabled: isSuccess
+  });
+  if (modelCartList) {
+    useCartStore.getState().setCartItems(modelCartList);
+  }
   const addToCart = useMutation({
     mutationKey: ['/api/cart'],
     mutationFn: (data: { models: CartItem[] }) => cartService.addCartItem(data)
@@ -43,6 +54,7 @@ export function DetailModelPage() {
           await addToCart.mutateAsync(data);
         }
         navigate('/cart');
+        setSelectedMenu(MENU_BAR.cart);
       } else {
         toast.error('Không tìm thấy ID sản phẩm');
       }

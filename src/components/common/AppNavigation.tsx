@@ -18,12 +18,14 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
   const { data: modelCartList } = useQuery({
     queryKey: ['/api/cart'],
     queryFn: () => cartService.getCart(),
-    retry: retryQueryFn
+    retry: retryQueryFn,
+    enabled: isSuccess
   });
   const numberOfUserModels = useMemo(
     () => modelCartList?.reduce((total, currentModel) => total + currentModel.quantity, 0),
     [modelCartList]
   );
+
   const { screenSize } = useScreenSize();
 
   const {
@@ -65,8 +67,12 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
       >
         <div className='relative'>
           <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
-          <Typography className='absolute px-1 bg-red-400 rounded-[999px] text-white text-[12px] font-bold top-1/3 right-1/3'>
-            {isSuccess ? numberOfUserModels : numberOfLocalModels}
+          <Typography className='absolute px-1 bg-red-400 rounded-full text-white text-[12px] font-bold top-1/3 right-1/3'>
+            {isSuccess
+              ? numberOfUserModels && numberOfUserModels > 0
+                ? numberOfUserModels
+                : null
+              : numberOfLocalModels}
           </Typography>
         </div>
       </Link>
@@ -95,7 +101,11 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
             menu={menu}
             listCategories={extraListCategories}
             numberModels={
-              isSuccess && numberOfUserModels ? numberOfUserModels : numberOfLocalModels
+              isSuccess
+                ? numberOfUserModels && numberOfUserModels > 0
+                  ? numberOfUserModels
+                  : 0
+                : numberOfLocalModels
             }
           />
         )}

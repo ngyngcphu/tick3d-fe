@@ -1,6 +1,7 @@
 import { AdminProtected, ProtectedRoutes } from '@components/common';
 import { MENU_BAR } from '@constants';
 import { AppLayout } from '@layouts';
+
 import {
   CategoryPage,
   DetailModelPage,
@@ -91,7 +92,9 @@ export default function App() {
         {
           type: 'logout-btn',
           name: 'Log out',
-          onClick: () => emitEvent('logout')
+          onClick: () => {
+            emitEvent('logout');
+          }
         }
       ]}
       child={[

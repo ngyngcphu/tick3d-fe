@@ -154,8 +154,8 @@ export const DesktopNavbar: Component<{
                     >
                       <div className='relative'>
                         <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
-                        <Typography className='absolute px-1 bg-red-400 rounded-[999px] text-white text-[12px] font-bold top-1/3 right-1/3'>
-                          {numberModels}
+                        <Typography className='absolute px-1 bg-red-400 rounded-full text-white text-[12px] font-bold top-1/3 right-1/3'>
+                          {numberModels > 0 && numberModels}
                         </Typography>
                       </div>
                     </ListItem>

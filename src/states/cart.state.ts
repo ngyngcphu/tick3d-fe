@@ -1,24 +1,24 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-export const useCartStore = create<CartState>()(
-  persist(
-    (set) => ({
-      cartItems: {},
-      addToCart: (modelId: string, quantity: number) => {
-        set((state) => {
-          const currentQuantity = state.cartItems[modelId] || 0;
-          return {
-            cartItems: {
-              ...state.cartItems,
-              [modelId]: currentQuantity + quantity
-            }
-          };
-        });
-      }
-    }),
-    {
-      name: 'cart-storage',
-      getStorage: () => localStorage
-    }
-  )
-);
+
+export const useCartStore = create<CartState>()((set) => ({
+  cartItems: {},
+  addToCart: (modelId: string, quantity: number) => {
+    set((state) => {
+      const currentQuantity = state.cartItems[modelId] || 0;
+      return {
+        cartItems: {
+          ...state.cartItems,
+          [modelId]: currentQuantity + quantity
+        }
+      };
+    });
+  },
+  setCartItems: (modelList: ModelItem[]) => {
+    const updatedCartItems: { [key: string]: number } = {};
+
+    modelList.forEach((item) => {
+      updatedCartItems[item.model_id] = item.quantity;
+    });
+    set({ cartItems: updatedCartItems });
+  }
+}));
