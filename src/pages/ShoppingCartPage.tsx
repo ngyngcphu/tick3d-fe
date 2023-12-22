@@ -4,6 +4,9 @@ import { TrashIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Items } from '@components/home';
 import { ScreenSize } from '@constants';
 import { useScreenSize } from '@hooks';
+// import { cartService } from '@services';
+// import { useQuery } from '@tanstack/react-query';
+// import { retryQueryFn } from '@utils';
 
 type OrderData = {
   id: string;
@@ -14,6 +17,11 @@ type OrderData = {
   numberBought: number;
 };
 export const ShoppingCartPage = () => {
+  // const {data: cartModelList} = useQuery({
+  //   queryKey: ['/api/cart'],
+  //   queryFn: () => cartService.getCart(),
+  //   retry: retryQueryFn
+  // })
   const { screenSize } = useScreenSize();
   const Header = () => {
     return (

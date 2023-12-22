@@ -4,16 +4,36 @@ import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outli
 import tick3D from '@assets/tick3D-logo.svg';
 import { AppDrawer, DesktopNavbar, ToggleSidebarBtn, useSidebarMenu } from '@components/common';
 import { ScreenSize, MENU_BAR } from '@constants';
-import { useScreenSize, useCategoryQuery } from '@hooks';
-import { useMenuBarStore, usePaginationStore } from '@states';
+import { useScreenSize, useCategoryQuery, useUserQuery } from '@hooks';
+import { useMenuBarStore, usePaginationStore, useCartStore } from '@states';
+import { Typography } from '@material-tailwind/react';
+import { cartService } from '@services';
+import { useQuery } from '@tanstack/react-query';
+import { retryQueryFn } from '@utils';
 
 export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
+  const {
+    info: { isSuccess }
+  } = useUserQuery();
+  const { data: modelCartList } = useQuery({
+    queryKey: ['/api/cart'],
+    queryFn: () => cartService.getCart(),
+    retry: retryQueryFn
+  });
+  const numberOfUserModels = useMemo(
+    () => modelCartList?.reduce((total, currentModel) => total + currentModel.quantity, 0),
+    [modelCartList]
+  );
   const { screenSize } = useScreenSize();
+
   const {
     listCategories: { data: listCategories }
   } = useCategoryQuery();
   const { openSidebar, handleOpenSidebar, SidebarMenu } = useSidebarMenu();
-
+  const numberOfLocalModels = Object.values(useCartStore.getState().cartItems).reduce(
+    (acc, value) => acc + value,
+    0
+  );
   const extraListCategories = useMemo(
     () => [{ id: '', name: 'All things' }, ...(listCategories ?? [])],
     [listCategories]
@@ -43,7 +63,12 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           setActivePage(1);
         }}
       >
-        <ShoppingCartIcon strokeWidth={2} className='w-6 h-6 ' />
+        <div className='relative'>
+          <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+          <Typography className='absolute px-1 bg-red-400 rounded-[999px] text-white text-[12px] font-bold top-1/3 right-1/3'>
+            {isSuccess ? numberOfUserModels : numberOfLocalModels}
+          </Typography>
+        </div>
       </Link>
     );
   };
@@ -66,7 +91,13 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
             <SidebarMenu menu={menu} listCategories={extraListCategories} />
           </AppDrawer>
         ) : (
-          <DesktopNavbar menu={menu} listCategories={extraListCategories} />
+          <DesktopNavbar
+            menu={menu}
+            listCategories={extraListCategories}
+            numberModels={
+              isSuccess && numberOfUserModels ? numberOfUserModels : numberOfLocalModels
+            }
+          />
         )}
       </div>
     </div>

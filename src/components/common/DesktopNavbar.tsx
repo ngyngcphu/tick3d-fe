@@ -7,10 +7,11 @@ import { MENU_BAR } from '@constants';
 import { useUserQuery } from '@hooks';
 import { useMenuBarStore, usePaginationStore } from '@states';
 
-export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Category[] }> = ({
-  menu,
-  listCategories
-}) => {
+export const DesktopNavbar: Component<{
+  menu: RouteMenu;
+  listCategories: Category[];
+  numberModels: number;
+}> = ({ menu, listCategories, numberModels }) => {
   const {
     info: { data, isSuccess }
   } = useUserQuery();
@@ -35,7 +36,6 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
     onMouseEnter: () => setOpenPopoverAvatar(true),
     onMouseLeave: () => setOpenPopoverAvatar(false)
   };
-
   const NAVBAR_ITEM_CLASSNAME =
     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold text-gray/4 font-medium rounded-lg text-lg w-fit text-center';
   const CATEGORYLIST_ITEM_CLASSNAME =
@@ -152,7 +152,12 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                         setActivePage(1);
                       }}
                     >
-                      <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+                      <div className='relative'>
+                        <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+                        <Typography className='absolute px-1 bg-red-400 rounded-[999px] text-white text-[12px] font-bold top-1/3 right-1/3'>
+                          {numberModels}
+                        </Typography>
+                      </div>
                     </ListItem>
                   </Link>
                 </div>

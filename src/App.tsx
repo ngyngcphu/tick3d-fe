@@ -76,11 +76,7 @@ export default function App() {
           type: 'skeleton',
           path: '/cart',
           name: MENU_BAR.cart,
-          element: (
-            <ProtectedRoutes>
-              <ShoppingCartPage />
-            </ProtectedRoutes>
-          )
+          element: <ShoppingCartPage />
         },
         {
           type: 'skeleton',
