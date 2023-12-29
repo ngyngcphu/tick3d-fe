@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Chip, List, ListItem, Input, Tooltip, Typography } from '@material-tailwind/react';
+import {
+  Avatar,
+  Badge,
+  Chip,
+  List,
+  ListItem,
+  Input,
+  Tooltip,
+  Typography
+} from '@material-tailwind/react';
 import { MagnifyingGlassIcon, ShoppingCartIcon, StarIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { MENU_BAR } from '@constants';
@@ -10,8 +19,8 @@ import { useMenuBarStore, usePaginationStore } from '@states';
 export const DesktopNavbar: Component<{
   menu: RouteMenu;
   listCategories: Category[];
-  numberModels: number;
-}> = ({ menu, listCategories, numberModels }) => {
+  totalCartItems: number;
+}> = ({ menu, listCategories, totalCartItems }) => {
   const {
     info: { data, isSuccess }
   } = useUserQuery();
@@ -152,12 +161,13 @@ export const DesktopNavbar: Component<{
                         setActivePage(1);
                       }}
                     >
-                      <div className='relative'>
+                      {totalCartItems > 0 ? (
+                        <Badge content={totalCartItems}>
+                          <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+                        </Badge>
+                      ) : (
                         <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
-                        <Typography className='absolute px-1 bg-red-400 rounded-full text-white text-[12px] font-bold top-1/3 right-1/3'>
-                          {numberModels > 0 && numberModels}
-                        </Typography>
-                      </div>
+                      )}
                     </ListItem>
                   </Link>
                 </div>

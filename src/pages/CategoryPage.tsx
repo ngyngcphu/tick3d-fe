@@ -190,7 +190,7 @@ export function CategoryPage() {
                           className='bg-red-500 text-white normal-case text-sm truncate p-4'
                           onClick={(event) => event.stopPropagation()}
                         >
-                          Thêm vào giỏ
+                          Thêm vào giỏ hàng
                         </Button>
                       </div>
                     </div>
@@ -237,7 +237,7 @@ export function CategoryPage() {
                         className='bg-red-500 text-white normal-case text-base'
                         onClick={(event) => event.stopPropagation()}
                       >
-                        Thêm vào giỏ
+                        Thêm vào giỏ hàng
                       </Button>
                     </div>
                   </CardBody>

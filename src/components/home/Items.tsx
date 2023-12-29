@@ -43,7 +43,7 @@ export function Items() {
                   className='bg-red-500 text-white normal-case text-sm md:text-base'
                   onClick={(event) => event.stopPropagation()}
                 >
-                  Thêm vào giỏ
+                  Thêm vào giỏ hàng
                 </Button>
               </div>
             </CardBody>

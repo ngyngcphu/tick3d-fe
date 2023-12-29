@@ -1,24 +1,49 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-export const useCartStore = create<CartState>()((set) => ({
-  cartItems: {},
-  addToCart: (modelId: string, quantity: number) => {
-    set((state) => {
-      const currentQuantity = state.cartItems[modelId] || 0;
-      return {
-        cartItems: {
-          ...state.cartItems,
-          [modelId]: currentQuantity + quantity
-        }
-      };
-    });
-  },
-  setCartItems: (modelList: ModelItem[]) => {
-    const updatedCartItems: { [key: string]: number } = {};
-
-    modelList.forEach((item) => {
-      updatedCartItems[item.model_id] = item.quantity;
-    });
-    set({ cartItems: updatedCartItems });
-  }
-}));
+export const useCartStore = create<CartStore>()(
+  persist(
+    (set, get) => ({
+      totalCartItems: 0,
+      cartItems: [],
+      setTotal: (total) => {
+        set({ totalCartItems: total });
+      },
+      create: (model) => {
+        set((state) => {
+          const newCartItems = [...state.cartItems];
+          const existingModelIndex = newCartItems.findIndex((item) => item.id === model.id);
+          if (existingModelIndex !== -1) {
+            newCartItems[existingModelIndex].quantity = model.quantity;
+          } else {
+            newCartItems.push(model);
+            get().setTotal(state.totalCartItems + 1);
+          }
+          return { cartItems: newCartItems };
+        });
+      },
+      update: (modelId, quantity) => {
+        set((state) => {
+          const newCartItems = [...state.cartItems];
+          const existingModelIndex = newCartItems.findIndex((item) => item.id === modelId);
+          if (existingModelIndex === -1) throw new Error('Model not found !');
+          newCartItems[existingModelIndex].quantity = quantity;
+          return { cartItems: newCartItems };
+        });
+      },
+      delete: (modelId) => {
+        set((state) => {
+          const newCartItems = [...state.cartItems];
+          const existingModelIndex = newCartItems.findIndex((item) => item.id === modelId);
+          if (existingModelIndex === -1) throw new Error('Model not found !');
+          newCartItems.splice(existingModelIndex, 1);
+          get().setTotal(state.totalCartItems - 1);
+          return { cartItems: newCartItems };
+        });
+      }
+    }),
+    {
+      name: 'cartLocalStorage'
+    }
+  )
+);

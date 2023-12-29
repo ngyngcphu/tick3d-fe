@@ -1,30 +1,28 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+//import { useQuery } from '@tanstack/react-query';
+import { Badge } from '@material-tailwind/react';
 import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { AppDrawer, DesktopNavbar, ToggleSidebarBtn, useSidebarMenu } from '@components/common';
 import { ScreenSize, MENU_BAR } from '@constants';
-import { useScreenSize, useCategoryQuery, useUserQuery } from '@hooks';
+import { useScreenSize, useCategoryQuery } from '@hooks';
 import { useMenuBarStore, usePaginationStore, useCartStore } from '@states';
-import { Typography } from '@material-tailwind/react';
-import { cartService } from '@services';
-import { useQuery } from '@tanstack/react-query';
-import { retryQueryFn } from '@utils';
+//import { cartService } from '@services';
+//import { retryQueryFn } from '@utils';
 
 export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
-  const {
-    info: { isSuccess }
-  } = useUserQuery();
-  const { data: modelCartList } = useQuery({
-    queryKey: ['/api/cart'],
-    queryFn: () => cartService.getCart(),
-    retry: retryQueryFn,
-    enabled: isSuccess
-  });
-  const numberOfUserModels = useMemo(
-    () => modelCartList?.reduce((total, currentModel) => total + currentModel.quantity, 0),
-    [modelCartList]
-  );
+  // const { data: modelCartList } = useQuery({
+  //   queryKey: ['/api/cart'],
+  //   queryFn: () => cartService.getCart(),
+  //   retry: retryQueryFn,
+  //   enabled: isSuccess
+  // });
+  // const numberOfUserModels = useMemo(
+  //   () => modelCartList?.reduce((total, currentModel) => total + currentModel.quantity, 0),
+  //   [modelCartList]
+  // );
+  const { totalCartItems } = useCartStore();
 
   const { screenSize } = useScreenSize();
 
@@ -32,10 +30,7 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
     listCategories: { data: listCategories }
   } = useCategoryQuery();
   const { openSidebar, handleOpenSidebar, SidebarMenu } = useSidebarMenu();
-  const numberOfLocalModels = Object.values(useCartStore.getState().cartItems).reduce(
-    (acc, value) => acc + value,
-    0
-  );
+
   const extraListCategories = useMemo(
     () => [{ id: '', name: 'All things' }, ...(listCategories ?? [])],
     [listCategories]
@@ -65,16 +60,13 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           setActivePage(1);
         }}
       >
-        <div className='relative'>
+        {totalCartItems > 0 ? (
+          <Badge content={totalCartItems}>
+            <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+          </Badge>
+        ) : (
           <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
-          <Typography className='absolute px-1 bg-red-400 rounded-full text-white text-[12px] font-bold top-1/3 right-1/3'>
-            {isSuccess
-              ? numberOfUserModels && numberOfUserModels > 0
-                ? numberOfUserModels
-                : null
-              : numberOfLocalModels}
-          </Typography>
-        </div>
+        )}
       </Link>
     );
   };
@@ -100,13 +92,7 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           <DesktopNavbar
             menu={menu}
             listCategories={extraListCategories}
-            numberModels={
-              isSuccess
-                ? numberOfUserModels && numberOfUserModels > 0
-                  ? numberOfUserModels
-                  : 0
-                : numberOfLocalModels
-            }
+            totalCartItems={totalCartItems}
           />
         )}
       </div>
