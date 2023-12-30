@@ -50,7 +50,7 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           setActivePage(1);
         }}
       >
-        {totalCartItems > 0 || (listModelsInCart?.total ?? 0) > 0 ? (
+        {totalCartItems > 0 || (isSuccess && (listModelsInCart?.total ?? 0 > 0)) ? (
           <Badge content={isSuccess ? listModelsInCart?.total : totalCartItems}>
             <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
           </Badge>

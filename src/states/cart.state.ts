@@ -24,6 +24,9 @@ export const useCartStore = create<CartStore>()(
           return { listFlagIsModelAdded: result };
         });
       },
+      resetCart: () => {
+        set({ totalCartItems: 0, cartItems: [], listFlagIsModelAdded: {} });
+      },
       create: (model) => {
         set((state) => {
           const newCartItems = [...state.cartItems];

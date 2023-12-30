@@ -4,7 +4,7 @@ import { Dialog, DialogHeader, DialogBody, Typography, Button } from '@material-
 import { CheckIcon } from '@heroicons/react/24/outline';
 import { AppNavigation, Footer } from '@components/common';
 import { MENU_BAR } from '@constants';
-import { useAuthMutation, useListenEvent } from '@hooks';
+import { useAuthMutation, useListenEvent, emitEvent } from '@hooks';
 import { useMenuBarStore } from '@states';
 
 export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ menu, child }) => {
@@ -24,7 +24,7 @@ export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ m
       setSelectedMenu(MENU_BAR.category);
       setIsCategoryItem(true);
     }
-    if (pathname === '/checkout') {
+    if (pathname === '/cart' || pathname === '/checkout') {
       setSelectedMenu(MENU_BAR.cart);
     }
   }, [pathname, setSelectedMenu, setIsCategoryItem]);
@@ -38,6 +38,7 @@ export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ m
       setOpenDialog(false);
       navigate('/');
       setSelectedMenu(MENU_BAR.home);
+      emitEvent('refetch:clearModelsInCart');
     } catch (err) {
       throw err;
     }

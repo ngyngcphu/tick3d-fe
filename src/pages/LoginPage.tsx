@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Card, CardBody, Input, Button, Typography } from '@material-tailwind/react';
 import { MENU_BAR } from '@constants';
-import { useUserQuery, useCartMutation } from '@hooks';
+import { useUserQuery, useCartQuery, useCartMutation } from '@hooks';
 import { authService } from '@services';
 import { useMenuBarStore, useCartStore } from '@states';
 
@@ -16,11 +16,14 @@ export function LoginPage() {
   const navigate = useNavigate();
 
   const {
-    info: { isSuccess, refetch }
+    info: { isSuccess, refetch: refetchUserInfo }
   } = useUserQuery();
+  const {
+    listModelsInCart: { refetch: refetchTotalModelsInCart }
+  } = useCartQuery();
   const { createCart } = useCartMutation();
 
-  const { cartItems, totalCartItems } = useCartStore();
+  const { cartItems, totalCartItems, resetCart } = useCartStore();
   const { setSelectedMenu } = useMenuBarStore();
 
   useEffect(() => {
@@ -61,12 +64,13 @@ export function LoginPage() {
   const submit = async (data: LoginFormData) => {
     try {
       await login.mutateAsync(data);
-      await refetch();
+      await refetchUserInfo();
       if (totalCartItems > 0) {
         await createCart.mutateAsync({
           models: cartItems.map((item) => ({ id: item.id, quantity: item.quantity }))
         });
         localStorage.removeItem('cartLocalStorage');
+        resetCart();
       }
       if (state && state.from) {
         navigate(state.from);
@@ -75,6 +79,7 @@ export function LoginPage() {
         setSelectedMenu(MENU_BAR.home);
       }
       toast.success('Login successfully');
+      await refetchTotalModelsInCart();
     } catch (err) {
       toast.error(err as string);
     }
