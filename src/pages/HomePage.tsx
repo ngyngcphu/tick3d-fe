@@ -1,8 +1,14 @@
 import { Card, CardBody, Typography } from '@material-tailwind/react';
 import { Items, Slides } from '@components/home';
 import { HOME_CONTACT } from '@constants';
+import { useListenEvent, useCartQuery } from '@hooks';
 
 export function HomePage() {
+  const {
+    listModelsInCart: { refetch }
+  } = useCartQuery();
+  useListenEvent('refetch:clearModelsInCart', refetch);
+
   return (
     <>
       <div>

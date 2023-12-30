@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-type EventKey = 'logout';
+type EventKey = 'logout' | 'refetch:clearModelsInCart';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useListenEvent(event: EventKey, listener: (...args: any[]) => void) {
