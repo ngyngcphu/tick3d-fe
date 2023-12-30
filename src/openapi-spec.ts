@@ -469,14 +469,18 @@ export interface paths {
           };
           content: {
             'application/json': {
-              model_id: string;
-              quantity: number;
-              model: {
+              total: number;
+              cart: {
+                quantity: number;
                 id: string;
                 name: string;
                 price: number;
-              };
-            }[];
+                discount?: number;
+                image?: string;
+                isDiscontinued: boolean;
+                isUserUploaded: boolean;
+              }[];
+            };
           };
         };
       };

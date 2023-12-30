@@ -1,17 +1,24 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { Badge } from '@material-tailwind/react';
 import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { AppDrawer, DesktopNavbar, ToggleSidebarBtn, useSidebarMenu } from '@components/common';
 import { ScreenSize, MENU_BAR } from '@constants';
-import { useScreenSize, useCategoryQuery } from '@hooks';
-import { useMenuBarStore, usePaginationStore } from '@states';
+import { useScreenSize, useCategoryQuery, useCartQuery } from '@hooks';
+import { useMenuBarStore, usePaginationStore, useCartStore } from '@states';
 
 export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
-  const { screenSize } = useScreenSize();
+  const {
+    listModelsInCart: { data: listModelsInCart, isSuccess }
+  } = useCartQuery();
   const {
     listCategories: { data: listCategories }
   } = useCategoryQuery();
+  const { totalCartItems } = useCartStore();
+
+  const { screenSize } = useScreenSize();
+
   const { openSidebar, handleOpenSidebar, SidebarMenu } = useSidebarMenu();
 
   const extraListCategories = useMemo(
@@ -43,7 +50,13 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           setActivePage(1);
         }}
       >
-        <ShoppingCartIcon strokeWidth={2} className='w-6 h-6 ' />
+        {totalCartItems > 0 || (listModelsInCart?.total ?? 0) > 0 ? (
+          <Badge content={isSuccess ? listModelsInCart?.total : totalCartItems}>
+            <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+          </Badge>
+        ) : (
+          <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+        )}
       </Link>
     );
   };
@@ -66,7 +79,11 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
             <SidebarMenu menu={menu} listCategories={extraListCategories} />
           </AppDrawer>
         ) : (
-          <DesktopNavbar menu={menu} listCategories={extraListCategories} />
+          <DesktopNavbar
+            menu={menu}
+            listCategories={extraListCategories}
+            totalCartItems={isSuccess ? listModelsInCart?.total ?? 0 : totalCartItems}
+          />
         )}
       </div>
     </div>

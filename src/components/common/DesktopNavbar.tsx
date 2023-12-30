@@ -1,16 +1,26 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Chip, List, ListItem, Input, Tooltip, Typography } from '@material-tailwind/react';
+import {
+  Avatar,
+  Badge,
+  Chip,
+  List,
+  ListItem,
+  Input,
+  Tooltip,
+  Typography
+} from '@material-tailwind/react';
 import { MagnifyingGlassIcon, ShoppingCartIcon, StarIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { MENU_BAR } from '@constants';
 import { useUserQuery } from '@hooks';
 import { useMenuBarStore, usePaginationStore } from '@states';
 
-export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Category[] }> = ({
-  menu,
-  listCategories
-}) => {
+export const DesktopNavbar: Component<{
+  menu: RouteMenu;
+  listCategories: Category[];
+  totalCartItems: number;
+}> = ({ menu, listCategories, totalCartItems }) => {
   const {
     info: { data, isSuccess }
   } = useUserQuery();
@@ -35,7 +45,6 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
     onMouseEnter: () => setOpenPopoverAvatar(true),
     onMouseLeave: () => setOpenPopoverAvatar(false)
   };
-
   const NAVBAR_ITEM_CLASSNAME =
     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold text-gray/4 font-medium rounded-lg text-lg w-fit text-center';
   const CATEGORYLIST_ITEM_CLASSNAME =
@@ -152,7 +161,13 @@ export const DesktopNavbar: Component<{ menu: RouteMenu; listCategories: Categor
                         setActivePage(1);
                       }}
                     >
-                      <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+                      {totalCartItems > 0 ? (
+                        <Badge content={totalCartItems}>
+                          <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+                        </Badge>
+                      ) : (
+                        <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+                      )}
                     </ListItem>
                   </Link>
                 </div>

@@ -25,7 +25,7 @@ import { FilterDrawer, FilterAccordion } from '@components/category';
 import { ScreenSize, SORT_CRITERIA, SORT_ORDER } from '@constants';
 import { useScreenSize } from '@hooks';
 import { defaultModelService } from '@services';
-import { useMenuBarStore, usePaginationStore, useFilterStore } from '@states';
+import { useCartStore, useFilterStore, useMenuBarStore, usePaginationStore } from '@states';
 import { retryQueryFn } from '@utils';
 import type { colors } from '@material-tailwind/react/types/generic';
 import type { variant } from '@material-tailwind/react/types/components/button';
@@ -40,9 +40,10 @@ export function CategoryPage() {
   });
 
   const { screenSize } = useScreenSize();
+  const { listFlagIsModelAdded, setListFlagIsModelAdded, create: addModelToCart } = useCartStore();
+  const { selectedStar, fromDay, toDay, setSelectedStar, setFromDay, setToDay } = useFilterStore();
   const { selectedCategoryItem, setSelectedCategoryItem } = useMenuBarStore();
   const { activePage, setActivePage } = usePaginationStore();
-  const { selectedStar, fromDay, toDay, setSelectedStar, setFromDay, setToDay } = useFilterStore();
 
   const { data: listModels } = useQuery({
     queryKey: [
@@ -187,10 +188,28 @@ export function CategoryPage() {
                           {`Đã mua: ${item.numberBought}`}
                         </Typography>
                         <Button
-                          className='bg-red-500 text-white normal-case text-sm truncate p-4'
-                          onClick={(event) => event.stopPropagation()}
+                          className={
+                            'text-white normal-case text-sm truncate p-4' +
+                            (!listFlagIsModelAdded[item.id] ? ' bg-red-500 ' : ' bg-blue-500')
+                          }
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            if (!listFlagIsModelAdded[item.id]) {
+                              addModelToCart({
+                                id: item.id,
+                                image: item.imageUrl,
+                                name: item.name,
+                                discount: item.discount ?? 0,
+                                price: item.price,
+                                quantity: 1
+                              });
+                              setListFlagIsModelAdded(item.id, true);
+                            } else {
+                              navigate('/cart');
+                            }
+                          }}
                         >
-                          Thêm vào giỏ
+                          {listFlagIsModelAdded[item.id] ? 'Đi đến giỏ hàng' : 'Thêm vào giỏ hàng'}
                         </Button>
                       </div>
                     </div>
@@ -234,10 +253,28 @@ export function CategoryPage() {
                         {`Đã mua: ${item.numberBought}`}
                       </Typography>
                       <Button
-                        className='bg-red-500 text-white normal-case text-base'
-                        onClick={(event) => event.stopPropagation()}
+                        className={
+                          'text-white normal-case text-sm truncate p-4' +
+                          (!listFlagIsModelAdded[item.id] ? ' bg-red-500 ' : ' bg-blue-500')
+                        }
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          if (!listFlagIsModelAdded[item.id]) {
+                            addModelToCart({
+                              id: item.id,
+                              image: item.imageUrl,
+                              name: item.name,
+                              discount: item.discount ?? 0,
+                              price: item.price,
+                              quantity: 1
+                            });
+                            setListFlagIsModelAdded(item.id, true);
+                          } else {
+                            navigate('/cart');
+                          }
+                        }}
                       >
-                        Thêm vào giỏ
+                        {listFlagIsModelAdded[item.id] ? 'Đi đến giỏ hàng' : 'Thêm vào giỏ hàng'}
                       </Button>
                     </div>
                   </CardBody>

@@ -4,16 +4,12 @@ import {
   CardBody,
   Chip,
   Button,
-  Radio,
   Input,
   Typography,
   Textarea
 } from '@material-tailwind/react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import cashPaymentLogo from '@assets/cashpayment.webp';
-import momoPaymentLogo from '@assets/momopayment.png';
-import { PaymentMethod } from '@constants';
 
 export function PaymentCheckoutPage() {
   const CheckoutForm = () => {
@@ -54,38 +50,6 @@ export function PaymentCheckoutPage() {
         id='checkout-form'
         onSubmit={handleSubmit(submit)}
       >
-        <div>
-          <p className='text-black'>Phương thức thanh toán</p>
-          <div className='flex flex-col'>
-            <Radio
-              label={
-                <div className='flex gap-2'>
-                  <img src={cashPaymentLogo} alt='' className='w-6 h-6'></img>
-                  <p>Tiền mặt</p>
-                </div>
-              }
-              value={PaymentMethod.CASH}
-              name='paymentMethod'
-              crossOrigin=''
-            />
-            <Radio
-              label={
-                <div className='flex gap-2'>
-                  <img src={momoPaymentLogo} className='w-6 h-6'></img>
-                  <p>Momo</p>
-                </div>
-              }
-              value={PaymentMethod.MOMO}
-              name='paymentMethod'
-              crossOrigin=''
-            />
-          </div>
-          {/* {errors.paymentMethod?.message && (
-            <Typography color='red' variant='small'>
-              {errors.paymentMethod?.message}{' '}
-            </Typography>
-          )} */}
-        </div>
         <Input
           className='text-black !rounded-none border-border-dark focus:border-dark transition-all placeholder-shown:border-border-dark'
           labelProps={{

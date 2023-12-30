@@ -44,7 +44,16 @@ type ModelOption = {
   order?: Order;
 };
 
-type CartItem = {
+type ModelInCart = {
+  id: string;
+  image?: string;
+  name: string;
+  discount?: number;
+  price: number;
+  quantity: number;
+};
+
+type CartCreationPayload = {
   id: string;
   quantity: number;
 };

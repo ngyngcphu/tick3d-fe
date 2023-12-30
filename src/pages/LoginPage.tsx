@@ -7,9 +7,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Card, CardBody, Input, Button, Typography } from '@material-tailwind/react';
 import { MENU_BAR } from '@constants';
-import { useUserQuery } from '@hooks';
+import { useUserQuery, useCartMutation } from '@hooks';
 import { authService } from '@services';
-import { useMenuBarStore } from '@states';
+import { useMenuBarStore, useCartStore } from '@states';
 
 export function LoginPage() {
   const { state } = useLocation();
@@ -18,6 +18,9 @@ export function LoginPage() {
   const {
     info: { isSuccess, refetch }
   } = useUserQuery();
+  const { createCart } = useCartMutation();
+
+  const { cartItems, totalCartItems } = useCartStore();
   const { setSelectedMenu } = useMenuBarStore();
 
   useEffect(() => {
@@ -59,6 +62,12 @@ export function LoginPage() {
     try {
       await login.mutateAsync(data);
       await refetch();
+      if (totalCartItems > 0) {
+        await createCart.mutateAsync({
+          models: cartItems.map((item) => ({ id: item.id, quantity: item.quantity }))
+        });
+        localStorage.removeItem('cartLocalStorage');
+      }
       if (state && state.from) {
         navigate(state.from);
       } else {
