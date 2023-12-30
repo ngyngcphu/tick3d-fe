@@ -1,5 +1,5 @@
-import { Fragment, useMemo, useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Dialog, DialogHeader, DialogBody, Typography, Button } from '@material-tailwind/react';
 import { CheckIcon } from '@heroicons/react/24/outline';
 import { AppNavigation, Footer } from '@components/common';
@@ -9,9 +9,22 @@ import { useMenuBarStore } from '@states';
 
 export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ menu, child }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const { setSelectedMenu } = useMenuBarStore();
+  const { setSelectedMenu, setIsCategoryItem } = useMenuBarStore();
   const { logout } = useAuthMutation();
+
+  useEffect(() => {
+    if (pathname === '/home') {
+      setSelectedMenu(MENU_BAR.home);
+      setIsCategoryItem(false);
+    }
+    if (pathname.includes('/category')) {
+      setSelectedMenu(MENU_BAR.category);
+      setIsCategoryItem(true);
+    }
+  }, [pathname, setSelectedMenu, setIsCategoryItem]);
 
   const handleOpenDialog = () => {
     setOpenDialog(!openDialog);

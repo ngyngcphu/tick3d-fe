@@ -6,8 +6,23 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       totalCartItems: 0,
       cartItems: [],
+      listFlagIsModelAdded: {},
       setTotal: (total) => {
         set({ totalCartItems: total });
+      },
+      setListFlagIsModelAdded: (modelId, data) => {
+        set((state) => {
+          const result = { ...state.listFlagIsModelAdded };
+          result[modelId] = data;
+          return { listFlagIsModelAdded: result };
+        });
+      },
+      removeItemInListFlag: (modelId) => {
+        set((state) => {
+          const result = { ...state.listFlagIsModelAdded };
+          delete result[modelId];
+          return { listFlagIsModelAdded: result };
+        });
       },
       create: (model) => {
         set((state) => {

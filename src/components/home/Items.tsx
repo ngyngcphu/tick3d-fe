@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { Button, Card, CardBody, Chip, Typography } from '@material-tailwind/react';
 import { homeService } from '@services';
+import { useCartStore } from '@states';
 import { retryQueryFn } from '@utils';
-import { useQuery } from '@tanstack/react-query';
 
 export function Items() {
   const navigate = useNavigate();
@@ -12,6 +13,8 @@ export function Items() {
     queryFn: () => homeService.getTopModels(8, 'numberBought', 'desc'),
     retry: retryQueryFn
   });
+
+  const { listFlagIsModelAdded, setListFlagIsModelAdded, create: addModelToCart } = useCartStore();
 
   return (
     <div className='grid grid-cols-2 gap-2 lg:grid-cols-4 lg:py-6 lg:px-4 lg:gap-3'>
@@ -40,10 +43,28 @@ export function Items() {
                   {`Đã mua: ${item.numberBought}`}
                 </Typography>
                 <Button
-                  className='bg-red-500 text-white normal-case text-sm md:text-base'
-                  onClick={(event) => event.stopPropagation()}
+                  className={
+                    'text-white normal-case text-sm truncate p-4' +
+                    (!listFlagIsModelAdded[item.id] ? ' bg-red-500 ' : ' bg-blue-500')
+                  }
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (!listFlagIsModelAdded[item.id]) {
+                      addModelToCart({
+                        id: item.id,
+                        image: item.imageUrl,
+                        name: item.name,
+                        discount: item.discount ?? 0,
+                        price: item.price,
+                        quantity: 1
+                      });
+                      setListFlagIsModelAdded(item.id, true);
+                    } else {
+                      navigate('/cart');
+                    }
+                  }}
                 >
-                  Thêm vào giỏ hàng
+                  {listFlagIsModelAdded[item.id] ? 'Đi đến giỏ hàng' : 'Thêm vào giỏ hàng'}
                 </Button>
               </div>
             </CardBody>

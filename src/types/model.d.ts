@@ -46,14 +46,14 @@ type ModelOption = {
 
 type ModelInCart = {
   id: string;
-  image: string;
+  image?: string;
   name: string;
-  discount: number;
+  discount?: number;
   price: number;
   quantity: number;
 };
 
-type CartItem = {
+type CartCreationPayload = {
   id: string;
   quantity: number;
 };

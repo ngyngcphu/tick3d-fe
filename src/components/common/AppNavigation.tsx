@@ -1,34 +1,24 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-//import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@material-tailwind/react';
 import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { AppDrawer, DesktopNavbar, ToggleSidebarBtn, useSidebarMenu } from '@components/common';
 import { ScreenSize, MENU_BAR } from '@constants';
-import { useScreenSize, useCategoryQuery } from '@hooks';
+import { useScreenSize, useCategoryQuery, useCartQuery } from '@hooks';
 import { useMenuBarStore, usePaginationStore, useCartStore } from '@states';
-//import { cartService } from '@services';
-//import { retryQueryFn } from '@utils';
 
 export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
-  // const { data: modelCartList } = useQuery({
-  //   queryKey: ['/api/cart'],
-  //   queryFn: () => cartService.getCart(),
-  //   retry: retryQueryFn,
-  //   enabled: isSuccess
-  // });
-  // const numberOfUserModels = useMemo(
-  //   () => modelCartList?.reduce((total, currentModel) => total + currentModel.quantity, 0),
-  //   [modelCartList]
-  // );
+  const {
+    listModelsInCart: { data: listModelsInCart, isSuccess }
+  } = useCartQuery();
+  const {
+    listCategories: { data: listCategories }
+  } = useCategoryQuery();
   const { totalCartItems } = useCartStore();
 
   const { screenSize } = useScreenSize();
 
-  const {
-    listCategories: { data: listCategories }
-  } = useCategoryQuery();
   const { openSidebar, handleOpenSidebar, SidebarMenu } = useSidebarMenu();
 
   const extraListCategories = useMemo(
@@ -60,8 +50,8 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           setActivePage(1);
         }}
       >
-        {totalCartItems > 0 ? (
-          <Badge content={totalCartItems}>
+        {totalCartItems > 0 || (listModelsInCart?.total ?? 0) > 0 ? (
+          <Badge content={isSuccess ? listModelsInCart?.total : totalCartItems}>
             <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
           </Badge>
         ) : (
@@ -92,7 +82,7 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           <DesktopNavbar
             menu={menu}
             listCategories={extraListCategories}
-            totalCartItems={totalCartItems}
+            totalCartItems={isSuccess ? listModelsInCart?.total ?? 0 : totalCartItems}
           />
         )}
       </div>
