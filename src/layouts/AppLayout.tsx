@@ -24,6 +24,9 @@ export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ m
       setSelectedMenu(MENU_BAR.category);
       setIsCategoryItem(true);
     }
+    if (pathname === '/checkout') {
+      setSelectedMenu(MENU_BAR.cart);
+    }
   }, [pathname, setSelectedMenu, setIsCategoryItem]);
 
   const handleOpenDialog = () => {
