@@ -1,55 +1,71 @@
 import { useForm } from 'react-hook-form';
-import {
-  Card,
-  CardBody,
-  Chip,
-  Button,
-  Input,
-  Typography,
-  Textarea
-} from '@material-tailwind/react';
+import { Card, CardBody, Chip, Input, Typography, Textarea } from '@material-tailwind/react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useCartQuery, useOrderMutation } from '@hooks';
+import { useCartStore } from '@states';
+import { useMemo } from 'react';
+import {
+  PayPalButtons,
+  PayPalScriptProvider,
+  usePayPalScriptReducer
+} from '@paypal/react-paypal-js';
+import { checkoutService } from '@services';
 
 export function PaymentCheckoutPage() {
+  const {
+    listModelsInCart: { data: listModelsInCart, isSuccess }
+  } = useCartQuery();
+
+  const { cartItems } = useCartStore();
+
+  const totalPrice = useMemo(() => {
+    if (isSuccess && listModelsInCart) {
+      return listModelsInCart.cart.reduce(
+        (result, item) =>
+          result + Math.floor(item.price * (1 - (item.discount ?? 0)) * item.quantity),
+        0
+      );
+    } else {
+      return cartItems.reduce(
+        (result, item) =>
+          result + Math.floor(item.price * (1 - (item.discount ?? 0)) * item.quantity),
+        0
+      );
+    }
+  }, [cartItems, isSuccess, listModelsInCart]);
+
+  const { approvePayPalOrder } = useOrderMutation();
+  const validateSchema = yup.object({
+    total_price: yup.number(),
+    shipping_fee: yup.number(),
+    est_deli_time: yup.string(),
+    district: yup.string(),
+    ward: yup.string(),
+    street: yup.string(),
+    streetNo: yup.string(),
+    isPaid: yup.boolean(),
+    extra_note: yup.string().optional()
+  }) as yup.ObjectSchema<CheckoutForm>;
+
+  const {
+    watch,
+    register,
+    formState: { errors }
+  } = useForm<CheckoutForm>({
+    defaultValues: {
+      district: '',
+      ward: '',
+      street: '',
+      streetNo: '',
+      extra_note: ''
+    },
+    resolver: yupResolver(validateSchema)
+  });
+
   const CheckoutForm = () => {
-    const validateSchema = yup.object({
-      total_price: yup.number(),
-      shipping_fee: yup.number(),
-      est_deli_time: yup.string(),
-      district: yup.string(),
-      ward: yup.string(),
-      street: yup.string(),
-      streetNo: yup.string(),
-      isPaid: yup.boolean(),
-      extra_note: yup.string().optional()
-    }) as yup.ObjectSchema<CheckoutForm>;
-
-    const {
-      handleSubmit,
-      register,
-      formState: { errors }
-    } = useForm<CheckoutForm>({
-      defaultValues: {
-        district: '',
-        ward: '',
-        street: '',
-        streetNo: '',
-        extra_note: ''
-      },
-      resolver: yupResolver(validateSchema)
-    });
-
-    const submit = async (data: CheckoutForm) => {
-      return data;
-    };
-
     return (
-      <form
-        className='flex flex-col gap-3 w-full max-w-screen-lg'
-        id='checkout-form'
-        onSubmit={handleSubmit(submit)}
-      >
+      <form className='flex flex-col gap-3 w-full max-w-screen-lg' id='checkout-form'>
         <Input
           className='text-black !rounded-none border-border-dark focus:border-dark transition-all placeholder-shown:border-border-dark'
           labelProps={{
@@ -202,8 +218,38 @@ export function PaymentCheckoutPage() {
 
   const OrderSummary = () => {
     const shippingFee = 30000;
-    const productPrice = 0;
+    const productPrice = totalPrice;
     const discount = 0;
+
+    const PayPalButtonWrapper = () => {
+      const [{ isPending }] = usePayPalScriptReducer();
+
+      return (
+        <>
+          {isPending && <div className='spinner' />}
+          <PayPalButtons
+            disabled={false}
+            style={{ color: 'blue' }}
+            createOrder={async () => {
+              const { id } = await checkoutService.createPaypalOrder({
+                intent: 'CAPTURE',
+                orderInfo: {
+                  ...watch(),
+                  total_price: totalPrice,
+                  shipping_fee: 30000,
+                  est_deli_time: '1/1/2024'
+                }
+              });
+
+              return id;
+            }}
+            onApprove={async (data) => {
+              await approvePayPalOrder.mutateAsync(data.orderID);
+            }}
+          />
+        </>
+      );
+    };
 
     return (
       <>
@@ -234,15 +280,15 @@ export function PaymentCheckoutPage() {
             ₫ {(productPrice - discount + shippingFee).toLocaleString('en-US')}
           </p>
         </div>
-
-        <Button
-          placeholder=''
-          className='py-2 px-8 bg-transparent border rounded-none border-black capitalize w-fit font-normal text-base text-dark'
-          type='submit'
-          form='checkout-form'
+        <PayPalScriptProvider
+          options={{
+            clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID,
+            components: 'buttons',
+            currency: 'USD'
+          }}
         >
-          <div>Xác nhận</div>
-        </Button>
+          <PayPalButtonWrapper />
+        </PayPalScriptProvider>
       </>
     );
   };
