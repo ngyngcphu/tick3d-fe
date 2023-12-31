@@ -14,8 +14,14 @@ export function useCartMutation() {
         models: [{ id: modelId, quantity: quantity }]
       })
   });
+
+  const deleteUserModel = useMutation({
+    mutationKey: ['deleteMode'],
+    mutationFn: (payload: { models: string[] }) => cartService.deleteUserModel(payload)
+  });
   return {
     createCart: createCart,
-    updateCartQuantity: updateCartQuantity
+    updateCartQuantity: updateCartQuantity,
+    deleteUserModel: deleteUserModel
   };
 }

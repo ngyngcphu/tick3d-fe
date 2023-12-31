@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   Button,
   Card,
@@ -23,14 +23,18 @@ import {
 } from '@heroicons/react/24/solid';
 import { FilterDrawer, FilterAccordion } from '@components/category';
 import { ScreenSize, SORT_CRITERIA, SORT_ORDER } from '@constants';
-import { useScreenSize } from '@hooks';
-import { defaultModelService } from '@services';
+import { useScreenSize, useUserQuery, useCartQuery } from '@hooks';
+import { defaultModelService, cartService } from '@services';
 import { useCartStore, useFilterStore, useMenuBarStore, usePaginationStore } from '@states';
 import { retryQueryFn } from '@utils';
 import type { colors } from '@material-tailwind/react/types/generic';
 import type { variant } from '@material-tailwind/react/types/components/button';
+import {} from '@services';
 
 export function CategoryPage() {
+  const {
+    info: { isSuccess }
+  } = useUserQuery();
   const NUMBER_ITEMS_PER_PAGE = 8;
   const navigate = useNavigate();
 
@@ -101,7 +105,21 @@ export function CategoryPage() {
     setToDay(undefined);
     setActivePage(1);
   };
-
+  const addToUserCart = useMutation({
+    mutationKey: ['/api/cart'],
+    mutationFn: (data: { models: CartCreationPayload[] }) => cartService.create(data)
+  });
+  const {
+    listModelsInCart: { refetch: refetchTotalModelsInCart }
+  } = useCartQuery();
+  const handleAddtoUserCart = async (data: { models: CartCreationPayload[] }) => {
+    try {
+      await addToUserCart.mutateAsync(data);
+      await refetchTotalModelsInCart();
+    } catch (e) {
+      alert(e);
+    }
+  };
   return (
     <>
       <div className='flex md:justify-between items-center md:pe-8'>
@@ -194,7 +212,17 @@ export function CategoryPage() {
                           }
                           onClick={(event) => {
                             event.stopPropagation();
-                            if (!listFlagIsModelAdded[item.id]) {
+                            if (isSuccess && !listFlagIsModelAdded[item.id]) {
+                              handleAddtoUserCart({
+                                models: [
+                                  {
+                                    id: item.id,
+                                    quantity: 1
+                                  }
+                                ]
+                              });
+                              setListFlagIsModelAdded(item.id, true);
+                            } else if (!isSuccess && !listFlagIsModelAdded[item.id]) {
                               addModelToCart({
                                 id: item.id,
                                 image: item.imageUrl,
@@ -259,7 +287,17 @@ export function CategoryPage() {
                         }
                         onClick={(event) => {
                           event.stopPropagation();
-                          if (!listFlagIsModelAdded[item.id]) {
+                          if (isSuccess && !listFlagIsModelAdded[item.id]) {
+                            handleAddtoUserCart({
+                              models: [
+                                {
+                                  id: item.id,
+                                  quantity: 1
+                                }
+                              ]
+                            });
+                            setListFlagIsModelAdded(item.id, true);
+                          } else if (!isSuccess && !listFlagIsModelAdded[item.id]) {
                             addModelToCart({
                               id: item.id,
                               image: item.imageUrl,
