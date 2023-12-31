@@ -109,7 +109,9 @@ export function DetailModelPage() {
             <Typography placeholder='' className='lg:mb-3' variant='paragraph'>
               {modelData?.description}
             </Typography>
-            <Typography variant='h6'>Số lượng</Typography>
+            <Typography placeholder='' variant='h6'>
+              Số lượng
+            </Typography>
             <div className='flex datas-center gap-8 w-[120px] border-gray-400 border-2 p-2 my-3 lg:mb-6'>
               <MinusIcon
                 width={20}

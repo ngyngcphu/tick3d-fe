@@ -246,7 +246,7 @@ export const DesktopNavbar: Component<{
                         alt='avatar'
                       />
                       <div>
-                        <Typography variant='h6' color='gray'>
+                        <Typography placeholder='' variant='h6' color='gray'>
                           {data ? data.VnFormatName : ''}
                         </Typography>
                         <Typography
