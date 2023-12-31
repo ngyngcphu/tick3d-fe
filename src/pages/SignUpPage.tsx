@@ -133,9 +133,9 @@ export function SignUpPage() {
       }}
     >
       {!isOTPForm ? (
-        <Card className='bg-black/50 rounded-none' shadow={false}>
-          <CardBody className='flex flex-col gap-8'>
-            <Typography className='font-normal' variant='h2' color='white'>
+        <Card placeholder='' className='bg-black/50 rounded-none' shadow={false}>
+          <CardBody placeholder='' className='flex flex-col gap-8'>
+            <Typography placeholder='' className='font-normal' variant='h2' color='white'>
               Đăng ký tài khoản
             </Typography>
             <form
@@ -166,7 +166,7 @@ export function SignUpPage() {
                     />
 
                     {signupErrors.lastname?.message && (
-                      <Typography color='red' variant='small'>
+                      <Typography placeholder='' color='red' variant='small'>
                         {signupErrors.lastname?.message}{' '}
                       </Typography>
                     )}
@@ -191,7 +191,7 @@ export function SignUpPage() {
                   </div>
 
                   {signupErrors.firstname?.message && (
-                    <Typography color='red' variant='small'>
+                    <Typography placeholder='' color='red' variant='small'>
                       {signupErrors.firstname?.message}{' '}
                     </Typography>
                   )}
@@ -219,7 +219,7 @@ export function SignUpPage() {
                     {...registerSignup('tel', { minLength: 8, required: true })}
                   />
                   {signupErrors.tel?.message && (
-                    <Typography color='red' variant='small'>
+                    <Typography placeholder='' color='red' variant='small'>
                       {signupErrors.tel?.message}{' '}
                     </Typography>
                   )}
@@ -246,7 +246,7 @@ export function SignUpPage() {
                     {...registerSignup('email', { minLength: 8, required: true })}
                   />
                   {signupErrors.email?.message && (
-                    <Typography color='red' variant='small'>
+                    <Typography placeholder='' color='red' variant='small'>
                       {signupErrors.email?.message}{' '}
                     </Typography>
                   )}
@@ -274,7 +274,7 @@ export function SignUpPage() {
                     {...registerSignup('password', { minLength: 8, required: true })}
                   />
                   {signupErrors.password?.message && (
-                    <Typography color='red' variant='small'>
+                    <Typography placeholder='' color='red' variant='small'>
                       {signupErrors.password?.message}{' '}
                     </Typography>
                   )}
@@ -282,6 +282,7 @@ export function SignUpPage() {
               </div>
 
               <Button
+                placeholder=''
                 className='py-2 px-8 bg-transparent border rounded-none border-white capitalize w-fit font-normal text-base'
                 type='submit'
               >
@@ -291,12 +292,17 @@ export function SignUpPage() {
           </CardBody>
         </Card>
       ) : (
-        <Card className='bg-black/50 rounded-none' shadow={false}>
-          <CardBody className='flex flex-col gap-4 w-96'>
-            <Typography className='font-normal text-center' variant='h2' color='white'>
+        <Card placeholder='' className='bg-black/50 rounded-none' shadow={false}>
+          <CardBody placeholder='' className='flex flex-col gap-4 w-96'>
+            <Typography
+              placeholder=''
+              className='font-normal text-center'
+              variant='h2'
+              color='white'
+            >
               Xác nhận email
             </Typography>
-            <Typography variant='paragraph' color='white'>
+            <Typography placeholder='' variant='paragraph' color='white'>
               Mã gồm 6 ký tự đã được gửi về địa chỉ email{' '}
               <span className='font-bold underline'>{signup.data?.email}</span>
             </Typography>
@@ -324,11 +330,12 @@ export function SignUpPage() {
                 {...registerOTP('otp', { minLength: 6, required: true })}
               />
               {otpErrors.otp?.message && (
-                <Typography color='red' variant='small'>
+                <Typography placeholder='' color='red' variant='small'>
                   {otpErrors.otp?.message}{' '}
                 </Typography>
               )}
               <Button
+                placeholder=''
                 className='flex bg-transparent border rounded-none border-white capitalize w-fit font-normal text-base self-center'
                 type='submit'
               >

@@ -61,7 +61,7 @@ export const FilterAccordion: Component<{
                 crossOrigin=''
               />
             </PopoverHandler>
-            <PopoverContent className='z-[10000]'>
+            <PopoverContent placeholder='' className='z-[10000]'>
               <DayPicker
                 mode='single'
                 selected={date}
@@ -110,6 +110,7 @@ export const FilterAccordion: Component<{
   return (
     <div className='w-full'>
       <Accordion
+        placeholder=''
         open={open === 1}
         icon={
           open === 1 ? (
@@ -119,12 +120,15 @@ export const FilterAccordion: Component<{
           )
         }
       >
-        <AccordionHeader onClick={() => handleOpen(1)}>Categories</AccordionHeader>
+        <AccordionHeader placeholder='' onClick={() => handleOpen(1)}>
+          Categories
+        </AccordionHeader>
         <AccordionBody>
           <div className='flex flex-col'>
-            <List className='p-0'>
+            <List placeholder='' className='p-0'>
               {[{ id: '', name: 'All things' }, ...(listCategories ?? [])].map((item, idx) => (
                 <ListItem
+                  placeholder=''
                   key={idx}
                   className={
                     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold px-6 rounded-none text-gray/4 font-medium' +
@@ -146,6 +150,7 @@ export const FilterAccordion: Component<{
         </AccordionBody>
       </Accordion>
       <Accordion
+        placeholder=''
         open={open === 2}
         icon={
           open === 2 ? (
@@ -155,7 +160,9 @@ export const FilterAccordion: Component<{
           )
         }
       >
-        <AccordionHeader onClick={() => handleOpen(2)}>Stars</AccordionHeader>
+        <AccordionHeader placeholder='' onClick={() => handleOpen(2)}>
+          Stars
+        </AccordionHeader>
         <AccordionBody className='flex flex-col'>
           {STAR_FILTER.map((item, index) => (
             <Radio
@@ -170,6 +177,7 @@ export const FilterAccordion: Component<{
         </AccordionBody>
       </Accordion>
       <Accordion
+        placeholder=''
         open={open === 3}
         icon={
           open === 3 ? (
@@ -179,14 +187,20 @@ export const FilterAccordion: Component<{
           )
         }
       >
-        <AccordionHeader onClick={() => handleOpen(3)}>Upload Date</AccordionHeader>
+        <AccordionHeader placeholder='' onClick={() => handleOpen(3)}>
+          Upload Date
+        </AccordionHeader>
         <AccordionBody className='flex flex-col'>
           <div>
-            <Typography variant='h6'>From:</Typography>
+            <Typography placeholder='' variant='h6'>
+              From:
+            </Typography>
             <CalendarPicker date={fromDay} setDate={setFromDay} />
           </div>
           <div>
-            <Typography variant='h6'>To:</Typography>
+            <Typography placeholder='' variant='h6'>
+              To:
+            </Typography>
             <CalendarPicker date={toDay} setDate={setToDay} />
           </div>
         </AccordionBody>

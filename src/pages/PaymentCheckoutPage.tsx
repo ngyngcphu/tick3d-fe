@@ -65,7 +65,7 @@ export function PaymentCheckoutPage() {
           {...register('district', { required: true })}
         />
         {errors.district?.message && (
-          <Typography color='red' variant='small'>
+          <Typography placeholder='' color='red' variant='small'>
             {errors.district?.message}{' '}
           </Typography>
         )}
@@ -84,7 +84,7 @@ export function PaymentCheckoutPage() {
           {...register('ward', { required: true })}
         />
         {errors.ward?.message && (
-          <Typography color='red' variant='small'>
+          <Typography placeholder='' color='red' variant='small'>
             {errors.ward?.message}{' '}
           </Typography>
         )}
@@ -103,7 +103,7 @@ export function PaymentCheckoutPage() {
           {...register('street', { required: true })}
         />
         {errors.street?.message && (
-          <Typography color='red' variant='small'>
+          <Typography placeholder='' color='red' variant='small'>
             {errors.street?.message}{' '}
           </Typography>
         )}
@@ -122,7 +122,7 @@ export function PaymentCheckoutPage() {
           {...register('streetNo', { required: true })}
         />
         {errors.streetNo?.message && (
-          <Typography color='red' variant='small'>
+          <Typography placeholder='' color='red' variant='small'>
             {errors.streetNo?.message}{' '}
           </Typography>
         )}
@@ -169,7 +169,7 @@ export function PaymentCheckoutPage() {
               <img src={item.image} alt={item.name} className='w-full block' />
             </div>
             <div className='flex items-center gap-10 w-full'>
-              <Typography className='text-left w-1/2' variant='h5'>
+              <Typography placeholder='' className='text-left w-1/2' variant='h5'>
                 {item.name}
               </Typography>
               {item.discount > 0 ? (
@@ -208,26 +208,35 @@ export function PaymentCheckoutPage() {
     return (
       <>
         <div className='flex w-full'>
-          <Typography variant='h6'>Tổng phí sản phẩm</Typography>
+          <Typography placeholder='' variant='h6'>
+            Tổng phí sản phẩm
+          </Typography>
           <p className='flex-1 text-right'>₫ {productPrice.toLocaleString('en-US')}</p>
         </div>
         <div className='flex w-full'>
-          <Typography variant='h6'>Giảm giá</Typography>
+          <Typography placeholder='' variant='h6'>
+            Giảm giá
+          </Typography>
           <p className='flex-1 text-right'>- ₫ {discount.toLocaleString('en-US')}</p>
         </div>
         <div className='flex w-full'>
-          <Typography variant='h6'>Phí vận chuyển</Typography>
+          <Typography placeholder='' variant='h6'>
+            Phí vận chuyển
+          </Typography>
           <p className='flex-1 text-right'>₫ {shippingFee.toLocaleString('en-US')}</p>
         </div>
         <hr />
         <div className='flex w-full'>
-          <Typography variant='h6'>Tổng chi phí</Typography>
+          <Typography placeholder='' variant='h6'>
+            Tổng chi phí
+          </Typography>
           <p className='flex-1 text-right'>
             ₫ {(productPrice - discount + shippingFee).toLocaleString('en-US')}
           </p>
         </div>
 
         <Button
+          placeholder=''
           className='py-2 px-8 bg-transparent border rounded-none border-black capitalize w-fit font-normal text-base text-dark'
           type='submit'
           form='checkout-form'
@@ -240,21 +249,21 @@ export function PaymentCheckoutPage() {
 
   return (
     <div className='w-full lg:flex justify-center p-0 m-0'>
-      <Card className='bg-white/100 rounded-none sm:w-full lg:w-1/2' shadow={false}>
-        <CardBody className='flex flex-col gap-5'>
-          <Typography className='font-normal' variant='h2' color='black'>
+      <Card placeholder='' className='bg-white/100 rounded-none sm:w-full lg:w-1/2' shadow={false}>
+        <CardBody placeholder='' className='flex flex-col gap-5'>
+          <Typography placeholder='' className='font-normal' variant='h2' color='black'>
             Xác nhận đơn hàng
           </Typography>
           <CheckoutForm />
-          <Typography className='font-normal' variant='h2' color='black'>
+          <Typography placeholder='' className='font-normal' variant='h2' color='black'>
             Chi tiết đơn hàng
           </Typography>
           <OrderDetails />
         </CardBody>
       </Card>
-      <Card className='bg-white/100 rounded-none sm:w-full lg:w-1/3' shadow={false}>
-        <CardBody className='flex flex-col gap-5'>
-          <Typography className='font-normal' variant='h2' color='black'>
+      <Card placeholder='' className='bg-white/100 rounded-none sm:w-full lg:w-1/3' shadow={false}>
+        <CardBody placeholder='' className='flex flex-col gap-5'>
+          <Typography placeholder='' className='font-normal' variant='h2' color='black'>
             Hóa đơn
           </Typography>
           <OrderSummary />

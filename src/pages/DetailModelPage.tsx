@@ -67,7 +67,9 @@ export function DetailModelPage() {
             images={[modelData.imageUrl, modelData.subImages[0], modelData.subImages[1]]}
           />
           <div className='lg:w-[50%]'>
-            <Typography className='font-bold text-2xl lg:mb-3'>{modelData.name}</Typography>
+            <Typography placeholder='' className='font-bold text-2xl lg:mb-3'>
+              {modelData.name}
+            </Typography>
             {modelData?.discount ? (
               <div>
                 <Chip
@@ -75,25 +77,27 @@ export function DetailModelPage() {
                   color='red'
                   className='w-fit rounded-full'
                 />
-                <Typography className='text-black font-bold lg:mb-3 line-through'>
+                <Typography placeholder='' className='text-black font-bold lg:mb-3 line-through'>
                   {`${modelData.price.toLocaleString('en-US')} VNĐ`}
                 </Typography>
-                <Typography className='text-red-500 font-bold lg:mb-3'>
+                <Typography placeholder='' className='text-red-500 font-bold lg:mb-3'>
                   {`${(modelData.price * (1 - modelData.discount)).toLocaleString('en-US')} VNĐ`}
                 </Typography>
               </div>
             ) : (
-              <Typography className='text-red-500 font-bold lg:mb-3'>
+              <Typography placeholder='' className='text-red-500 font-bold lg:mb-3'>
                 {`${modelData.price.toLocaleString('en-US')} VNĐ`}
               </Typography>
             )}
-            <Typography className='font-bold lg:mb-3' variant='h6'>
+            <Typography placeholder='' className='font-bold lg:mb-3' variant='h6'>
               Thông tin chi tiết
             </Typography>
-            <Typography className='lg:mb-3' variant='paragraph'>
+            <Typography placeholder='' className='lg:mb-3' variant='paragraph'>
               {modelData?.description}
             </Typography>
-            <Typography variant='h6'>Số lượng</Typography>
+            <Typography placeholder='' variant='h6'>
+              Số lượng
+            </Typography>
             <div className='flex items-center gap-8 w-[120px] border-gray-400 border-2 p-2 my-3 lg:mb-6'>
               <MinusIcon
                 width={20}

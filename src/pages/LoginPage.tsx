@@ -93,9 +93,9 @@ export function LoginPage() {
           url('./src/assets/auth-background.png')`
       }}
     >
-      <Card className='bg-black/50 rounded-none' shadow={false}>
-        <CardBody className='flex flex-col gap-8'>
-          <Typography className='font-normal' variant='h2' color='white'>
+      <Card placeholder='' className='bg-black/50 rounded-none' shadow={false}>
+        <CardBody placeholder='' className='flex flex-col gap-8'>
+          <Typography placeholder='' className='font-normal' variant='h2' color='white'>
             Đăng nhập
           </Typography>
           <form
@@ -124,7 +124,7 @@ export function LoginPage() {
                   {...register('email', { minLength: 8, required: true })}
                 />
                 {errors.email?.message && (
-                  <Typography color='red' variant='small'>
+                  <Typography placeholder='' color='red' variant='small'>
                     {errors.email?.message}{' '}
                   </Typography>
                 )}
@@ -151,7 +151,7 @@ export function LoginPage() {
                   {...register('password', { minLength: 8, required: true })}
                 />
                 {errors.password?.message && (
-                  <Typography color='red' variant='small'>
+                  <Typography placeholder='' color='red' variant='small'>
                     {errors.password?.message}{' '}
                   </Typography>
                 )}
@@ -159,6 +159,7 @@ export function LoginPage() {
             </div>
 
             <Button
+              placeholder=''
               className='py-2 px-8 bg-transparent border rounded-none border-white capitalize w-fit font-normal text-base'
               type='submit'
             >
