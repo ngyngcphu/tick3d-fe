@@ -11,12 +11,17 @@ export function Footer() {
       <div className='grid grid-cols-2 justify-between lg:gap-4 px-8 lg:px-24 mb-16'>
         {HOME_LINKS.map(({ title, items }) => (
           <ul key={title} className='list-disc text-white space-x-5'>
-            <Typography color='white' className='mb-3 font-medium text-[14px] lg:text-[24px]'>
+            <Typography
+              placeholder=''
+              color='white'
+              className='mb-3 font-medium text-[14px] lg:text-[24px]'
+            >
               {title}
             </Typography>
             {items.map((link) => (
               <li key={link}>
                 <Typography
+                  placeholder=''
                   color='white'
                   className='py-1.5 font-normal transition-colors text-xs lg:text-base'
                 >
@@ -29,7 +34,9 @@ export function Footer() {
       </div>
       <div className='px-4 lg:px-16 flex flex-col lg:flex-row lg:justify-between lg:items-center'>
         <div className='text-white'>
-          <Typography className='mb-4'>Nhận email của chúng tôi</Typography>
+          <Typography placeholder='' className='mb-4'>
+            Nhận email của chúng tôi
+          </Typography>
           <div className='flex relative lg:w-[400px] mb-4'>
             <Input
               type='email'
@@ -40,6 +47,7 @@ export function Footer() {
               crossOrigin=''
             ></Input>
             <Button
+              placeholder=''
               size='sm'
               color={email ? 'white' : 'blue-gray'}
               disabled={!email}

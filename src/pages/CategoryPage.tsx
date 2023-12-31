@@ -107,6 +107,7 @@ export function CategoryPage() {
       <div className='flex md:justify-between items-center md:pe-8'>
         <div className='flex gap-5 justify-center md:justify-start items-center m-5'>
           <Button
+            placeholder=''
             onClick={() => setOpenDrawer(!openDrawer)}
             variant='outlined'
             size='md'
@@ -117,6 +118,7 @@ export function CategoryPage() {
           </Button>
           <div className='w-fit'>
             <Select
+              placeholder=''
               label={`Sort by: ${criteriaSort[Object.keys(criteriaSort)[0] as OrderBy]}`}
               size='md'
               color='blue-gray'
@@ -158,11 +160,12 @@ export function CategoryPage() {
           </div>
         )}
         {screenSize <= ScreenSize.MD ? (
-          <List className='grid gap-2 w-full'>
+          <List placeholder='' className='grid gap-2 w-full'>
             {listModels ? (
               listModels.models.length > 0 ? (
                 listModels.models.map((item, index) => (
                   <ListItem
+                    placeholder=''
                     key={index}
                     className='flex gap-5 border-2 border-b-gray-400 cursor-pointer rounded-lg p-4'
                     onClick={() => navigate(`/category/${item.id}`)}
@@ -173,10 +176,12 @@ export function CategoryPage() {
                       className='w-40 h-40 md:w-full md:h-full'
                     />
                     <div className='flex flex-col gap-3'>
-                      <Typography variant='lead' className='font-bold truncate'>
+                      <Typography placeholder='' variant='lead' className='font-bold truncate'>
                         {item.name}
                       </Typography>
-                      <Typography variant='paragraph'>{item.description}</Typography>
+                      <Typography placeholder='' variant='paragraph'>
+                        {item.description}
+                      </Typography>
                       <Chip
                         color='amber'
                         value={`${item.price.toLocaleString('en-US')} VNĐ`}
@@ -184,10 +189,11 @@ export function CategoryPage() {
                       />
 
                       <div className='flex items-center justify-between'>
-                        <Typography variant='h6' className='font-bold'>
+                        <Typography placeholder='' variant='h6' className='font-bold'>
                           {`Đã mua: ${item.numberBought}`}
                         </Typography>
                         <Button
+                          placeholder=''
                           className={
                             'text-white normal-case text-sm truncate p-4' +
                             (!listFlagIsModelAdded[item.id] ? ' bg-red-500 ' : ' bg-blue-500')
@@ -217,7 +223,9 @@ export function CategoryPage() {
                 ))
               ) : (
                 <div className='w-full text-center'>
-                  <Typography variant='h5'>Không có mô hình nào</Typography>
+                  <Typography placeholder='' variant='h5'>
+                    Không có mô hình nào
+                  </Typography>
                 </div>
               )
             ) : (
@@ -231,14 +239,15 @@ export function CategoryPage() {
             <div className='grid grid-cols-2 gap-2 lg:grid-cols-4 lg:py-6 lg:px-4 lg:gap-3'>
               {listModels.models.map((item, index) => (
                 <Card
+                  placeholder=''
                   key={index}
                   className='border-2 border-gray-400 hover:border-gray-600 cursor-pointer rounded-lg'
                   onClick={() => navigate(`/category/${item.id}`)}
                 >
-                  <CardBody className='flex flex-col justify-between h-[500px]'>
+                  <CardBody placeholder='' className='flex flex-col justify-between h-[500px]'>
                     <div className='line-clamp-4'>
                       <img src={item.imageUrl} />
-                      <Typography variant='lead' className='font-bold'>
+                      <Typography placeholder='' variant='lead' className='font-bold'>
                         {item.name}
                       </Typography>
                       <Chip
@@ -246,13 +255,16 @@ export function CategoryPage() {
                         value={`${item.price.toLocaleString('en-US')} VNĐ`}
                         className='w-fit'
                       />
-                      <Typography variant='paragraph'>{item.description}</Typography>
+                      <Typography placeholder='' variant='paragraph'>
+                        {item.description}
+                      </Typography>
                     </div>
                     <div className='flex flex-col gap-2'>
-                      <Typography variant='h6' className='font-bold'>
+                      <Typography placeholder='' variant='h6' className='font-bold'>
                         {`Đã mua: ${item.numberBought}`}
                       </Typography>
                       <Button
+                        placeholder=''
                         className={
                           'text-white normal-case text-sm truncate p-4' +
                           (!listFlagIsModelAdded[item.id] ? ' bg-red-500 ' : ' bg-blue-500')
@@ -283,7 +295,9 @@ export function CategoryPage() {
             </div>
           ) : (
             <div className='w-full text-center'>
-              <Typography variant='h5'>Không có mô hình nào</Typography>
+              <Typography placeholder='' variant='h5'>
+                Không có mô hình nào
+              </Typography>
             </div>
           )
         ) : (
@@ -295,6 +309,7 @@ export function CategoryPage() {
       <div className='flex items-center justify-center gap-4 py-4'>
         {listModels && listModels?.models.length > 0 && (
           <Button
+            placeholder=''
             variant='text'
             className='flex items-center gap-2'
             onClick={prev}
@@ -306,27 +321,31 @@ export function CategoryPage() {
         <div className='flex items-center gap-2'>
           {numPages >= 6 && activePage > 3 && (
             <>
-              <IconButton {...getItemProps(1)}>1</IconButton>
+              <IconButton placeholder='' {...getItemProps(1)}>
+                1
+              </IconButton>
               <EllipsisHorizontalIcon className='w-6 h-6' />
             </>
           )}
           {numPages < 6 ? (
             [...Array(numPages).keys()].map((pageNumber) => (
-              <IconButton key={pageNumber} {...getItemProps(pageNumber + 1)}>
+              <IconButton placeholder='' key={pageNumber} {...getItemProps(pageNumber + 1)}>
                 {pageNumber + 1}
               </IconButton>
             ))
           ) : activePage <= 3 ? (
             [...Array(numPages).keys()].slice(0, 3).map((pageNumber) => (
-              <IconButton key={pageNumber} {...getItemProps(pageNumber + 1)}>
+              <IconButton placeholder='' key={pageNumber} {...getItemProps(pageNumber + 1)}>
                 {pageNumber + 1}
               </IconButton>
             ))
           ) : activePage > 3 && activePage <= numPages - 3 ? (
-            <IconButton {...getItemProps(activePage)}>{activePage}</IconButton>
+            <IconButton placeholder='' {...getItemProps(activePage)}>
+              {activePage}
+            </IconButton>
           ) : (
             [...Array(numPages).keys()].slice(numPages - 3).map((pageNumber) => (
-              <IconButton key={pageNumber} {...getItemProps(pageNumber + 1)}>
+              <IconButton placeholder='' key={pageNumber} {...getItemProps(pageNumber + 1)}>
                 {pageNumber + 1}
               </IconButton>
             ))
@@ -334,12 +353,15 @@ export function CategoryPage() {
           {numPages >= 6 && activePage <= numPages - 3 && (
             <>
               <EllipsisHorizontalIcon className='w-6 h-6' />
-              <IconButton {...getItemProps(numPages)}>{numPages}</IconButton>
+              <IconButton placeholder='' {...getItemProps(numPages)}>
+                {numPages}
+              </IconButton>
             </>
           )}
         </div>
         {listModels && listModels?.models.length > 0 && (
           <Button
+            placeholder=''
             variant='text'
             className='flex items-center gap-2'
             onClick={next}

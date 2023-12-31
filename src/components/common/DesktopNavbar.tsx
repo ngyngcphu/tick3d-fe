@@ -55,7 +55,7 @@ export const DesktopNavbar: Component<{
       <div className='max-w-[40px] max-h-[40px] ml-0 mr-3 object-cover'>
         <img className='w-full h-full' src={tick3D} alt='tick3D-logo'></img>
       </div>
-      <List className='p-0 flex flex-row items-center gap-3 max-w-[calc(100%-36px)]'>
+      <List placeholder='' className='p-0 flex flex-row items-center gap-3 max-w-[calc(100%-36px)]'>
         {menu.map((menuItem, idx) => {
           if (menuItem === 'divider') return;
           if (menuItem.type === 'item') {
@@ -68,9 +68,10 @@ export const DesktopNavbar: Component<{
                   {...triggersCategory}
                   className='bg-white'
                   content={
-                    <List className='p-0'>
+                    <List placeholder='' className='p-0'>
                       {listCategories.map((item, idx) => (
                         <ListItem
+                          placeholder=''
                           key={idx}
                           className={
                             CATEGORYLIST_ITEM_CLASSNAME +
@@ -92,6 +93,7 @@ export const DesktopNavbar: Component<{
                 >
                   <Link to={menuItem.path}>
                     <ListItem
+                      placeholder=''
                       className={
                         NAVBAR_ITEM_CLASSNAME +
                         (selectedMenu === menuItem.name ? ' bg-blue-100 text-blue/1 font-bold' : '')
@@ -130,6 +132,7 @@ export const DesktopNavbar: Component<{
                     }
                   >
                     <ListItem
+                      placeholder=''
                       className={
                         NAVBAR_ITEM_CLASSNAME +
                         (selectedMenu === menuItem.name
@@ -153,6 +156,7 @@ export const DesktopNavbar: Component<{
                   </Link>
                   <Link to='/cart'>
                     <ListItem
+                      placeholder=''
                       className={
                         NAVBAR_ITEM_CLASSNAME +
                         (selectedMenu === MENU_BAR.cart
@@ -192,6 +196,7 @@ export const DesktopNavbar: Component<{
                 }
               >
                 <ListItem
+                  placeholder=''
                   className={
                     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold text-gray/4 font-medium rounded-lg text-lg w-fit text-center' +
                     (selectedMenu === menuItem.name
@@ -247,26 +252,35 @@ export const DesktopNavbar: Component<{
                   <>
                     <div className='flex items-center gap-2'>
                       <Avatar
+                        placeholder=''
                         src='https://docs.material-tailwind.com/img/face-2.jpg'
                         alt='avatar'
                       />
                       <div>
-                        <Typography variant='h6' color='gray'>
+                        <Typography placeholder='' variant='h6' color='gray'>
                           Tania Andrew
                         </Typography>
-                        <Typography variant='small' color='gray' className='font-normal'>
+                        <Typography
+                          placeholder=''
+                          variant='small'
+                          color='gray'
+                          className='font-normal'
+                        >
                           {data ? data.email : ''}
                         </Typography>
                       </div>
                     </div>
                     <hr className='my-1' />
-                    <List className='p-0'>
-                      <ListItem onClick={menuItem.onClick}>{menuItem.name}</ListItem>
+                    <List placeholder='' className='p-0'>
+                      <ListItem placeholder='' onClick={menuItem.onClick}>
+                        {menuItem.name}
+                      </ListItem>
                     </List>
                   </>
                 }
               >
                 <Avatar
+                  placeholder=''
                   size='sm'
                   src='https://docs.material-tailwind.com/img/face-2.jpg'
                   alt='avatar'

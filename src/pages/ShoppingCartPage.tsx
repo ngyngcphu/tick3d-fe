@@ -24,10 +24,18 @@ export const ShoppingCartPage = () => {
   const Header = () => {
     return (
       <div className='flex items-center justify-between bg-white'>
-        <Typography variant={screenSize >= ScreenSize.MD ? 'h3' : 'h4'}>Giỏ hàng</Typography>
+        <Typography placeholder='' variant={screenSize >= ScreenSize.MD ? 'h3' : 'h4'}>
+          Giỏ hàng
+        </Typography>
         <Link to={'/category'} className='flex justify-center items-center hover:bg-gray-100'>
-          <Button variant='outlined' className='flex items-center gap-2 normal-case cursor-pointer'>
-            <Typography variant='h6'>Tiếp tục mua hàng</Typography>
+          <Button
+            placeholder=''
+            variant='outlined'
+            className='flex items-center gap-2 normal-case cursor-pointer'
+          >
+            <Typography placeholder='' variant='h6'>
+              Tiếp tục mua hàng
+            </Typography>
             <ChevronRightIcon className='w-5 h-5' />
           </Button>
         </Link>
@@ -73,13 +81,17 @@ export const ShoppingCartPage = () => {
           <div className='flex flex-row gap-1 md:gap-6 justify-center items-center h-fit'>
             <div className='border-2 flex gap-4 md:gap-8 justify-between items-center px-2 py-0 md:px-4 md:py-2 h-fit'>
               <Typography
+                placeholder=''
                 className='text-xl md:text-2xl h-fit cursor-pointer'
                 onClick={() => handleDecreaseNumBought(order.id)}
               >
                 -
               </Typography>
-              <Typography className='h-fit text-xs md:text-base'>{order.quantity}</Typography>
+              <Typography placeholder='' className='h-fit text-xs md:text-base'>
+                {order.quantity}
+              </Typography>
               <Typography
+                placeholder=''
                 className='text-xl md:text-2xl h-fit cursor-pointer'
                 onClick={() => handleIncreaseNumBought(order.id)}
               >
@@ -101,6 +113,7 @@ export const ShoppingCartPage = () => {
         <div className='flex items-center justify-between w-full'>
           <div className='flex items-center gap-2 md:gap-6'>
             <Avatar
+              placeholder=''
               src={order.image}
               alt=''
               variant='square'
@@ -108,6 +121,7 @@ export const ShoppingCartPage = () => {
             />
             <div className='flex flex-col gap-1 justify-start items-start'>
               <Typography
+                placeholder=''
                 variant={screenSize < ScreenSize.MD ? 'small' : 'paragraph'}
                 className='capitalize w-36 md:w-72'
               >
@@ -165,16 +179,17 @@ export const ShoppingCartPage = () => {
       return (
         <div className='flex flex-col gap-3 items-center md:items-end'>
           <div className='flex flex-col gap-2 items-center md:items-end'>
-            <Typography className='w-fit'>
+            <Typography placeholder='' className='w-fit'>
               <span>Tổng: </span>
               <span className='font-bold text-xl'>{productPrice.toLocaleString('en-US')} VNĐ</span>
             </Typography>
-            <Typography variant='small' className='w-fit text-center'>
+            <Typography placeholder='' variant='small' className='w-fit text-center'>
               Thuế và phí giao hàng được tính tại bước thanh toán
             </Typography>
           </div>
 
           <Button
+            placeholder=''
             className='normal-case rounded-none w-80 md:w-96 text-md bg-red-500'
             onClick={() => navigate('/checkout')}
           >
@@ -187,14 +202,14 @@ export const ShoppingCartPage = () => {
     return (
       <div className='flex flex-col gap-4 justify-between bg-white'>
         <div className='flex justify-between w-full'>
-          <Typography variant='small' className='uppercase'>
+          <Typography placeholder='' variant='small' className='uppercase'>
             Sản phẩm
           </Typography>
           <div className='flex justify-end lg:justify-between w-fit md:w-[34rem]'>
-            <Typography variant='small' className='uppercase hidden lg:inline'>
+            <Typography placeholder='' variant='small' className='uppercase hidden lg:inline'>
               Số lượng
             </Typography>
-            <Typography variant='small' className='uppercase'>
+            <Typography placeholder='' variant='small' className='uppercase'>
               Tổng cộng
             </Typography>
           </div>
@@ -213,13 +228,17 @@ export const ShoppingCartPage = () => {
     return (
       <div className='flex flex-col gap-2 w-full'>
         <div className='flex justify-start'>
-          <Typography variant={screenSize >= ScreenSize.MD ? 'h4' : 'h5'} className='w-fit'>
+          <Typography
+            placeholder=''
+            variant={screenSize >= ScreenSize.MD ? 'h4' : 'h5'}
+            className='w-fit'
+          >
             Có thể bạn cũng thích !
           </Typography>
         </div>
         <Items />
         <Link to={'/category'} className='w-full flex justify-center'>
-          <Button className='normal-case rounded-none w-fit px-6 text-md bg-red-500'>
+          <Button placeholder='' className='normal-case rounded-none w-fit px-6 text-md bg-red-500'>
             Xem thêm
           </Button>
         </Link>

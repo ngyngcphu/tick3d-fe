@@ -39,12 +39,15 @@ export function useSidebarMenu() {
               onClick={() => setIsCategoryItem(false)}
             >
               <ChevronLeftIcon className='w-5 h-5' />
-              <Typography variant='h6'>{MENU_BAR.category}</Typography>
+              <Typography placeholder='' variant='h6'>
+                {MENU_BAR.category}
+              </Typography>
             </div>
             <div className='flex flex-col'>
-              <List className='p-0'>
+              <List placeholder='' className='p-0'>
                 {listCategories.map((item, idx) => (
                   <ListItem
+                    placeholder=''
                     key={idx}
                     className={
                       CATEGORYBAR_ITEM_CLASSNAME +
@@ -81,10 +84,16 @@ export function useSidebarMenu() {
             <div className='p-4 flex items-center justify-between bg-gray-100 rounded-t-2xl'>
               {isSuccess ? (
                 <div className='flex items-center gap-2'>
-                  <Avatar src='https://docs.material-tailwind.com/img/face-2.jpg' alt='avatar' />
+                  <Avatar
+                    placeholder=''
+                    src='https://docs.material-tailwind.com/img/face-2.jpg'
+                    alt='avatar'
+                  />
                   <div>
-                    <Typography variant='h6'>Tania Andrew</Typography>
-                    <Typography variant='small' color='gray' className='font-normal'>
+                    <Typography placeholder='' variant='h6'>
+                      Tania Andrew
+                    </Typography>
+                    <Typography placeholder='' variant='small' color='gray' className='font-normal'>
                       {data ? data.email : ''}
                     </Typography>
                   </div>
@@ -92,7 +101,9 @@ export function useSidebarMenu() {
               ) : (
                 <div className='flex items-center gap-2'>
                   <img className='w-10 h-10' src={tick3D} alt='tick3D-logo'></img>
-                  <Typography variant='h5'>Tick3D</Typography>
+                  <Typography placeholder='' variant='h5'>
+                    Tick3D
+                  </Typography>
                 </div>
               )}
               <div
@@ -103,7 +114,7 @@ export function useSidebarMenu() {
               </div>
             </div>
             <div className='flex flex-col'>
-              <List className='p-0'>
+              <List placeholder='' className='p-0'>
                 {menu.map((menuItem, idx) => {
                   if (menuItem === 'divider') {
                     return <hr key={idx} className='my-2 border-blue-gray-100' />;
@@ -113,6 +124,7 @@ export function useSidebarMenu() {
                       return (
                         <Link key={idx} to={menuItem.path}>
                           <ListItem
+                            placeholder=''
                             className={
                               SIDEBAR_ITEM_CLASSNAME +
                               (selectedMenu === menuItem.name
@@ -130,7 +142,7 @@ export function useSidebarMenu() {
                             }}
                           >
                             {menuItem.name}
-                            <ListItemSuffix>
+                            <ListItemSuffix placeholder=''>
                               <ChevronRightIcon className='w-5 h-5' />
                             </ListItemSuffix>
                           </ListItem>
@@ -148,6 +160,7 @@ export function useSidebarMenu() {
                           }
                         >
                           <ListItem
+                            placeholder=''
                             className={
                               SIDEBAR_ITEM_CLASSNAME +
                               (selectedMenu === menuItem.name
@@ -184,6 +197,7 @@ export function useSidebarMenu() {
                         }
                       >
                         <ListItem
+                          placeholder=''
                           className={
                             SIDEBAR_ITEM_CLASSNAME +
                             (selectedMenu === menuItem.name
@@ -214,6 +228,7 @@ export function useSidebarMenu() {
                   if (isSuccess && menuItem.type === 'logout-btn') {
                     return (
                       <ListItem
+                        placeholder=''
                         key={idx}
                         className={SIDEBAR_ITEM_CLASSNAME}
                         onClick={menuItem.onClick}
