@@ -3,6 +3,7 @@
  */
 
 export * from './AdminDashboard';
+export * from './AdminDetailModelPage';
 export * from './CategoryPage';
 export * from './DetailModelPage';
 export * from './HomePage';

@@ -677,7 +677,7 @@ export interface paths {
                 subImages: string[];
                 discount?: number;
                 isDiscontinued: boolean;
-                IsModelInCart: boolean;
+                isModelInCart: boolean;
               }[];
             };
           };
@@ -734,7 +734,7 @@ export interface paths {
                 subImages: string[];
                 discount?: number;
                 isDiscontinued: boolean;
-                IsModelInCart: boolean;
+                isModelInCart: boolean;
               }[];
             };
           };
@@ -1634,6 +1634,200 @@ export interface paths {
         };
       };
     };
+    trace?: never;
+  };
+  '/api/stat/category': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get product counts by category */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              count: number;
+              id: string;
+              name: string;
+            }[];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/stat/user': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Summarize the number of joined and old users in a given interval */
+    get: {
+      parameters: {
+        query: {
+          /** @description The start date of the interval */
+          start: string;
+          /** @description The end date of the interval */
+          end: string;
+          /** @description The unit used for `interval` */
+          unit: 'day' | 'month';
+          /** @description The length of a sub-interval */
+          interval: number;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** Format: date */
+              start: string;
+              /** Format: date */
+              end: string;
+              old: number;
+              new: number;
+            }[];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/stat/revenue': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Summarize the total revenue in a given interval */
+    get: {
+      parameters: {
+        query: {
+          /** @description The start date of the interval */
+          start: string;
+          /** @description The end date of the interval */
+          end: string;
+          /** @description The unit used for `interval` */
+          unit: 'day' | 'month';
+          /** @description The length of a sub-interval */
+          interval: number;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** Format: date */
+              start: string;
+              /** Format: date */
+              end: string;
+              total: number;
+            }[];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/stat/userModel': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Summarize the total uploaded user models in a given interval */
+    get: {
+      parameters: {
+        query: {
+          /** @description The start date of the interval */
+          start: string;
+          /** @description The end date of the interval */
+          end: string;
+          /** @description The unit used for `interval` */
+          unit: 'day' | 'month';
+          /** @description The length of a sub-interval */
+          interval: number;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** Format: date */
+              start: string;
+              /** Format: date */
+              end: string;
+              count: number;
+            }[];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
     trace?: never;
   };
 }
