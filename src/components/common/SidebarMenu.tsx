@@ -137,6 +137,40 @@ export function useSidebarMenu() {
                         </Link>
                       );
                     }
+                    if (menuItem.name === MENU_BAR.uploadOrDashboard) {
+                      return (
+                        <Link
+                          key={idx}
+                          to={
+                            isSuccess && data?.role === 'MANAGER' && menuItem.pathReplace
+                              ? menuItem.pathReplace
+                              : menuItem.path
+                          }
+                        >
+                          <ListItem
+                            className={
+                              SIDEBAR_ITEM_CLASSNAME +
+                              (selectedMenu === menuItem.name
+                                ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
+                                : '')
+                            }
+                            onClick={() => {
+                              setSelectedMenu(menuItem.name);
+                              setOpenSidebar(false);
+                              setSelectedCategoryItem({
+                                id: '',
+                                name: ''
+                              });
+                              setActivePage(1);
+                            }}
+                          >
+                            {isSuccess && data?.role === 'MANAGER'
+                              ? MENU_BAR.dashboard
+                              : menuItem.name}
+                          </ListItem>
+                        </Link>
+                      );
+                    }
                     return (
                       <Link
                         key={idx}

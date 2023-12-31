@@ -34,8 +34,14 @@ export default function App() {
         {
           type: 'item',
           path: '/up',
-          name: MENU_BAR.upload,
-          element: <></>
+          pathReplace: '/admin/dashboard',
+          name: MENU_BAR.uploadOrDashboard,
+          element: <></>,
+          elementReplace: (
+            <AdminProtected>
+              <AdminDashboard />
+            </AdminProtected>
+          )
         },
         'divider',
         {
@@ -77,16 +83,6 @@ export default function App() {
           path: '/cart',
           name: MENU_BAR.cart,
           element: <ShoppingCartPage />
-        },
-        {
-          type: 'skeleton',
-          path: '/admin/dashboard',
-          name: MENU_BAR.cart,
-          element: (
-            <AdminProtected>
-              <AdminDashboard />
-            </AdminProtected>
-          )
         },
         {
           type: 'logout-btn',

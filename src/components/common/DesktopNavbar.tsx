@@ -111,7 +111,7 @@ export const DesktopNavbar: Component<{
                   </Link>
                 </Tooltip>
               );
-            if (menuItem.name === MENU_BAR.upload)
+            if (menuItem.name === MENU_BAR.uploadOrDashboard)
               return (
                 <div key={idx} className='flex items-center gap-4'>
                   <div className='text-center min-w-[350px] xl:min-w-[500px]'>
@@ -122,7 +122,13 @@ export const DesktopNavbar: Component<{
                       label='Search for anything'
                     />
                   </div>
-                  <Link to={menuItem.path}>
+                  <Link
+                    to={
+                      isSuccess && data?.role === 'MANAGER' && menuItem.pathReplace
+                        ? menuItem.pathReplace
+                        : menuItem.path
+                    }
+                  >
                     <ListItem
                       className={
                         NAVBAR_ITEM_CLASSNAME +
@@ -140,7 +146,9 @@ export const DesktopNavbar: Component<{
                         setActivePage(1);
                       }}
                     >
-                      <span className='truncate'>{menuItem.name}</span>
+                      <span className='truncate'>
+                        {isSuccess && data?.role === 'MANAGER' ? MENU_BAR.dashboard : menuItem.name}
+                      </span>
                     </ListItem>
                   </Link>
                   <Link to='/cart'>
