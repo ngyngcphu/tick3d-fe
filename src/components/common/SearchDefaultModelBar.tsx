@@ -15,7 +15,9 @@ const escapeRegexCharacters = (str: string) => {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
 
-export function SearchDefaultModel() {
+export const DesktopSearchDefaultModel: Component<{ handleSuggestionSelected?: () => void }> = ({
+  handleSuggestionSelected
+}) => {
   const [value, setValue] = useState<string>('');
   const [suggestions, setSuggestions] = useState<SimpleDefaultModel[]>([]);
 
@@ -92,6 +94,7 @@ export function SearchDefaultModel() {
       event.preventDefault();
     }
     setValue('');
+    if (handleSuggestionSelected) handleSuggestionSelected();
     navigate(`category/${suggestion.id}`);
   };
 
@@ -144,4 +147,135 @@ export function SearchDefaultModel() {
       containerProps={{ className: 'w-full' }}
     />
   );
-}
+};
+
+export const MobileSearchDefaultModel: Component<{ handleSuggestionSelected?: () => void }> = ({
+  handleSuggestionSelected
+}) => {
+  const [value, setValue] = useState<string>('');
+  const [suggestions, setSuggestions] = useState<SimpleDefaultModel[]>([]);
+
+  const navigate: NavigateFunction = useNavigate();
+
+  useEffect(() => {
+    return () => setValue('');
+  }, []);
+
+  const getSuggestionValue = (suggestion: SimpleDefaultModel) => suggestion.name;
+
+  const getSuggestions = useMemo(
+    () => async (value: string) => {
+      const escapedValue = escapeRegexCharacters(value.trim());
+      if (escapedValue === '') {
+        return [];
+      }
+      try {
+        const listModels = await defaultModelService.getAll({ keyword: value });
+
+        return (
+          listModels?.models
+            .map((model) => {
+              return { id: model.id, name: model.name };
+            })
+            .slice(0, 10) || []
+        );
+      } catch (err) {
+        throw (err as ResponseError).message;
+      }
+    },
+    []
+  );
+
+  const renderSuggestion = useMemo(
+    () =>
+      (suggestion: SimpleDefaultModel, { query }: Autosuggest.RenderSuggestionParams) => {
+        const suggestionText = suggestion;
+        const matches = AutosuggestHighlightMatch(suggestionText.name, query, {
+          findAllOccurrences: true,
+          insideWords: true
+        });
+        const parts = AutosuggestHighlightParse(suggestionText.name, matches);
+
+        return (
+          <div className='cursor-pointer hover:bg-gray-200 w-full px-2 py-1'>
+            {parts.map((part, index) => {
+              return (
+                <span key={index} className={part.highlight ? 'text-red-500' : ''}>
+                  {part.text}
+                </span>
+              );
+            })}
+          </div>
+        );
+      },
+    []
+  );
+
+  const onSuggestionsFetchRequested = useMemo(
+    () =>
+      async ({ value }: Autosuggest.SuggestionsFetchRequestedParams) => {
+        const suggestionValue = await getSuggestions(value);
+        setSuggestions(suggestionValue);
+      },
+    [getSuggestions]
+  );
+
+  const onSuggestionSelected = (
+    event: React.FormEvent<HTMLInputElement>,
+    { suggestion, method }: Autosuggest.SuggestionSelectedEventData<SimpleDefaultModel>
+  ) => {
+    if (method === 'enter') {
+      event.preventDefault();
+    }
+    setValue('');
+    if (handleSuggestionSelected) handleSuggestionSelected();
+    navigate(`category/${suggestion.id}`);
+  };
+
+  const onSuggestionsClearRequested = () => setSuggestions([]);
+
+  const onChange = (_: React.FormEvent, { newValue }: Autosuggest.ChangeEvent) => {
+    setValue(newValue);
+  };
+
+  const inputProps = {
+    value,
+    onChange
+  };
+
+  const renderInputComponent = (inputProps: React.InputHTMLAttributes<HTMLInputElement>) => (
+    <div className='w-full flex items-center border-b-2 m-0 pb-2'>
+      <div className='place-items-center text-blue-gray-500 ml-3'>
+        <MagnifyingGlassIcon strokeWidth={2} className='w-5 h-5' />
+      </div>
+      <input
+        {...inputProps}
+        className='peer h-full w-full rounded-[7px] bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all disabled:bg-blue-gray-50'
+        placeholder='Search for anything'
+      />
+    </div>
+  );
+
+  const renderSuggestionsContainer: RenderSuggestionsContainer = ({ containerProps, children }) => {
+    return (
+      <div {...containerProps} className='bg-white flex flex-col rounded-sm ml-8'>
+        {children}
+      </div>
+    );
+  };
+
+  return (
+    <Autosuggest
+      suggestions={suggestions}
+      onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+      onSuggestionsClearRequested={onSuggestionsClearRequested}
+      onSuggestionSelected={onSuggestionSelected}
+      getSuggestionValue={getSuggestionValue}
+      renderSuggestion={renderSuggestion}
+      inputProps={inputProps}
+      renderInputComponent={renderInputComponent}
+      renderSuggestionsContainer={renderSuggestionsContainer}
+      containerProps={{ className: 'w-full p-0 m-0' }}
+    />
+  );
+};
