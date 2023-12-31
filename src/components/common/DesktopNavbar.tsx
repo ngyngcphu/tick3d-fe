@@ -6,7 +6,7 @@ import tick3D from '@assets/tick3D-logo.svg';
 import { MENU_BAR } from '@constants';
 import { useUserQuery } from '@hooks';
 import { useMenuBarStore, usePaginationStore } from '@states';
-import { SearchDefaultModel } from './SearchDefaultModelBar';
+import { DesktopSearchDefaultModel } from './SearchDefaultModelBar';
 
 export const DesktopNavbar: Component<{
   menu: RouteMenu;
@@ -110,7 +110,7 @@ export const DesktopNavbar: Component<{
                 <div key={idx} className='flex items-center gap-4'>
                   <div className='min-w-[350px] xl:min-w-[500px] flex justify-center items-center'>
                     <div className='flex flex-col justify-start items-start h-[40px] w-full'>
-                      <SearchDefaultModel />
+                      <DesktopSearchDefaultModel />
                     </div>
                   </div>
                   <Link

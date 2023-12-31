@@ -8,7 +8,8 @@ import { retryQueryFn } from '@utils';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useCartStore } from '@states';
-import { useCartQuery, useCartMutation } from '@hooks';
+import { useCartQuery, useCartMutation, useUserQuery } from '@hooks';
+import { AdminDetailModelPage } from './AdminDetailModelPage';
 
 //import { toast } from 'react-toastify';
 //import { useCartStore, useMenuBarStore } from '@states';
@@ -16,6 +17,10 @@ import { useCartQuery, useCartMutation } from '@hooks';
 //import { MENU_BAR } from '@constants';
 
 export function DetailModelPage() {
+  const {
+    info: { data: userInfo, isSuccess: isAdmin }
+  } = useUserQuery();
+
   const { listFlagIsModelAdded, setListFlagIsModelAdded, create: addModelToCart } = useCartStore();
   const { createCart } = useCartMutation();
   //const { setSelectedMenu } = useMenuBarStore();
@@ -68,6 +73,10 @@ export function DetailModelPage() {
   //     toast.error(err as string);
   //   }
   // };
+  if (isAdmin && userInfo?.role === 'MANAGER') {
+    return <AdminDetailModelPage />;
+  }
+
   return (
     <div className='px-6 py-3 lg:datas-center lg:justify-datas-center lg:bg-white'>
       {modelData ? (

@@ -8,12 +8,7 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-interface DataType {
-  name: string;
-  value: number;
-}
-
-const RevenueChart: Component<{ data: DataType[] }> = ({ data }) => (
+export const RevenueChart: Component<{ data: DataType[] }> = ({ data }) => (
   <ResponsiveContainer width='100%' height='100%'>
     <AreaChart
       width={500}
@@ -34,5 +29,3 @@ const RevenueChart: Component<{ data: DataType[] }> = ({ data }) => (
     </AreaChart>
   </ResponsiveContainer>
 );
-
-export default RevenueChart;

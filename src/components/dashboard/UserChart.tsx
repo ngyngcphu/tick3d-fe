@@ -15,7 +15,7 @@ type BarData = {
   'new user': number;
 };
 
-const UserChart: Component<{ data: BarData[] }> = ({ data }) => (
+export const UserChart: Component<{ data: BarData[] }> = ({ data }) => (
   <ResponsiveContainer width='100%' height='100%'>
     <BarChart
       width={500}
@@ -38,5 +38,3 @@ const UserChart: Component<{ data: BarData[] }> = ({ data }) => (
     </BarChart>
   </ResponsiveContainer>
 );
-
-export default UserChart;

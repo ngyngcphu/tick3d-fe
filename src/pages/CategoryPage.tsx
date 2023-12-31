@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { useCartMutation } from '@hooks';
 import {
   Button,
   Card,
@@ -24,13 +23,12 @@ import {
 } from '@heroicons/react/24/solid';
 import { FilterDrawer, FilterAccordion } from '@components/category';
 import { ScreenSize, SORT_CRITERIA, SORT_ORDER } from '@constants';
-import { useScreenSize, useCartQuery } from '@hooks';
+import { useScreenSize, useCartQuery, useUserQuery, useCartMutation } from '@hooks';
 import { defaultModelService } from '@services';
 import { useCartStore, useFilterStore, useMenuBarStore, usePaginationStore } from '@states';
 import { retryQueryFn } from '@utils';
 import type { colors } from '@material-tailwind/react/types/generic';
 import type { variant } from '@material-tailwind/react/types/components/button';
-import {} from '@services';
 
 export function CategoryPage() {
   const NUMBER_ITEMS_PER_PAGE = 8;
@@ -48,6 +46,9 @@ export function CategoryPage() {
   const { activePage, setActivePage } = usePaginationStore();
   const { createCart } = useCartMutation();
 
+  const {
+    info: { data: userInfo, isSuccess: isAdmin }
+  } = useUserQuery();
   const { data: listModels } = useQuery({
     queryKey: [
       '/api/model',
@@ -118,48 +119,55 @@ export function CategoryPage() {
   return (
     <>
       <div className='flex md:justify-between items-center md:pe-8'>
-        <div className='flex gap-5 justify-center md:justify-start items-center m-5'>
-          <Button
-            placeholder=''
-            onClick={() => setOpenDrawer(!openDrawer)}
-            variant='outlined'
-            size='md'
-            className='flex items-center gap-2'
-          >
-            <AdjustmentsHorizontalIcon className='w-5 h-5' />
-            Filter
-          </Button>
-          <div className='w-fit'>
-            <Select
+        <div className='flex flex-col gap-2 items-start mx-5 my-2'>
+          <div className='flex gap-5 justify-center md:justify-start items-center'>
+            <Button
               placeholder=''
-              label={`Sort by: ${criteriaSort[Object.keys(criteriaSort)[0] as OrderBy]}`}
+              onClick={() => setOpenDrawer(!openDrawer)}
+              variant='outlined'
               size='md'
-              color='blue-gray'
-              className='text-base font-medium'
-              value={Object.keys(criteriaSort)[0]}
-              onChange={(value) => {
-                if (value) {
-                  const selectedKey = value as OrderBy;
-                  setCriteriaSort({ [selectedKey]: SORT_CRITERIA[selectedKey] });
-                  setActivePage(1);
-                }
-              }}
-              labelProps={{ className: 'text-black' }}
+              className='flex items-center gap-2'
             >
-              {Object.entries(SORT_CRITERIA).map(([value, label], index) => (
-                <Option key={index} value={value}>
-                  {label}
-                </Option>
-              ))}
-            </Select>
-          </div>
-          {(selectedCategoryItem.id || selectedStar || fromDay || toDay) && (
-            <div
-              className='cursor-pointer hover:bg-gray-500 rounded-lg'
-              onClick={handleClearFilters}
-            >
-              <Chip variant='ghost' value={<span className='normal-case'>Clear filters</span>} />
+              <AdjustmentsHorizontalIcon className='w-5 h-5' />
+              Filter
+            </Button>
+            <div className='w-fit'>
+              <Select
+                placeholder=''
+                label={`Sort by: ${criteriaSort[Object.keys(criteriaSort)[0] as OrderBy]}`}
+                size='md'
+                color='blue-gray'
+                className='text-base font-medium'
+                value={Object.keys(criteriaSort)[0]}
+                onChange={(value) => {
+                  if (value) {
+                    const selectedKey = value as OrderBy;
+                    setCriteriaSort({ [selectedKey]: SORT_CRITERIA[selectedKey] });
+                    setActivePage(1);
+                  }
+                }}
+                labelProps={{ className: 'text-black' }}
+              >
+                {Object.entries(SORT_CRITERIA).map(([value, label], index) => (
+                  <Option key={index} value={value}>
+                    {label}
+                  </Option>
+                ))}
+              </Select>
             </div>
+            {(selectedCategoryItem.id || selectedStar || fromDay || toDay) && (
+              <div
+                className='cursor-pointer hover:bg-gray-500 rounded-lg'
+                onClick={handleClearFilters}
+              >
+                <Chip variant='ghost' value={<span className='normal-case'>Clear filters</span>} />
+              </div>
+            )}
+          </div>
+          {isAdmin && userInfo?.role === 'MANAGER' && (
+            <Button placeholder='' color='red' className='normal-case text-sm'>
+              Thêm mô hình
+            </Button>
           )}
         </div>
         {screenSize > ScreenSize.MD && (

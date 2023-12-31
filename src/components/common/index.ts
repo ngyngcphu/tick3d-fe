@@ -10,5 +10,6 @@ export * from './DigitalCheckoutSuccess';
 export * from './Footer';
 export * from './ProtectedRoutes';
 export * from './SearchDefaultModelBar';
+export * from './SearchMobile';
 export * from './SidebarMenu';
 export * from './ToggleSidebarBtn';
