@@ -270,6 +270,7 @@ export interface paths {
               role: 'CUSTOMER' | 'MANAGER';
               /** Format: email */
               email: string;
+              VnFormatName: string;
             };
           };
         };
@@ -675,6 +676,8 @@ export interface paths {
                 numberBought: number;
                 subImages: string[];
                 discount?: number;
+                isDiscontinued: boolean;
+                IsModelInCart: boolean;
               }[];
             };
           };
@@ -730,6 +733,8 @@ export interface paths {
                 numberBought: number;
                 subImages: string[];
                 discount?: number;
+                isDiscontinued: boolean;
+                IsModelInCart: boolean;
               }[];
             };
           };
@@ -1000,6 +1005,7 @@ export interface paths {
                 price: number;
                 /** Format: date-time */
                 uploadTime: string;
+                isModelInCart: boolean;
               }[];
             };
           };
@@ -1039,6 +1045,7 @@ export interface paths {
                 price: number;
                 /** Format: date-time */
                 uploadTime: string;
+                isModelInCart: boolean;
               }[];
             };
           };

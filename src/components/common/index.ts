@@ -8,5 +8,6 @@ export * from './AppNavigation';
 export * from './DesktopNavbar';
 export * from './Footer';
 export * from './ProtectedRoutes';
+export * from './SearchDefaultModelBar';
 export * from './SidebarMenu';
 export * from './ToggleSidebarBtn';
