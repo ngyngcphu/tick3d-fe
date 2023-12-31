@@ -4,8 +4,10 @@ import { Button, Card, CardBody, Chip, Typography } from '@material-tailwind/rea
 import { homeService } from '@services';
 import { useCartStore } from '@states';
 import { retryQueryFn } from '@utils';
+import { useCartQuery, useCartMutation } from '@hooks';
 
 export function Items() {
+  const { createCart } = useCartMutation();
   const navigate = useNavigate();
 
   const { data: items } = useQuery({
@@ -15,7 +17,17 @@ export function Items() {
   });
 
   const { listFlagIsModelAdded, setListFlagIsModelAdded, create: addModelToCart } = useCartStore();
-
+  const {
+    listModelsInCart: { isSuccess, refetch: refetchTotalModelsInCart }
+  } = useCartQuery();
+  const handleAddtoUserCart = async (data: { models: CartCreationPayload[] }) => {
+    try {
+      await createCart.mutateAsync(data);
+      await refetchTotalModelsInCart();
+    } catch (e) {
+      alert(e);
+    }
+  };
   return (
     <div className='grid grid-cols-2 gap-2 lg:grid-cols-4 lg:py-6 lg:px-4 lg:gap-3'>
       {items &&
@@ -53,7 +65,17 @@ export function Items() {
                   }
                   onClick={(event) => {
                     event.stopPropagation();
-                    if (!listFlagIsModelAdded[item.id]) {
+                    if (isSuccess && !listFlagIsModelAdded[item.id]) {
+                      handleAddtoUserCart({
+                        models: [
+                          {
+                            id: item.id,
+                            quantity: 1
+                          }
+                        ]
+                      });
+                      setListFlagIsModelAdded(item.id, true);
+                    } else if (!listFlagIsModelAdded[item.id]) {
                       addModelToCart({
                         id: item.id,
                         image: item.imageUrl,

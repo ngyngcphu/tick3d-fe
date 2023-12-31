@@ -247,7 +247,7 @@ export const DesktopNavbar: Component<{
                       />
                       <div>
                         <Typography placeholder='' variant='h6' color='gray'>
-                          Tania Andrew
+                          {data ? data.VnFormatName : ''}
                         </Typography>
                         <Typography
                           placeholder=''

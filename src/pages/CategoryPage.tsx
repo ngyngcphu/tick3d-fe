@@ -23,7 +23,7 @@ import {
 } from '@heroicons/react/24/solid';
 import { FilterDrawer, FilterAccordion } from '@components/category';
 import { ScreenSize, SORT_CRITERIA, SORT_ORDER } from '@constants';
-import { useScreenSize } from '@hooks';
+import { useScreenSize, useCartQuery, useUserQuery, useCartMutation } from '@hooks';
 import { defaultModelService } from '@services';
 import { useCartStore, useFilterStore, useMenuBarStore, usePaginationStore } from '@states';
 import { retryQueryFn } from '@utils';
@@ -44,7 +44,11 @@ export function CategoryPage() {
   const { selectedStar, fromDay, toDay, setSelectedStar, setFromDay, setToDay } = useFilterStore();
   const { selectedCategoryItem, setSelectedCategoryItem } = useMenuBarStore();
   const { activePage, setActivePage } = usePaginationStore();
+  const { createCart } = useCartMutation();
 
+  const {
+    info: { data: userInfo, isSuccess: isAdmin }
+  } = useUserQuery();
   const { data: listModels } = useQuery({
     queryKey: [
       '/api/model',
@@ -101,52 +105,69 @@ export function CategoryPage() {
     setToDay(undefined);
     setActivePage(1);
   };
-
+  const {
+    listModelsInCart: { isSuccess, refetch: refetchTotalModelsInCart }
+  } = useCartQuery();
+  const handleAddtoUserCart = async (data: { models: CartCreationPayload[] }) => {
+    try {
+      await createCart.mutateAsync(data);
+      await refetchTotalModelsInCart();
+    } catch (e) {
+      alert(e);
+    }
+  };
   return (
     <>
       <div className='flex md:justify-between items-center md:pe-8'>
-        <div className='flex gap-5 justify-center md:justify-start items-center m-5'>
-          <Button
-            placeholder=''
-            onClick={() => setOpenDrawer(!openDrawer)}
-            variant='outlined'
-            size='md'
-            className='flex items-center gap-2'
-          >
-            <AdjustmentsHorizontalIcon className='w-5 h-5' />
-            Filter
-          </Button>
-          <div className='w-fit'>
-            <Select
+        <div className='flex flex-col gap-2 items-start mx-5 my-2'>
+          <div className='flex gap-5 justify-center md:justify-start items-center'>
+            <Button
               placeholder=''
-              label={`Sort by: ${criteriaSort[Object.keys(criteriaSort)[0] as OrderBy]}`}
+              onClick={() => setOpenDrawer(!openDrawer)}
+              variant='outlined'
               size='md'
-              color='blue-gray'
-              className='text-base font-medium'
-              value={Object.keys(criteriaSort)[0]}
-              onChange={(value) => {
-                if (value) {
-                  const selectedKey = value as OrderBy;
-                  setCriteriaSort({ [selectedKey]: SORT_CRITERIA[selectedKey] });
-                  setActivePage(1);
-                }
-              }}
-              labelProps={{ className: 'text-black' }}
+              className='flex items-center gap-2'
             >
-              {Object.entries(SORT_CRITERIA).map(([value, label], index) => (
-                <Option key={index} value={value}>
-                  {label}
-                </Option>
-              ))}
-            </Select>
-          </div>
-          {(selectedCategoryItem.id || selectedStar || fromDay || toDay) && (
-            <div
-              className='cursor-pointer hover:bg-gray-500 rounded-lg'
-              onClick={handleClearFilters}
-            >
-              <Chip variant='ghost' value={<span className='normal-case'>Clear filters</span>} />
+              <AdjustmentsHorizontalIcon className='w-5 h-5' />
+              Filter
+            </Button>
+            <div className='w-fit'>
+              <Select
+                placeholder=''
+                label={`Sort by: ${criteriaSort[Object.keys(criteriaSort)[0] as OrderBy]}`}
+                size='md'
+                color='blue-gray'
+                className='text-base font-medium'
+                value={Object.keys(criteriaSort)[0]}
+                onChange={(value) => {
+                  if (value) {
+                    const selectedKey = value as OrderBy;
+                    setCriteriaSort({ [selectedKey]: SORT_CRITERIA[selectedKey] });
+                    setActivePage(1);
+                  }
+                }}
+                labelProps={{ className: 'text-black' }}
+              >
+                {Object.entries(SORT_CRITERIA).map(([value, label], index) => (
+                  <Option key={index} value={value}>
+                    {label}
+                  </Option>
+                ))}
+              </Select>
             </div>
+            {(selectedCategoryItem.id || selectedStar || fromDay || toDay) && (
+              <div
+                className='cursor-pointer hover:bg-gray-500 rounded-lg'
+                onClick={handleClearFilters}
+              >
+                <Chip variant='ghost' value={<span className='normal-case'>Clear filters</span>} />
+              </div>
+            )}
+          </div>
+          {isAdmin && userInfo?.role === 'MANAGER' && (
+            <Button placeholder='' color='red' className='normal-case text-sm'>
+              Thêm mô hình
+            </Button>
           )}
         </div>
         {screenSize > ScreenSize.MD && (
@@ -200,7 +221,17 @@ export function CategoryPage() {
                           }
                           onClick={(event) => {
                             event.stopPropagation();
-                            if (!listFlagIsModelAdded[item.id]) {
+                            if (isSuccess && !listFlagIsModelAdded[item.id]) {
+                              handleAddtoUserCart({
+                                models: [
+                                  {
+                                    id: item.id,
+                                    quantity: 1
+                                  }
+                                ]
+                              });
+                              setListFlagIsModelAdded(item.id, true);
+                            } else if (!isSuccess && !listFlagIsModelAdded[item.id]) {
                               addModelToCart({
                                 id: item.id,
                                 image: item.imageUrl,
@@ -271,7 +302,17 @@ export function CategoryPage() {
                         }
                         onClick={(event) => {
                           event.stopPropagation();
-                          if (!listFlagIsModelAdded[item.id]) {
+                          if (isSuccess && !listFlagIsModelAdded[item.id]) {
+                            handleAddtoUserCart({
+                              models: [
+                                {
+                                  id: item.id,
+                                  quantity: 1
+                                }
+                              ]
+                            });
+                            setListFlagIsModelAdded(item.id, true);
+                          } else if (!isSuccess && !listFlagIsModelAdded[item.id]) {
                             addModelToCart({
                               id: item.id,
                               image: item.imageUrl,
