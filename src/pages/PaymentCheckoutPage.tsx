@@ -11,14 +11,13 @@ import {
   usePayPalScriptReducer
 } from '@paypal/react-paypal-js';
 import { checkoutService } from '@services';
+import { useDigitalCheckoutSuccessModal } from '@components/common';
 
 export function PaymentCheckoutPage() {
   const {
     listModelsInCart: { data: listModelsInCart, isSuccess }
   } = useCartQuery();
-
   const { cartItems } = useCartStore();
-
   const totalPrice = useMemo(() => {
     if (isSuccess && listModelsInCart) {
       return listModelsInCart.cart.reduce(
@@ -34,6 +33,8 @@ export function PaymentCheckoutPage() {
       );
     }
   }, [cartItems, isSuccess, listModelsInCart]);
+
+  const { handleOpen, DigitalCheckoutSuccessModal } = useDigitalCheckoutSuccessModal();
 
   const { approvePayPalOrder } = useOrderMutation();
   const validateSchema = yup.object({
@@ -245,6 +246,7 @@ export function PaymentCheckoutPage() {
             }}
             onApprove={async (data) => {
               await approvePayPalOrder.mutateAsync(data.orderID);
+              handleOpen();
             }}
           />
         </>
@@ -315,6 +317,7 @@ export function PaymentCheckoutPage() {
           <OrderSummary />
         </CardBody>
       </Card>
+      <DigitalCheckoutSuccessModal />
     </div>
   );
 }

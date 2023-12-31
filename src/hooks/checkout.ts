@@ -24,8 +24,7 @@ export function useOrderMutation() {
   const approvePayPalOrder = useMutation({
     mutationKey: ['approvePayPalOrder'],
     mutationFn: (paypalOrderId: string) =>
-      checkoutService.completePaypalOrder({ intent: 'CAPTURE', paypalOrderId }),
-    onSuccess: () => {}
+      checkoutService.completePaypalOrder({ intent: 'CAPTURE', paypalOrderId })
   });
 
   return {

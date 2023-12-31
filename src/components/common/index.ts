@@ -6,6 +6,7 @@ export * from './AdminProtected';
 export * from './AppDrawer';
 export * from './AppNavigation';
 export * from './DesktopNavbar';
+export * from './DigitalCheckoutSuccess';
 export * from './Footer';
 export * from './ProtectedRoutes';
 export * from './SearchDefaultModelBar';
