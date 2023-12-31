@@ -11,3 +11,4 @@ export * from './ProtectedRoutes';
 export * from './SearchDefaultModelBar';
 export * from './SidebarMenu';
 export * from './ToggleSidebarBtn';
+export * from './searchMobile';
