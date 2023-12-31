@@ -1,9 +1,15 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@material-tailwind/react';
-import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
-import { AppDrawer, DesktopNavbar, ToggleSidebarBtn, useSidebarMenu } from '@components/common';
+import {
+  AppDrawer,
+  DesktopNavbar,
+  MobileDefaultModelSearch,
+  ToggleSidebarBtn,
+  useSidebarMenu
+} from '@components/common';
 import { ScreenSize, MENU_BAR } from '@constants';
 import { useScreenSize, useCategoryQuery, useCartQuery } from '@hooks';
 import { useMenuBarStore, usePaginationStore, useCartStore } from '@states';
@@ -70,7 +76,7 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           </div>
           <img className='w-12 h-12' src={tick3D} alt='tick3D-logo' />
           <div className='flex items-center gap-8'>
-            <MagnifyingGlassIcon strokeWidth={2} className='w-6 h-6 cursor-pointer' />
+            <MobileDefaultModelSearch />
             <ShoppingCart />
           </div>
         </div>
