@@ -91,7 +91,7 @@ export function useSidebarMenu() {
                   />
                   <div>
                     <Typography placeholder='' variant='h6'>
-                      Tania Andrew
+                      {data ? data.VnFormatName : ''}
                     </Typography>
                     <Typography placeholder='' variant='small' color='gray' className='font-normal'>
                       {data ? data.email : ''}
