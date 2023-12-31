@@ -1,20 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Avatar,
-  Badge,
-  Chip,
-  List,
-  ListItem,
-  Input,
-  Tooltip,
-  Typography
-} from '@material-tailwind/react';
-import { MagnifyingGlassIcon, ShoppingCartIcon, StarIcon } from '@heroicons/react/24/outline';
+import { Avatar, Badge, Chip, List, ListItem, Tooltip, Typography } from '@material-tailwind/react';
+import { ShoppingCartIcon, StarIcon } from '@heroicons/react/24/outline';
 import tick3D from '@assets/tick3D-logo.svg';
 import { MENU_BAR } from '@constants';
 import { useUserQuery } from '@hooks';
 import { useMenuBarStore, usePaginationStore } from '@states';
+import { SearchDefaultModel } from './SearchDefaultModelBar';
 
 export const DesktopNavbar: Component<{
   menu: RouteMenu;
@@ -55,7 +47,7 @@ export const DesktopNavbar: Component<{
       <div className='max-w-[40px] max-h-[40px] ml-0 mr-3 object-cover'>
         <img className='w-full h-full' src={tick3D} alt='tick3D-logo'></img>
       </div>
-      <List className='p-0 flex flex-row items-center gap-3 max-w-[calc(100%-36px)]'>
+      <List placeholder='' className='p-0 flex flex-row items-center gap-3 max-w-[calc(100%-36px)]'>
         {menu.map((menuItem, idx) => {
           if (menuItem === 'divider') return;
           if (menuItem.type === 'item') {
@@ -68,9 +60,10 @@ export const DesktopNavbar: Component<{
                   {...triggersCategory}
                   className='bg-white'
                   content={
-                    <List className='p-0'>
+                    <List placeholder='' className='p-0'>
                       {listCategories.map((item, idx) => (
                         <ListItem
+                          placeholder=''
                           key={idx}
                           className={
                             CATEGORYLIST_ITEM_CLASSNAME +
@@ -92,6 +85,7 @@ export const DesktopNavbar: Component<{
                 >
                   <Link to={menuItem.path}>
                     <ListItem
+                      placeholder=''
                       className={
                         NAVBAR_ITEM_CLASSNAME +
                         (selectedMenu === menuItem.name ? ' bg-blue-100 text-blue/1 font-bold' : '')
@@ -111,19 +105,23 @@ export const DesktopNavbar: Component<{
                   </Link>
                 </Tooltip>
               );
-            if (menuItem.name === MENU_BAR.upload)
+            if (menuItem.name === MENU_BAR.uploadOrDashboard)
               return (
                 <div key={idx} className='flex items-center gap-4'>
-                  <div className='text-center min-w-[350px] xl:min-w-[500px]'>
-                    <Input
-                      size='lg'
-                      crossOrigin=''
-                      icon={<MagnifyingGlassIcon className='w-5 h-5' />}
-                      label='Search for anything'
-                    />
+                  <div className='min-w-[350px] xl:min-w-[500px] flex justify-center items-center'>
+                    <div className='flex flex-col justify-start items-start h-[40px] w-full'>
+                      <SearchDefaultModel />
+                    </div>
                   </div>
-                  <Link to={menuItem.path}>
+                  <Link
+                    to={
+                      isSuccess && data?.role === 'MANAGER' && menuItem.pathReplace
+                        ? menuItem.pathReplace
+                        : menuItem.path
+                    }
+                  >
                     <ListItem
+                      placeholder=''
                       className={
                         NAVBAR_ITEM_CLASSNAME +
                         (selectedMenu === menuItem.name
@@ -140,11 +138,14 @@ export const DesktopNavbar: Component<{
                         setActivePage(1);
                       }}
                     >
-                      <span className='truncate'>{menuItem.name}</span>
+                      <span className='truncate'>
+                        {isSuccess && data?.role === 'MANAGER' ? MENU_BAR.dashboard : menuItem.name}
+                      </span>
                     </ListItem>
                   </Link>
                   <Link to='/cart'>
                     <ListItem
+                      placeholder=''
                       className={
                         NAVBAR_ITEM_CLASSNAME +
                         (selectedMenu === MENU_BAR.cart
@@ -184,6 +185,7 @@ export const DesktopNavbar: Component<{
                 }
               >
                 <ListItem
+                  placeholder=''
                   className={
                     'hover:bg-gray/1 focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold text-gray/4 font-medium rounded-lg text-lg w-fit text-center' +
                     (selectedMenu === menuItem.name
@@ -239,6 +241,7 @@ export const DesktopNavbar: Component<{
                   <>
                     <div className='flex items-center gap-2'>
                       <Avatar
+                        placeholder=''
                         src='https://docs.material-tailwind.com/img/face-2.jpg'
                         alt='avatar'
                       />
@@ -246,19 +249,27 @@ export const DesktopNavbar: Component<{
                         <Typography variant='h6' color='gray'>
                           {data ? data.VnFormatName : ''}
                         </Typography>
-                        <Typography variant='small' color='gray' className='font-normal'>
+                        <Typography
+                          placeholder=''
+                          variant='small'
+                          color='gray'
+                          className='font-normal'
+                        >
                           {data ? data.email : ''}
                         </Typography>
                       </div>
                     </div>
                     <hr className='my-1' />
-                    <List className='p-0'>
-                      <ListItem onClick={menuItem.onClick}>{menuItem.name}</ListItem>
+                    <List placeholder='' className='p-0'>
+                      <ListItem placeholder='' onClick={menuItem.onClick}>
+                        {menuItem.name}
+                      </ListItem>
                     </List>
                   </>
                 }
               >
                 <Avatar
+                  placeholder=''
                   size='sm'
                   src='https://docs.material-tailwind.com/img/face-2.jpg'
                   alt='avatar'

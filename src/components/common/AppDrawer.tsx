@@ -9,6 +9,7 @@ export const AppDrawer: Component<{
   return (
     <React.Fragment>
       <Drawer
+        placeholder=''
         open={open}
         className='p-0 rounded-r-2xl overflow-y-auto'
         onClose={onClose}
