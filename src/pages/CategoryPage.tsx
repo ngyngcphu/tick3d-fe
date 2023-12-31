@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import { useCartMutation } from '@hooks';
 import {
   Button,
   Card,
@@ -23,8 +24,8 @@ import {
 } from '@heroicons/react/24/solid';
 import { FilterDrawer, FilterAccordion } from '@components/category';
 import { ScreenSize, SORT_CRITERIA, SORT_ORDER } from '@constants';
-import { useScreenSize, useUserQuery, useCartQuery } from '@hooks';
-import { defaultModelService, cartService } from '@services';
+import { useScreenSize, useCartQuery } from '@hooks';
+import { defaultModelService } from '@services';
 import { useCartStore, useFilterStore, useMenuBarStore, usePaginationStore } from '@states';
 import { retryQueryFn } from '@utils';
 import type { colors } from '@material-tailwind/react/types/generic';
@@ -32,9 +33,6 @@ import type { variant } from '@material-tailwind/react/types/components/button';
 import {} from '@services';
 
 export function CategoryPage() {
-  const {
-    info: { isSuccess }
-  } = useUserQuery();
   const NUMBER_ITEMS_PER_PAGE = 8;
   const navigate = useNavigate();
 
@@ -48,6 +46,7 @@ export function CategoryPage() {
   const { selectedStar, fromDay, toDay, setSelectedStar, setFromDay, setToDay } = useFilterStore();
   const { selectedCategoryItem, setSelectedCategoryItem } = useMenuBarStore();
   const { activePage, setActivePage } = usePaginationStore();
+  const { createCart } = useCartMutation();
 
   const { data: listModels } = useQuery({
     queryKey: [
@@ -105,16 +104,12 @@ export function CategoryPage() {
     setToDay(undefined);
     setActivePage(1);
   };
-  const addToUserCart = useMutation({
-    mutationKey: ['/api/cart'],
-    mutationFn: (data: { models: CartCreationPayload[] }) => cartService.create(data)
-  });
   const {
-    listModelsInCart: { refetch: refetchTotalModelsInCart }
+    listModelsInCart: { isSuccess, refetch: refetchTotalModelsInCart }
   } = useCartQuery();
   const handleAddtoUserCart = async (data: { models: CartCreationPayload[] }) => {
     try {
-      await addToUserCart.mutateAsync(data);
+      await createCart.mutateAsync(data);
       await refetchTotalModelsInCart();
     } catch (e) {
       alert(e);
