@@ -5,9 +5,10 @@ import { CheckIcon } from '@heroicons/react/24/outline';
 import { AppNavigation, Footer } from '@components/common';
 import { MENU_BAR } from '@constants';
 import { useAuthMutation, useListenEvent, emitEvent } from '@hooks';
-import { useMenuBarStore } from '@states';
+import { useMenuBarStore, useCartStore } from '@states';
 
 export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ menu, child }) => {
+  const { resetCart } = useCartStore();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -39,6 +40,8 @@ export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ m
       navigate('/');
       setSelectedMenu(MENU_BAR.home);
       emitEvent('refetch:clearModelsInCart');
+      localStorage.removeItem('cartLocalStorage');
+      resetCart();
     } catch (err) {
       throw err;
     }

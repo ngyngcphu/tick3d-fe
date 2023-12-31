@@ -18,7 +18,7 @@ export function Items() {
 
   const { listFlagIsModelAdded, setListFlagIsModelAdded, create: addModelToCart } = useCartStore();
   const {
-    listModelsInCart: { isSuccess, refetch: refetchTotalModelsInCart }
+    listModelsInCart: { data: listModelsInCart, isSuccess, refetch: refetchTotalModelsInCart }
   } = useCartQuery();
   const handleAddtoUserCart = async (data: { models: CartCreationPayload[] }) => {
     try {
@@ -61,11 +61,20 @@ export function Items() {
                   placeholder=''
                   className={
                     'text-white normal-case text-sm truncate p-4' +
-                    (!listFlagIsModelAdded[item.id] ? ' bg-red-500 ' : ' bg-blue-500')
+                    (listFlagIsModelAdded[item.id] ||
+                    (isSuccess &&
+                      listModelsInCart &&
+                      listModelsInCart.cart.map((item) => item.id).includes(item.id))
+                      ? ' bg-blue-500 '
+                      : ' bg-red-500')
                   }
                   onClick={(event) => {
                     event.stopPropagation();
-                    if (isSuccess && !listFlagIsModelAdded[item.id]) {
+                    if (
+                      isSuccess &&
+                      listModelsInCart &&
+                      !listModelsInCart.cart.map((item) => item.id).includes(item.id)
+                    ) {
                       handleAddtoUserCart({
                         models: [
                           {
@@ -75,7 +84,7 @@ export function Items() {
                         ]
                       });
                       setListFlagIsModelAdded(item.id, true);
-                    } else if (!listFlagIsModelAdded[item.id]) {
+                    } else if (!isSuccess && !listFlagIsModelAdded[item.id]) {
                       addModelToCart({
                         id: item.id,
                         image: item.imageUrl,
@@ -90,7 +99,12 @@ export function Items() {
                     }
                   }}
                 >
-                  {listFlagIsModelAdded[item.id] ? 'Đi đến giỏ hàng' : 'Thêm vào giỏ hàng'}
+                  {listFlagIsModelAdded[item.id] ||
+                  (isSuccess &&
+                    listModelsInCart &&
+                    listModelsInCart.cart.map((item) => item.id).includes(item.id))
+                    ? 'Đi đến giỏ hàng'
+                    : 'Thêm vào giỏ hàng'}
                 </Button>
               </div>
             </CardBody>
