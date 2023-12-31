@@ -19,3 +19,8 @@ type OrderInfo = {
   intent: string;
   orderId: string;
 };
+
+type PaypalOrderInfo = {
+  orderInfo: CheckoutForm;
+  intent: string;
+};

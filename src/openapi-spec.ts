@@ -375,7 +375,7 @@ export interface paths {
           'application/json': {
             /** @default CAPTURE */
             intent: string;
-            /** @description The id of Paypal order you get when creating */
+            /** @description The id of Paypal order you get when creating Paypal order */
             paypalOrderId: string;
           };
         };
@@ -421,8 +421,17 @@ export interface paths {
       requestBody: {
         content: {
           'application/json': {
+            orderInfo: {
+              total_price: number;
+              shipping_fee: number;
+              est_deli_time: string;
+              district: string;
+              ward: string;
+              street: string;
+              streetNo: string;
+              extra_note: string;
+            };
             intent: string;
-            orderId: string;
           };
         };
       };
@@ -1779,14 +1788,14 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/stat/userModel': {
+  '/api/stat/defaultModel': {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** Summarize the total uploaded user models in a given interval */
+    /** Summarize the total uploaded default models in a given interval */
     get: {
       parameters: {
         query: {
