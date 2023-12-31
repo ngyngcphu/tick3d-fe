@@ -9,9 +9,9 @@ import { useCartStore } from '@states';
 
 export const ShoppingCartPage = () => {
   const {
-    listModelsInCart: { data: listModelsInCart, isSuccess }
+    listModelsInCart: { data: listModelsInCart, isSuccess, refetch: refetchTotalModelsInCart }
   } = useCartQuery();
-  const { updateCartQuantity } = useCartMutation();
+  const { updateCartQuantity, deleteUserModel } = useCartMutation();
 
   const { screenSize } = useScreenSize();
   const {
@@ -54,6 +54,7 @@ export const ShoppingCartPage = () => {
             modelId: modelId,
             quantity: listModelsInCart.cart[index].quantity + 1
           });
+          await refetchTotalModelsInCart();
         } else {
           const index = cartItems.findIndex((item) => item.id === modelId);
           updateModelQuantity(cartItems[index].id, cartItems[index].quantity + 1);
@@ -67,6 +68,7 @@ export const ShoppingCartPage = () => {
               modelId: modelId,
               quantity: listModelsInCart.cart[index].quantity - 1
             });
+            await refetchTotalModelsInCart();
           }
         } else {
           const index = cartItems.findIndex((item) => item.id === modelId);
@@ -75,7 +77,15 @@ export const ShoppingCartPage = () => {
           }
         }
       };
-
+      const handleRemove = async (modelId: string) => {
+        if (isSuccess && listModelsInCart) {
+          await deleteUserModel.mutateAsync({ models: [modelId] });
+          await refetchTotalModelsInCart();
+        } else {
+          deleteModel(order.id);
+          removeItemInListFlag(order.id);
+        }
+      };
       const QuantityButton = () => {
         return (
           <div className='flex flex-row gap-1 md:gap-6 justify-center items-center h-fit'>
@@ -102,8 +112,7 @@ export const ShoppingCartPage = () => {
               strokeWidth={2}
               className='w-7 h-7 md:w-8 md:h-8 p-1 cursor-pointer text-red-600 hover:bg-red-50 rounded-full'
               onClick={() => {
-                deleteModel(order.id);
-                removeItemInListFlag(order.id);
+                handleRemove(order.id);
               }}
             />
           </div>

@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { Button, Card, CardBody, Chip, Typography } from '@material-tailwind/react';
-import { homeService } from '@services';
+import { homeService, cartService } from '@services';
 import { useCartStore } from '@states';
 import { retryQueryFn } from '@utils';
+import { useUserQuery, useCartQuery } from '@hooks';
 
 export function Items() {
+  const {
+    info: { isSuccess }
+  } = useUserQuery();
   const navigate = useNavigate();
 
   const { data: items } = useQuery({
@@ -15,7 +19,21 @@ export function Items() {
   });
 
   const { listFlagIsModelAdded, setListFlagIsModelAdded, create: addModelToCart } = useCartStore();
-
+  const {
+    listModelsInCart: { refetch: refetchTotalModelsInCart }
+  } = useCartQuery();
+  const addToUserCart = useMutation({
+    mutationKey: ['/api/cart'],
+    mutationFn: (data: { models: CartCreationPayload[] }) => cartService.create(data)
+  });
+  const handleAddtoUserCart = async (data: { models: CartCreationPayload[] }) => {
+    try {
+      await addToUserCart.mutateAsync(data);
+      await refetchTotalModelsInCart();
+    } catch (e) {
+      alert(e);
+    }
+  };
   return (
     <div className='grid grid-cols-2 gap-2 lg:grid-cols-4 lg:py-6 lg:px-4 lg:gap-3'>
       {items &&
@@ -53,7 +71,17 @@ export function Items() {
                   }
                   onClick={(event) => {
                     event.stopPropagation();
-                    if (!listFlagIsModelAdded[item.id]) {
+                    if (isSuccess && !listFlagIsModelAdded[item.id]) {
+                      handleAddtoUserCart({
+                        models: [
+                          {
+                            id: item.id,
+                            quantity: 1
+                          }
+                        ]
+                      });
+                      setListFlagIsModelAdded(item.id, true);
+                    } else if (!listFlagIsModelAdded[item.id]) {
                       addModelToCart({
                         id: item.id,
                         image: item.imageUrl,
