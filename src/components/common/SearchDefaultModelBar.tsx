@@ -4,8 +4,6 @@ import Autosuggest, { RenderSuggestionsContainer } from 'react-autosuggest';
 import AutosuggestHighlightMatch from 'autosuggest-highlight/match';
 import AutosuggestHighlightParse from 'autosuggest-highlight/parse';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useQuery } from '@tanstack/react-query';
-import { retryQueryFn } from '@utils';
 import { defaultModelService } from '@services';
 
 type SimpleDefaultModel = {
@@ -20,12 +18,6 @@ const escapeRegexCharacters = (str: string) => {
 export function SearchDefaultModel() {
   const [value, setValue] = useState<string>('');
   const [suggestions, setSuggestions] = useState<SimpleDefaultModel[]>([]);
-
-  const { data: listModels } = useQuery({
-    queryKey: ['/api/model', value],
-    queryFn: () => defaultModelService.getAll({ keyword: value }),
-    retry: retryQueryFn
-  });
 
   const navigate: NavigateFunction = useNavigate();
 
@@ -42,7 +34,8 @@ export function SearchDefaultModel() {
         return [];
       }
       try {
-        setValue(value);
+        const listModels = await defaultModelService.getAll({ keyword: value });
+
         return (
           listModels?.models
             .map((model) => {
@@ -54,7 +47,7 @@ export function SearchDefaultModel() {
         throw (err as ResponseError).message;
       }
     },
-    [listModels]
+    []
   );
 
   const renderSuggestion = useMemo(
