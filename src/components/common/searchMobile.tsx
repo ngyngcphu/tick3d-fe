@@ -14,8 +14,8 @@ export function MobileDefaultModelSearch() {
         className='w-6 h-6 cursor-pointer'
         onClick={handleOpen}
       />
-      <Dialog open={open} handler={handleOpen} size='xxl'>
-        <DialogBody className='mx-0 px-0 pt-3'>
+      <Dialog open={open} handler={handleOpen} size='xxl' placeholder=' '>
+        <DialogBody className='mx-0 px-0 pt-3' placeholder=' '>
           <MobileSearchDefaultModel handleSuggestionSelected={handleOpen} />
         </DialogBody>
       </Dialog>
