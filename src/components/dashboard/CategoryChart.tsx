@@ -24,17 +24,15 @@ export const CategoryChart: Component<{ data: DataType[] }> = ({ data }) => {
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-    return (
-      <text
-        x={x}
-        y={y}
-        fill='white'
-        textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline='central'
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
+    if (percent > 0.05) {
+      return (
+        <text x={x} y={y} fill='white' textAnchor='middle' dominantBaseline='central' fontSize={12}>
+          {`${(percent * 100).toFixed(0)}%`}
+        </text>
+      );
+    }
+
+    return null;
   };
 
   return (

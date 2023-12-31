@@ -1,17 +1,23 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   Button,
   Card,
   CardBody,
   Chip,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
   IconButton,
+  Input,
   List,
   ListItem,
   Select,
   Option,
   Spinner,
+  Textarea,
   Typography
 } from '@material-tailwind/react';
 import { formatISO } from 'date-fns';
@@ -19,11 +25,18 @@ import {
   AdjustmentsHorizontalIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
-  EllipsisHorizontalIcon
+  EllipsisHorizontalIcon,
+  TrashIcon
 } from '@heroicons/react/24/solid';
 import { FilterDrawer, FilterAccordion } from '@components/category';
 import { ScreenSize, SORT_CRITERIA, SORT_ORDER } from '@constants';
-import { useScreenSize, useCartQuery, useUserQuery, useCartMutation } from '@hooks';
+import {
+  useScreenSize,
+  useCartQuery,
+  useUserQuery,
+  useCartMutation,
+  useCategoryQuery
+} from '@hooks';
 import { defaultModelService } from '@services';
 import { useCartStore, useFilterStore, useMenuBarStore, usePaginationStore } from '@states';
 import { retryQueryFn } from '@utils';
@@ -40,6 +53,9 @@ export function CategoryPage() {
   });
 
   const { screenSize } = useScreenSize();
+  const {
+    listCategories: { data: listCategories }
+  } = useCategoryQuery();
   const { listFlagIsModelAdded, setListFlagIsModelAdded, create: addModelToCart } = useCartStore();
   const { selectedStar, fromDay, toDay, setSelectedStar, setFromDay, setToDay } = useFilterStore();
   const { selectedCategoryItem, setSelectedCategoryItem } = useMenuBarStore();
@@ -116,6 +132,70 @@ export function CategoryPage() {
       alert(e);
     }
   };
+
+  /*
+   * UPLOAD MODEL DIALOG
+   */
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(!open);
+
+  const [uploadForm, setUploadForm] = useState<DefaultModel>({
+    name: '',
+    price: 0,
+    gcode: '',
+    imageUrl: '',
+    category_id: '',
+    description: '',
+    subImageUrls: [],
+    discount: 0
+  });
+
+  const [subImageUrl, setSubImageUrl] = useState('');
+
+  const handleInputChange = (e, name: string) => {
+    const { value } = e.target;
+    setUploadForm((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSelectChange = (e) => {
+    setUploadForm((prevState) => ({ ...prevState, category_id: e }));
+  };
+
+  const handleAddSubImageUrl = () => {
+    setUploadForm((prevState) => ({
+      ...prevState,
+      subImageUrls: [...prevState.subImageUrls, subImageUrl]
+    }));
+    setSubImageUrl('');
+  };
+
+  const handleDeleteSubImageUrl = (index: number) => {
+    setUploadForm((prevState) => {
+      const newSubImageUrls = [...prevState.subImageUrls];
+      newSubImageUrls.splice(index, 1);
+      return { ...prevState, subImageUrls: newSubImageUrls };
+    });
+  };
+
+  const uploadModel = useMutation({
+    mutationKey: ['upload'],
+    mutationFn: (data: DefaultModel) => defaultModelService.uploadDefaultModel([data])
+  });
+
+  const handleSubmit = async () => {
+    await uploadModel.mutateAsync(uploadForm);
+    setUploadForm({
+      name: '',
+      price: 0,
+      gcode: '',
+      imageUrl: '',
+      category_id: '',
+      description: '',
+      subImageUrls: [],
+      discount: 0
+    });
+  };
+
   return (
     <>
       <div className='flex md:justify-between items-center md:pe-8'>
@@ -165,7 +245,7 @@ export function CategoryPage() {
             )}
           </div>
           {isAdmin && userInfo?.role === 'MANAGER' && (
-            <Button placeholder='' color='red' className='normal-case text-sm'>
+            <Button placeholder='' color='red' className='normal-case text-sm' onClick={handleOpen}>
               Thêm mô hình
             </Button>
           )}
@@ -422,6 +502,74 @@ export function CategoryPage() {
           <FilterAccordion closeDrawer={() => setOpenDrawer(false)} />
         </FilterDrawer>
       )}
+      <Dialog
+        placeholder=''
+        open={open}
+        handler={handleOpen}
+        className='overflow-y-auto overflow-scroll'
+      >
+        <DialogHeader placeholder=''>Thêm mô hình</DialogHeader>
+        <DialogBody placeholder='' className='flex flex-col gap-5 overflow-y-auto max-h-[500px]'>
+          <Input label='Name' onChange={(e) => handleInputChange(e, 'name')} />
+          <Input label='Price' type='number' onChange={(e) => handleInputChange(e, 'price')} />
+          <Input label='GCode' onChange={(e) => handleInputChange(e, 'gcode')} />
+          <Input label='Image URL' onChange={(e) => handleInputChange(e, 'imageUrl')} />
+          <Input
+            label='Discount'
+            type='number'
+            onChange={(e) => handleInputChange(e, 'discount')}
+          />
+          <Select placeholder='' label='Category' onChange={handleSelectChange}>
+            {listCategories &&
+              listCategories.map((category, index) => (
+                <Option key={index} value={category.id}>
+                  {category.name}
+                </Option>
+              ))}
+          </Select>
+          <Textarea label='Description' onChange={(e) => handleInputChange(e, 'description')} />
+          <div className='flex gap-5'>
+            <Input
+              label='Sub Image URL'
+              onChange={(e) => setSubImageUrl(e.target.value)}
+              value={subImageUrl}
+            />
+            <Button placeholder='' type='button' onClick={handleAddSubImageUrl}>
+              Add
+            </Button>
+          </div>
+          {uploadForm.subImageUrls.map((url, index) => (
+            <div key={index} className='flex justify-between'>
+              <p>{url}</p>
+              <IconButton
+                placeholder=''
+                variant='text'
+                color='red'
+                onClick={() => handleDeleteSubImageUrl(index)}
+                className='w-10 shrink-0'
+              >
+                <TrashIcon className='w-5' />
+              </IconButton>
+            </div>
+          ))}
+        </DialogBody>
+        <DialogFooter placeholder=''>
+          <Button placeholder='' variant='text' color='red' onClick={handleOpen} className='mr-1'>
+            <span>Cancel</span>
+          </Button>
+          <Button
+            placeholder=''
+            variant='gradient'
+            color='green'
+            onClick={() => {
+              handleOpen();
+              handleSubmit();
+            }}
+          >
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </>
   );
 }
