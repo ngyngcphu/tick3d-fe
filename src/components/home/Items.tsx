@@ -1,15 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Button, Card, CardBody, Chip, Typography } from '@material-tailwind/react';
-import { homeService, cartService } from '@services';
+import { homeService } from '@services';
 import { useCartStore } from '@states';
 import { retryQueryFn } from '@utils';
-import { useUserQuery, useCartQuery } from '@hooks';
+import { useCartQuery, useCartMutation } from '@hooks';
 
 export function Items() {
-  const {
-    info: { isSuccess }
-  } = useUserQuery();
+  const { createCart } = useCartMutation();
   const navigate = useNavigate();
 
   const { data: items } = useQuery({
@@ -20,15 +18,11 @@ export function Items() {
 
   const { listFlagIsModelAdded, setListFlagIsModelAdded, create: addModelToCart } = useCartStore();
   const {
-    listModelsInCart: { refetch: refetchTotalModelsInCart }
+    listModelsInCart: { isSuccess, refetch: refetchTotalModelsInCart }
   } = useCartQuery();
-  const addToUserCart = useMutation({
-    mutationKey: ['/api/cart'],
-    mutationFn: (data: { models: CartCreationPayload[] }) => cartService.create(data)
-  });
   const handleAddtoUserCart = async (data: { models: CartCreationPayload[] }) => {
     try {
-      await addToUserCart.mutateAsync(data);
+      await createCart.mutateAsync(data);
       await refetchTotalModelsInCart();
     } catch (e) {
       alert(e);

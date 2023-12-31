@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Chip, Typography } from '@material-tailwind/react';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { ImageSlider } from '@components/model';
-import { defaultModelService, cartService } from '@services';
+import { defaultModelService } from '@services';
 import { retryQueryFn } from '@utils';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useCartStore } from '@states';
-import { useUserQuery, useCartQuery } from '@hooks';
+import { useCartQuery, useCartMutation } from '@hooks';
+
 //import { toast } from 'react-toastify';
 //import { useCartStore, useMenuBarStore } from '@states';
 //import { useUserQuery } from '@hooks';
@@ -16,19 +17,17 @@ import { useUserQuery, useCartQuery } from '@hooks';
 
 export function DetailModelPage() {
   const { listFlagIsModelAdded, setListFlagIsModelAdded, create: addModelToCart } = useCartStore();
+  const { createCart } = useCartMutation();
   //const { setSelectedMenu } = useMenuBarStore();
   const navigate = useNavigate();
   const { id } = useParams();
-  const {
-    info: { isSuccess }
-  } = useUserQuery();
   const { data: modelData } = useQuery({
     queryKey: [`/api/model/{id}`, id],
     queryFn: () => (id ? defaultModelService.getById(id) : null),
     retry: retryQueryFn
   });
   const {
-    listModelsInCart: { refetch: refetchTotalModelsInCart }
+    listModelsInCart: { isSuccess, refetch: refetchTotalModelsInCart }
   } = useCartQuery();
   // const { data: modelCartList } = useQuery({
   //   queryKey: ['/api/cart'],
@@ -36,13 +35,9 @@ export function DetailModelPage() {
   //   retry: retryQueryFn,
   //   enabled: isSuccess
   // });
-  const addToUserCart = useMutation({
-    mutationKey: ['/api/cart'],
-    mutationFn: (data: { models: CartCreationPayload[] }) => cartService.create(data)
-  });
   const handleAddtoUserCart = async (data: { models: CartCreationPayload[] }) => {
     try {
-      await addToUserCart.mutateAsync(data);
+      await createCart.mutateAsync(data);
       await refetchTotalModelsInCart();
     } catch (e) {
       alert(e);
