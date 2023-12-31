@@ -8,12 +8,7 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-interface DataType {
-  name: string;
-  value: number;
-}
-
-const UploadChart: Component<{ data: DataType[] }> = ({ data }) => (
+export const UploadChart: Component<{ data: DataType[] }> = ({ data }) => (
   <ResponsiveContainer width='100%' height='100%'>
     <LineChart
       width={500}
@@ -34,5 +29,3 @@ const UploadChart: Component<{ data: DataType[] }> = ({ data }) => (
     </LineChart>
   </ResponsiveContainer>
 );
-
-export default UploadChart;

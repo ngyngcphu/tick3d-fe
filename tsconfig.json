@@ -25,6 +25,7 @@
       "@components/home": ["src/components/home"],
       "@components/category": ["src/components/category"],
       "@components/model": ["src/components/model"],
+      "@components/dashboard": ["src/components/dashboard"],
       "@constants": ["src/constants"],
       "@hooks": ["src/hooks"],
       "@interfaces": ["src/interfaces"],

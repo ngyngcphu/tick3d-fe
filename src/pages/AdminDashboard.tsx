@@ -1,9 +1,11 @@
 import { Card, Typography, Select, Option } from '@material-tailwind/react';
-import CategoryChart from 'src/components/dashboard/CategoryChart';
-import UploadChart from 'src/components/dashboard/UploadChart';
-import UserChart from 'src/components/dashboard/UserChart';
-import RevenueChart from 'src/components/dashboard/RevenueChart';
-import TopProduct from 'src/components/dashboard/TopProduct';
+import {
+  CategoryChart,
+  RevenueChart,
+  UserChart,
+  TopProduct,
+  UploadChart
+} from '@components/dashboard';
 
 // Data format for CategoryChart, UploadChart and RevenueChart
 const data = [
