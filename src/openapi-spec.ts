@@ -307,20 +307,13 @@ export interface paths {
       requestBody: {
         content: {
           /** @example {
-           *       "total_price": 45000,
-           *       "shipping_fee": 15000,
-           *       "est_deli_time": "2023-11-25T13:30:00",
            *       "district": "string",
            *       "ward": "string",
            *       "street": "string",
            *       "streetNo": "string",
-           *       "isPaid": false,
            *       "extra_note": "string"
            *     } */
           'application/json': {
-            total_price: number;
-            shipping_fee: number;
-            est_deli_time: string;
             district: string;
             ward: string;
             street: string;
@@ -338,6 +331,10 @@ export interface paths {
           content: {
             'application/json': {
               id: string;
+              totalPrice: number;
+              shippingFee: number;
+              /** Format: date */
+              deliTime: string;
             };
           };
         };
@@ -389,7 +386,6 @@ export interface paths {
           content: {
             'application/json': {
               id: string;
-              amountMoney: number;
             };
           };
         };
@@ -422,9 +418,6 @@ export interface paths {
         content: {
           'application/json': {
             orderInfo: {
-              total_price: number;
-              shipping_fee: number;
-              est_deli_time: string;
               district: string;
               ward: string;
               street: string;
@@ -444,6 +437,10 @@ export interface paths {
           content: {
             'application/json': {
               id: string;
+              totalPrice: number;
+              shippingFee: number;
+              /** Format: date */
+              deliTime: string;
             };
           };
         };

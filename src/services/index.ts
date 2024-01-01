@@ -9,5 +9,6 @@ export * from './checkout.service';
 export * from './common';
 export * from './defaultModel.service';
 export * from './home.service';
+export * from './order.service';
 export * from './user.service';
 export * from './userModel.service';

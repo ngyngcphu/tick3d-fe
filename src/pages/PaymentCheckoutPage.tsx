@@ -1,51 +1,30 @@
-import { useForm } from 'react-hook-form';
-import { Card, CardBody, Chip, Input, Typography, Textarea } from '@material-tailwind/react';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useCartQuery, useOrderMutation } from '@hooks';
-import { useCartStore } from '@states';
 import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   PayPalButtons,
   PayPalScriptProvider,
   usePayPalScriptReducer
 } from '@paypal/react-paypal-js';
+import { Card, CardBody, Chip, Input, Typography, Textarea } from '@material-tailwind/react';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useCartQuery, useOrderMutation } from '@hooks';
 import { checkoutService } from '@services';
 import { useDigitalCheckoutSuccessModal } from '@components/common';
 
 export function PaymentCheckoutPage() {
   const {
-    listModelsInCart: { data: listModelsInCart, isSuccess }
+    listModelsInCart: { data: listModelsInCart }
   } = useCartQuery();
-  const { cartItems } = useCartStore();
-  const totalPrice = useMemo(() => {
-    if (isSuccess && listModelsInCart) {
-      return listModelsInCart.cart.reduce(
-        (result, item) =>
-          result + Math.floor(item.price * (1 - (item.discount ?? 0)) * item.quantity),
-        0
-      );
-    } else {
-      return cartItems.reduce(
-        (result, item) =>
-          result + Math.floor(item.price * (1 - (item.discount ?? 0)) * item.quantity),
-        0
-      );
-    }
-  }, [cartItems, isSuccess, listModelsInCart]);
 
   const { handleOpen, DigitalCheckoutSuccessModal } = useDigitalCheckoutSuccessModal();
 
   const { approvePayPalOrder } = useOrderMutation();
   const validateSchema = yup.object({
-    total_price: yup.number(),
-    shipping_fee: yup.number(),
-    est_deli_time: yup.string(),
     district: yup.string(),
     ward: yup.string(),
     street: yup.string(),
     streetNo: yup.string(),
-    isPaid: yup.boolean(),
     extra_note: yup.string().optional()
   }) as yup.ObjectSchema<CheckoutForm>;
 
@@ -157,30 +136,20 @@ export function PaymentCheckoutPage() {
             label='Ghi chú'
             {...register('extra_note')}
           />
-          {/* {errors.note?.message && (
-            <Typography color='red' variant='small'>
-              {errors.note?.message}{' '}
+          {errors.extra_note?.message && (
+            <Typography placeholder='' color='red' variant='small'>
+              {errors.extra_note?.message}{' '}
             </Typography>
-          )} */}
+          )}
         </div>
       </form>
     );
   };
 
   const OrderDetails = () => {
-    const mockData = [
-      {
-        id: '0',
-        image: '',
-        name: '',
-        discount: 0,
-        price: 0,
-        numberBought: 0
-      }
-    ];
     return (
       <div className='flex flex-col gap-5 my-5'>
-        {mockData.map((item, index) => (
+        {listModelsInCart?.cart.map((item, index) => (
           <div key={index} className='flex gap-4 items-center'>
             <div className='w-1/6 m-auto'>
               <img src={item.image} alt={item.name} className='w-full block' />
@@ -189,15 +158,21 @@ export function PaymentCheckoutPage() {
               <Typography placeholder='' className='text-left w-1/2' variant='h5'>
                 {item.name}
               </Typography>
-              {item.discount > 0 ? (
+              {item.discount !== undefined && item.discount > 0 ? (
                 <div className='flex flex-col gap-2'>
                   <Chip
                     variant='ghost'
-                    value={<span className='line-through'>₫ {item.price.toLocaleString()}</span>}
+                    value={
+                      <span className='line-through'>
+                        ₫ {(item.price * item.quantity).toLocaleString()}
+                      </span>
+                    }
                   />
                   <Chip
                     variant='ghost'
-                    value={`₫ ${(item.price * (1 - item.discount)).toLocaleString()}`}
+                    value={`₫ ${Math.floor(
+                      item.price * (1 - item.discount) * item.quantity
+                    ).toLocaleString()}`}
                   />
                 </div>
               ) : (
@@ -205,9 +180,7 @@ export function PaymentCheckoutPage() {
               )}
               <Chip
                 value={
-                  <span className='normal-case'>
-                    Số lượng: {item.numberBought.toLocaleString()}
-                  </span>
+                  <span className='normal-case'>Số lượng: {item.quantity.toLocaleString()}</span>
                 }
               />
             </div>
@@ -218,9 +191,23 @@ export function PaymentCheckoutPage() {
   };
 
   const OrderSummary = () => {
-    const shippingFee = 30000;
-    const productPrice = totalPrice;
-    const discount = 0;
+    const SHIPPING_FEE = 30000;
+    const totalPrice = useMemo(() => {
+      if (listModelsInCart) {
+        return listModelsInCart.cart.reduce(
+          (result, item) => result + Math.floor(item.price * item.quantity),
+          0
+        );
+      } else return 0;
+    }, []);
+    const discount = useMemo(() => {
+      if (listModelsInCart) {
+        return listModelsInCart.cart.reduce(
+          (result, item) => result + Math.floor(item.price * (item.discount ?? 0) * item.quantity),
+          0
+        );
+      } else return 0;
+    }, []);
 
     const PayPalButtonWrapper = () => {
       const [{ isPending }] = usePayPalScriptReducer();
@@ -234,12 +221,7 @@ export function PaymentCheckoutPage() {
             createOrder={async () => {
               const { id } = await checkoutService.createPaypalOrder({
                 intent: 'CAPTURE',
-                orderInfo: {
-                  ...watch(),
-                  total_price: totalPrice,
-                  shipping_fee: 30000,
-                  est_deli_time: '1/1/2024'
-                }
+                orderInfo: { ...watch() }
               });
 
               return id;
@@ -259,7 +241,7 @@ export function PaymentCheckoutPage() {
           <Typography placeholder='' variant='h6'>
             Tổng phí sản phẩm
           </Typography>
-          <p className='flex-1 text-right'>₫ {productPrice.toLocaleString('en-US')}</p>
+          <p className='flex-1 text-right'>₫ {totalPrice.toLocaleString('en-US')}</p>
         </div>
         <div className='flex w-full'>
           <Typography placeholder='' variant='h6'>
@@ -271,7 +253,7 @@ export function PaymentCheckoutPage() {
           <Typography placeholder='' variant='h6'>
             Phí vận chuyển
           </Typography>
-          <p className='flex-1 text-right'>₫ {shippingFee.toLocaleString('en-US')}</p>
+          <p className='flex-1 text-right'>₫ {SHIPPING_FEE.toLocaleString('en-US')}</p>
         </div>
         <hr />
         <div className='flex w-full'>
@@ -279,7 +261,7 @@ export function PaymentCheckoutPage() {
             Tổng chi phí
           </Typography>
           <p className='flex-1 text-right'>
-            ₫ {(productPrice - discount + shippingFee).toLocaleString('en-US')}
+            ₫ {(totalPrice - discount + SHIPPING_FEE).toLocaleString('en-US')}
           </p>
         </div>
         <PayPalScriptProvider

@@ -81,8 +81,14 @@ export default function App() {
         {
           type: 'skeleton',
           path: '/cart',
-          name: MENU_BAR.cart,
-          element: <ShoppingCartPage />
+          pathReplace: '/admin/tracking-order',
+          name: MENU_BAR.cartOrTrackingOrder,
+          element: <ShoppingCartPage />,
+          elementReplace: (
+            <AdminProtected>
+              <></>
+            </AdminProtected>
+          )
         },
         {
           type: 'logout-btn',
