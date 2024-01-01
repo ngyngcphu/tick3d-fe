@@ -143,7 +143,9 @@ export const DesktopNavbar: Component<{
                       </span>
                     </ListItem>
                   </Link>
-                  <Link to='/cart'>
+                  <Link
+                    to={isSuccess && data?.role === 'MANAGER' ? '/admin/tracking-order' : '/cart'}
+                  >
                     <ListItem
                       placeholder=''
                       className={
@@ -162,18 +164,9 @@ export const DesktopNavbar: Component<{
                         setActivePage(1);
                       }}
                     >
-                      {/* {isSuccess && data?.role === 'MANAGER' ? (
+                      {isSuccess && data?.role === 'MANAGER' ? (
                         <span className='truncate'>{MENU_BAR.manageOrder}</span>
-                      ) : (
-                        totalCartItems > 0 ? (
-                          <Badge content={totalCartItems}>
-                            <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
-                          </Badge>
-                        ) : (
-                          <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
-                        )
-                      )} */}
-                      {totalCartItems > 0 ? (
+                      ) : totalCartItems > 0 ? (
                         <Badge content={totalCartItems}>
                           <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
                         </Badge>
@@ -188,7 +181,9 @@ export const DesktopNavbar: Component<{
               <Link
                 key={idx}
                 to={
-                  menuItem.name !== MENU_BAR.loginOrStar && menuItem.name !== MENU_BAR.signupOrOrder
+                  menuItem.name !== MENU_BAR.loginOrStar &&
+                  menuItem.name !== MENU_BAR.signupOrOrder &&
+                  menuItem.name !== MENU_BAR.cartOrTrackingOrder
                     ? menuItem.path
                     : isSuccess && menuItem.pathReplace
                     ? menuItem.pathReplace
@@ -228,7 +223,9 @@ export const DesktopNavbar: Component<{
                     ))}
                   {menuItem.name === MENU_BAR.signupOrOrder &&
                     (isSuccess ? (
-                      <span className='truncate'>{MENU_BAR.order}</span>
+                      data?.role === 'CUSTOMER' ? (
+                        <span className='truncate'>{MENU_BAR.order}</span>
+                      ) : null
                     ) : (
                       <Chip
                         size='lg'
