@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/ngyngcphu/tick3d-fe/compare/v1.3.0...v1.3.1) (2024-01-01)
+
+
+### Bug Fixes
+
+* **env:** add env paypal client id in workflows ([073028f](https://github.com/ngyngcphu/tick3d-fe/commit/073028f9347a4ab5717de351dea7bba8dac6bf9c))
+
 ## [1.3.0](https://github.com/ngyngcphu/tick3d-fe/compare/v1.2.0...v1.3.0) (2024-01-01)
 
 
