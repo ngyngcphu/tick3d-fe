@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import {
@@ -136,9 +136,22 @@ export function CategoryPage() {
   /*
    * UPLOAD MODEL DIALOG
    */
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const handleOpen = () => setOpen(!open);
 
+  type ErrorsState = {
+    name?: string | null;
+    price?: string | null;
+    gcode?: string | null;
+    imageUrl?: string | null;
+    discount?: string | null;
+    category_id?: string | null;
+    description?: string | null;
+    subImageUrls?: string | null;
+  };
+  const [errors, setErrors] = useState<ErrorsState>({});
+
+  const [subImageUrl, setSubImageUrl] = useState('');
   const [uploadForm, setUploadForm] = useState<DefaultModel>({
     name: '',
     price: 0,
@@ -150,23 +163,54 @@ export function CategoryPage() {
     discount: 0
   });
 
-  const [subImageUrl, setSubImageUrl] = useState('');
-
-  const handleInputChange = (e, name: string) => {
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
+    name: string
+  ) => {
     const { value } = e.target;
+    const errorMessage = validateInput(value, name);
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
     setUploadForm((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSelectChange = (e) => {
+  const handleSelectChange = (e: string | undefined) => {
+    if (e === undefined) return;
     setUploadForm((prevState) => ({ ...prevState, category_id: e }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      category_id: null
+    }));
   };
 
-  const handleAddSubImageUrl = () => {
-    setUploadForm((prevState) => ({
-      ...prevState,
-      subImageUrls: [...prevState.subImageUrls, subImageUrl]
-    }));
-    setSubImageUrl('');
+  const handleImageUrlChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    try {
+      await validateImageUrl(url);
+      setUploadForm((prevState) => ({ ...prevState, imageUrl: url }));
+      setErrors((prevErrors) => ({ ...prevErrors, imageUrl: null }));
+    } catch (error) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        imageUrl: 'URL does not point to a valid image'
+      }));
+    }
+  };
+
+  const handleAddSubImageUrl = async () => {
+    try {
+      await validateImageUrl(subImageUrl);
+      setUploadForm((prevState) => ({
+        ...prevState,
+        subImageUrls: [...prevState.subImageUrls, subImageUrl]
+      }));
+      setSubImageUrl('');
+      setErrors((prevErrors) => ({ ...prevErrors, subImageUrls: null }));
+    } catch (error) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        subImageUrls: 'URL does not point to a valid image'
+      }));
+    }
   };
 
   const handleDeleteSubImageUrl = (index: number) => {
@@ -183,16 +227,76 @@ export function CategoryPage() {
   });
 
   const handleSubmit = async () => {
-    await uploadModel.mutateAsync(uploadForm);
-    setUploadForm({
-      name: '',
-      price: 0,
-      gcode: '',
-      imageUrl: '',
-      category_id: '',
-      description: '',
-      subImageUrls: [],
-      discount: 0
+    const nameError = validateInput(uploadForm.name, 'name');
+    const priceError = validateInput(uploadForm.price, 'price');
+    const gcodeError = validateInput(uploadForm.gcode, 'gcode');
+    const imageUrlError = validateInput(uploadForm.imageUrl, 'imageUrl');
+    const discountError = validateInput(uploadForm.discount, 'discount');
+    const descriptionError = validateInput(uploadForm.description, 'description');
+
+    setErrors({
+      name: nameError,
+      price: priceError,
+      gcode: gcodeError,
+      imageUrl: imageUrlError,
+      discount: discountError,
+      description: descriptionError
+    });
+
+    if (uploadForm.category_id === '' || uploadForm.category_id === null) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        category_id: 'Please select a category'
+      }));
+      return;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        category_id: ''
+      }));
+    }
+
+    if (Object.values(errors).every((error) => error === null)) {
+      await uploadModel.mutateAsync(uploadForm);
+      setUploadForm({
+        name: '',
+        price: 0,
+        gcode: '',
+        imageUrl: '',
+        category_id: '',
+        description: '',
+        subImageUrls: [],
+        discount: 0
+      });
+      setErrors({});
+      handleOpen();
+    }
+  };
+
+  const validateInput = (value: string | number, name: string) => {
+    if (name === 'discount') {
+      const num = Number(value);
+      if (num < 0 || num > 1) {
+        return 'Discount should be between 0 and 1';
+      }
+    } else if (name === 'price') {
+      if (!Number.isInteger(+value)) {
+        return 'Price should be an integer';
+      }
+    } else {
+      if (value === null || value === '') {
+        return `${name.charAt(0).toUpperCase() + name.slice(1)} should not be empty`;
+      }
+    }
+    return null;
+  };
+
+  const validateImageUrl = async (url: string) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => reject(new Error('Invalid URL'));
+      img.src = url;
     });
   };
 
@@ -509,34 +613,124 @@ export function CategoryPage() {
         className='overflow-y-auto overflow-scroll'
       >
         <DialogHeader placeholder=''>Thêm mô hình</DialogHeader>
-        <DialogBody placeholder='' className='flex flex-col gap-5 overflow-y-auto max-h-[500px]'>
-          <Input label='Name' onChange={(e) => handleInputChange(e, 'name')} />
-          <Input label='Price' type='number' onChange={(e) => handleInputChange(e, 'price')} />
-          <Input label='GCode' onChange={(e) => handleInputChange(e, 'gcode')} />
-          <Input label='Image URL' onChange={(e) => handleInputChange(e, 'imageUrl')} />
-          <Input
-            label='Discount'
-            type='number'
-            onChange={(e) => handleInputChange(e, 'discount')}
-          />
-          <Select placeholder='' label='Category' onChange={handleSelectChange}>
-            {listCategories &&
-              listCategories.map((category, index) => (
-                <Option key={index} value={category.id}>
-                  {category.name}
-                </Option>
-              ))}
-          </Select>
-          <Textarea label='Description' onChange={(e) => handleInputChange(e, 'description')} />
-          <div className='flex gap-5'>
+        <DialogBody placeholder='' className='flex flex-col gap-5 overflow-scroll h-[35rem]'>
+          <div>
             <Input
-              label='Sub Image URL'
-              onChange={(e) => setSubImageUrl(e.target.value)}
-              value={subImageUrl}
+              crossOrigin=''
+              label='Name'
+              onChange={(e) => handleInputChange(e, 'name')}
+              error={!!errors.name}
             />
-            <Button placeholder='' type='button' onClick={handleAddSubImageUrl}>
-              Add
-            </Button>
+            {errors.name && (
+              <Typography placeholder='' variant='small' color='red'>
+                {errors.name}
+              </Typography>
+            )}
+          </div>
+          <div>
+            <Input
+              crossOrigin=''
+              label='Price'
+              onChange={(e) => handleInputChange(e, 'price')}
+              error={!!errors.price}
+            />
+            {errors.price && (
+              <Typography placeholder='' variant='small' color='red'>
+                {errors.price}
+              </Typography>
+            )}
+          </div>
+          <div>
+            <Input
+              crossOrigin=''
+              label='GCode'
+              onChange={(e) => handleInputChange(e, 'gcode')}
+              error={!!errors.gcode}
+            />
+            {errors.gcode && (
+              <Typography placeholder='' variant='small' color='red'>
+                {errors.gcode}
+              </Typography>
+            )}
+          </div>
+          <div>
+            <Input
+              crossOrigin=''
+              label='Image URL'
+              onChange={handleImageUrlChange}
+              error={!!errors.imageUrl}
+            />
+            {errors.imageUrl && (
+              <Typography placeholder='' variant='small' color='red'>
+                {errors.imageUrl}
+              </Typography>
+            )}
+          </div>
+          <div>
+            <Input
+              crossOrigin=''
+              label='Discount'
+              onChange={(e) => handleInputChange(e, 'discount')}
+              error={!!errors.discount}
+            />
+            {errors.discount && (
+              <Typography placeholder='' variant='small' color='red'>
+                {errors.discount}
+              </Typography>
+            )}
+          </div>
+          <div>
+            {listCategories && (
+              <Select
+                placeholder=''
+                label='Category'
+                onChange={handleSelectChange}
+                error={!!errors.category_id}
+                className='h-10'
+              >
+                {listCategories.map((category, index) => (
+                  <Option key={index} value={category.id}>
+                    {category.name}
+                  </Option>
+                ))}
+              </Select>
+            )}
+            {errors.category_id && (
+              <Typography placeholder='' variant='small' color='red'>
+                {errors.category_id}
+              </Typography>
+            )}
+          </div>
+          <div>
+            <Textarea
+              label='Description'
+              onChange={(e) => handleInputChange(e, 'description')}
+              error={!!errors.description}
+            />
+            {errors.description && (
+              <Typography placeholder='' variant='small' color='red'>
+                {errors.description}
+              </Typography>
+            )}
+          </div>
+          <div>
+            <div className='flex gap-5'>
+              <Input
+                crossOrigin=''
+                label='Sub Image URL'
+                onChange={(e) => setSubImageUrl(e.target.value)}
+                value={subImageUrl}
+                error={!!errors.subImageUrls}
+              />
+              <Button placeholder='' type='button' onClick={handleAddSubImageUrl}>
+                Add
+              </Button>
+            </div>
+            {errors.subImageUrls && (
+              <Typography placeholder='' variant='small' color='red'>
+                {errors.subImageUrls}
+              </Typography>
+            )}
           </div>
           {uploadForm.subImageUrls.map((url, index) => (
             <div key={index} className='flex justify-between'>
@@ -557,15 +751,7 @@ export function CategoryPage() {
           <Button placeholder='' variant='text' color='red' onClick={handleOpen} className='mr-1'>
             <span>Cancel</span>
           </Button>
-          <Button
-            placeholder=''
-            variant='gradient'
-            color='green'
-            onClick={() => {
-              handleOpen();
-              handleSubmit();
-            }}
-          >
+          <Button placeholder='' variant='gradient' color='green' onClick={() => handleSubmit()}>
             <span>Confirm</span>
           </Button>
         </DialogFooter>
