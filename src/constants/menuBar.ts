@@ -1,21 +1,12 @@
 export const MENU_BAR = {
   home: 'Home',
   category: 'Categories',
-  upload: 'Upload & print',
+  uploadOrDashboard: 'Upload & print',
   cart: 'Shopping Cart',
-  login: 'Log in',
-  signup: 'Sign up',
-  checkout: 'Check out',
+  loginOrStar: 'Log in',
+  signupOrOrder: 'Sign up',
+  star: 'Stars',
+  order: 'My order',
+  dashboard: 'Dashboard',
   manageOrder: 'Manage Order'
 };
-
-export const CATEGORY_LIST = [
-  'All things',
-  'Fashion',
-  'Hobby',
-  'Learning',
-  'Tools',
-  'Toys & Games',
-  'Art',
-  'Household'
-];

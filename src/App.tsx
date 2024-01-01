@@ -1,3 +1,4 @@
+import { AdminProtected, ProtectedRoutes } from '@components/common';
 import { MENU_BAR } from '@constants';
 import { AppLayout } from '@layouts';
 import {
@@ -5,11 +6,15 @@ import {
   DetailModelPage,
   HomePage,
   LoginPage,
+  MyOrderPage,
+  MyStarPage,
   ShoppingCartPage,
   SignUpPage,
   PaymentCheckoutPage,
-  ManagementOrderPage
+  ManagementOrderPage,
+  AdminDashboard
 } from '@pages';
+import { emitEvent } from '@hooks';
 
 export default function App() {
   return (
@@ -30,8 +35,14 @@ export default function App() {
         {
           type: 'item',
           path: '/up',
-          name: MENU_BAR.upload,
-          element: <></>
+          pathReplace: '/admin/dashboard',
+          name: MENU_BAR.uploadOrDashboard,
+          element: <></>,
+          elementReplace: (
+            <AdminProtected>
+              <AdminDashboard />
+            </AdminProtected>
+          )
         },
         {
           type: 'item',
@@ -43,26 +54,47 @@ export default function App() {
         {
           type: 'item',
           path: '/login',
-          name: MENU_BAR.login,
-          element: <LoginPage />
+          pathReplace: '/my-stars',
+          name: MENU_BAR.loginOrStar,
+          element: <LoginPage />,
+          elementReplace: (
+            <ProtectedRoutes>
+              <MyStarPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'item',
           path: '/signup',
-          name: MENU_BAR.signup,
-          element: <SignUpPage />
+          pathReplace: '/my-orders',
+          name: MENU_BAR.signupOrOrder,
+          element: <SignUpPage />,
+          elementReplace: (
+            <ProtectedRoutes>
+              <MyOrderPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'skeleton',
           path: '/checkout',
           name: 'Checkout',
-          element: <PaymentCheckoutPage />
+          element: (
+            <ProtectedRoutes>
+              <PaymentCheckoutPage />
+            </ProtectedRoutes>
+          )
         },
         {
           type: 'skeleton',
           path: '/cart',
           name: MENU_BAR.cart,
           element: <ShoppingCartPage />
+        },
+        {
+          type: 'logout-btn',
+          name: 'Log out',
+          onClick: () => emitEvent('logout')
         }
       ]}
       child={[

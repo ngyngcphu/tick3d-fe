@@ -1,13 +1,40 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Card, CardBody, Input, Button, Typography } from '@material-tailwind/react';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { authService } from '@services';
-import { useUserStore } from '@states';
+import { useMutation } from '@tanstack/react-query';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Card, CardBody, Input, Button, Typography } from '@material-tailwind/react';
+import { MENU_BAR } from '@constants';
+import { useUserQuery, useCartQuery, useCartMutation } from '@hooks';
+import { authService } from '@services';
+import { useMenuBarStore, useCartStore } from '@states';
 
 export function LoginPage() {
-  const { getUserData } = useUserStore();
+  const { state } = useLocation();
+  const navigate = useNavigate();
+
+  const {
+    info: { isSuccess, refetch: refetchUserInfo }
+  } = useUserQuery();
+  const {
+    listModelsInCart: { refetch: refetchTotalModelsInCart }
+  } = useCartQuery();
+  const { createCart } = useCartMutation();
+
+  const { cartItems, totalCartItems, resetCart } = useCartStore();
+  const { setSelectedMenu } = useMenuBarStore();
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (state && state.from) {
+        navigate(state.from);
+      } else {
+        navigate('/');
+      }
+    }
+  }, [isSuccess, state, navigate]);
 
   const validateSchema = yup.object({
     email: yup.string().required('Vui lòng nhập email').email('Email không đúng định dạng'),
@@ -29,14 +56,32 @@ export function LoginPage() {
     resolver: yupResolver(validateSchema)
   });
 
+  const login = useMutation({
+    mutationKey: ['login'],
+    mutationFn: (data: LoginFormData) => authService.login(data)
+  });
+
   const submit = async (data: LoginFormData) => {
     try {
-      await authService.login(data);
-      await getUserData();
+      await login.mutateAsync(data);
+      await refetchUserInfo();
+      if (totalCartItems > 0) {
+        await createCart.mutateAsync({
+          models: cartItems.map((item) => ({ id: item.id, quantity: item.quantity }))
+        });
+        localStorage.removeItem('cartLocalStorage');
+        resetCart();
+      }
+      if (state && state.from) {
+        navigate(state.from);
+      } else {
+        navigate('/');
+        setSelectedMenu(MENU_BAR.home);
+      }
       toast.success('Login successfully');
+      await refetchTotalModelsInCart();
     } catch (err) {
-      const error = err as Error;
-      toast.error(error.message);
+      toast.error(err as string);
     }
   };
 
@@ -45,12 +90,12 @@ export function LoginPage() {
       className='w-full h-full flex items-center justify-center bg-cover bg-no-repeat p-0 m-0 '
       style={{
         background: `linear-gradient(rgba(18, 18, 18, 0.4), rgba(18, 18, 18, 0.4)),
-          url(https://www.kisscom.co.uk/media/pages/news/3d-printing-a-world-of-possibilities/5824bcf0fe-1666776023/blog_31.08.18.png)`
+          url('./src/assets/auth-background.png')`
       }}
     >
-      <Card className='bg-black/50 rounded-none' shadow={false}>
-        <CardBody className='flex flex-col gap-8'>
-          <Typography className='font-normal' variant='h2' color='white'>
+      <Card placeholder='' className='bg-black/50 rounded-none' shadow={false}>
+        <CardBody placeholder='' className='flex flex-col gap-8'>
+          <Typography placeholder='' className='font-normal' variant='h2' color='white'>
             Đăng nhập
           </Typography>
           <form
@@ -79,7 +124,7 @@ export function LoginPage() {
                   {...register('email', { minLength: 8, required: true })}
                 />
                 {errors.email?.message && (
-                  <Typography color='red' variant='small'>
+                  <Typography placeholder='' color='red' variant='small'>
                     {errors.email?.message}{' '}
                   </Typography>
                 )}
@@ -106,7 +151,7 @@ export function LoginPage() {
                   {...register('password', { minLength: 8, required: true })}
                 />
                 {errors.password?.message && (
-                  <Typography color='red' variant='small'>
+                  <Typography placeholder='' color='red' variant='small'>
                     {errors.password?.message}{' '}
                   </Typography>
                 )}
@@ -114,6 +159,7 @@ export function LoginPage() {
             </div>
 
             <Button
+              placeholder=''
               className='py-2 px-8 bg-transparent border rounded-none border-white capitalize w-fit font-normal text-base'
               type='submit'
             >

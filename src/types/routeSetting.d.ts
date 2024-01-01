@@ -2,7 +2,9 @@ type RouteItem = {
   name: string;
   type: 'item';
   path: string;
+  pathReplace?: string;
   element: React.ReactElement;
+  elementReplace?: React.ReactElement;
 };
 
 type LogoutBtn = {
@@ -15,7 +17,9 @@ type RouteSkeleton = {
   name: string;
   type: 'skeleton';
   path: string;
+  pathReplace?: string;
   element: React.ReactElement;
+  elementReplace?: React.ReactElement;
 };
 
 type RouteMenuItem = RouteItem | RouteSkeleton | LogoutBtn | 'divider';

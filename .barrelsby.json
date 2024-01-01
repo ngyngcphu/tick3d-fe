@@ -4,13 +4,15 @@
     "./src/components/home",
     "./src/components/model",
     "./src/components/category",
+    "./src/components/dashboard",
     "./src/constants",
     "./src/hooks",
     "./src/interfaces",
     "./src/layouts",
     "./src/pages",
     "./src/services",
-    "./src/states"
+    "./src/states",
+    "./src/utils"
   ],
   "delete": true
 }
