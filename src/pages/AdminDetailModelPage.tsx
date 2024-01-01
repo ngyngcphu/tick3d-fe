@@ -240,7 +240,15 @@ export function AdminDetailModelPage() {
           <Typography placeholder='' className='font-bold text-2xl lg:mb-3'>
             {modelData ? modelData.name : ''}
           </Typography>
-          <ImageSlider images={modelData ? modelData.subImages : []} />
+          <div className='flex justify-center w-4'>
+            <ImageSlider
+              images={
+                modelData
+                  ? [modelData.imageUrl, modelData.subImages[0], modelData.subImages[1]]
+                  : []
+              }
+            />
+          </div>
         </div>
         <div className='mt-5'>
           <Typography placeholder='' className='font-bold lg:mb-3' variant='h6'>
