@@ -129,7 +129,7 @@ export function SignUpPage() {
       className='w-full h-full flex items-center justify-center bg-cover bg-no-repeat p-0 m-0 '
       style={{
         background: `linear-gradient(rgba(18, 18, 18, 0.4), rgba(18, 18, 18, 0.4)),
-          url('./src/assets/auth-background.png')`
+          url('https://ssps-minio.tickflow.net/tick3d/auth-background.png')`
       }}
     >
       {!isOTPForm ? (

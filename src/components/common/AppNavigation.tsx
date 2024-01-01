@@ -11,10 +11,13 @@ import {
   useSidebarMenu
 } from '@components/common';
 import { ScreenSize, MENU_BAR } from '@constants';
-import { useScreenSize, useCategoryQuery, useCartQuery } from '@hooks';
+import { useScreenSize, useCategoryQuery, useCartQuery, useUserQuery } from '@hooks';
 import { useMenuBarStore, usePaginationStore, useCartStore } from '@states';
 
 export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
+  const {
+    info: { data: userInfo, isSuccess: isAdmin }
+  } = useUserQuery();
   const {
     listModelsInCart: { data: listModelsInCart, isSuccess }
   } = useCartQuery();
@@ -39,7 +42,7 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
 
     return (
       <Link
-        to='/cart'
+        to={isAdmin && userInfo?.role === 'MANAGER' ? '/admin/tracking-order' : '/cart'}
         className={
           'focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold rounded-lg text-lg w-fit text-center' +
           (selectedMenu === MENU_BAR.cartOrTrackingOrder
@@ -56,7 +59,9 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
           setActivePage(1);
         }}
       >
-        {totalCartItems > 0 || (isSuccess && (listModelsInCart?.total ?? 0 > 0)) ? (
+        {isAdmin && userInfo?.role === 'MANAGER' ? (
+          <span className='truncate'>{MENU_BAR.manageOrder}</span>
+        ) : totalCartItems > 0 || (isSuccess && (listModelsInCart?.total ?? 0 > 0)) ? (
           <Badge content={isSuccess ? listModelsInCart?.total : totalCartItems}>
             <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
           </Badge>

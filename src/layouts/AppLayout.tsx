@@ -31,6 +31,9 @@ export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ m
     if (pathname === '/admin/dashboard') {
       setSelectedMenu(MENU_BAR.uploadOrDashboard);
     }
+    if (pathname === '/admin/tracking-order') {
+      setSelectedMenu(MENU_BAR.cartOrTrackingOrder);
+    }
   }, [pathname, setSelectedMenu, setIsCategoryItem]);
 
   const handleOpenDialog = () => {
