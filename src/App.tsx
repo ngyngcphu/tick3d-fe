@@ -44,17 +44,6 @@ export default function App() {
             </AdminProtected>
           )
         },
-        {
-          type: 'item',
-          path: '/manageOrder',
-          name: MENU_BAR.manageOrder,
-          element: <></>,
-          elementReplace: (
-            <AdminProtected>
-              <ManagementOrderPage />
-            </AdminProtected>
-          )
-        },
         'divider',
         {
           type: 'item',
@@ -98,7 +87,7 @@ export default function App() {
           element: <ShoppingCartPage />,
           elementReplace: (
             <AdminProtected>
-              <></>
+              <ManagementOrderPage />
             </AdminProtected>
           )
         },

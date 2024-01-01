@@ -37,7 +37,7 @@ jobs:
       - name: Setup env file
         run: |
           echo VITE_BACKEND_URL=${{ vars.BACKEND_URL }} >> .env
-          echo VITE_MOCK_BACKEND_URL=${{ vars.MOCK_BACKEND_URL }} >> .env
+          echo VITE_PAYPAL_CLIENT_ID=${{ vars.PAYPAL_CLIENT_ID }} >> .env
     
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2

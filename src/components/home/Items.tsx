@@ -84,7 +84,6 @@ export function Items() {
                           }
                         ]
                       });
-                      setListFlagIsModelAdded(item.id, true);
                     } else if (!isSuccess && !listFlagIsModelAdded[item.id]) {
                       addModelToCart({
                         id: item.id,

@@ -8,5 +8,5 @@ export const MENU_BAR = {
   star: 'Stars',
   order: 'My order',
   dashboard: 'Dashboard',
-  manageOrder: 'Manage Order'
+  manageOrder: 'Manage Orders'
 };
