@@ -21,10 +21,10 @@ export function PaymentCheckoutPage() {
 
   const { approvePayPalOrder } = useOrderMutation();
   const validateSchema = yup.object({
-    district: yup.string(),
-    ward: yup.string(),
-    street: yup.string(),
-    streetNo: yup.string(),
+    district: yup.string().required('Nhập tên quận'),
+    ward: yup.string().required('Nhập tên phường'),
+    street: yup.string().required('Nhập tên Đường'),
+    streetNo: yup.string().required('Nhập tên đường'),
     extra_note: yup.string().optional()
   }) as yup.ObjectSchema<CheckoutForm>;
 
@@ -58,6 +58,7 @@ export function PaymentCheckoutPage() {
           size='lg'
           label='Quận'
           crossOrigin=''
+          required={true}
           {...register('district', { required: true })}
         />
         {errors.district?.message && (
@@ -77,6 +78,7 @@ export function PaymentCheckoutPage() {
           size='lg'
           label='Phường'
           crossOrigin=''
+          required={true}
           {...register('ward', { required: true })}
         />
         {errors.ward?.message && (
@@ -96,6 +98,7 @@ export function PaymentCheckoutPage() {
           size='lg'
           label='Đường'
           crossOrigin=''
+          required={true}
           {...register('street', { required: true })}
         />
         {errors.street?.message && (
@@ -115,6 +118,7 @@ export function PaymentCheckoutPage() {
           size='lg'
           label='Số đường'
           crossOrigin=''
+          required={true}
           {...register('streetNo', { required: true })}
         />
         {errors.streetNo?.message && (
