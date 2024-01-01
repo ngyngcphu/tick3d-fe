@@ -162,6 +162,17 @@ export const DesktopNavbar: Component<{
                         setActivePage(1);
                       }}
                     >
+                      {/* {isSuccess && data?.role === 'MANAGER' ? (
+                        <span className='truncate'>{MENU_BAR.manageOrder}</span>
+                      ) : (
+                        totalCartItems > 0 ? (
+                          <Badge content={totalCartItems}>
+                            <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+                          </Badge>
+                        ) : (
+                          <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />
+                        )
+                      )} */}
                       {totalCartItems > 0 ? (
                         <Badge content={totalCartItems}>
                           <ShoppingCartIcon strokeWidth={2} className='w-6 h-6' />

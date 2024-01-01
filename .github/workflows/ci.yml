@@ -25,6 +25,7 @@ jobs:
       - name: Setup env file
         run: |
           echo VITE_BACKEND_URL=${{ vars.BACKEND_URL }} >> .env
+          echo VITE_PAYPAL_CLIENT_ID=${{ vars.PAYPAL_CLIENT_ID }} >> .env
 
       - name: Install dependencies
         run: yarn
