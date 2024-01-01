@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/ngyngcphu/tick3d-fe/compare/v1.3.2...v1.3.3) (2024-01-01)
+
+
+### Bug Fixes
+
+* **navigation:** display Management Orders when logging in by admin ([8f47e32](https://github.com/ngyngcphu/tick3d-fe/commit/8f47e32346aa26187b3b5ec2ee34edcec61dd814))
+
 ## [1.3.2](https://github.com/ngyngcphu/tick3d-fe/compare/v1.3.1...v1.3.2) (2024-01-01)
 
 
