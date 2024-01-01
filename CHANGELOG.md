@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.3.0](https://github.com/ngyngcphu/tick3d-fe/compare/v1.2.0...v1.3.0) (2024-01-01)
+
+
+### Features
+
+* **add-model:** add Add model dialog ([ccdf95a](https://github.com/ngyngcphu/tick3d-fe/commit/ccdf95a172c88180c59797670380c2514058f6eb))
+* **add-model:** add button Add model of manager ([70e8453](https://github.com/ngyngcphu/tick3d-fe/commit/70e845334804351a9ff57a02f9f3ba0537d54aa4))
+* **admin:** add menu option Dashboard for admin ([a5a9e69](https://github.com/ngyngcphu/tick3d-fe/commit/a5a9e6952a320f750c0ea88b9d8906a1360da3b1))
+* **cart:** add api for user cart ([a2be195](https://github.com/ngyngcphu/tick3d-fe/commit/a2be195c137b2c351ea7129a1be5782c97d73865))
+* **cart:** avoid duplicate mutation ([e006bb8](https://github.com/ngyngcphu/tick3d-fe/commit/e006bb8489e3118e819013d3a05815a7525fcece))
+* **cart:** complete api for user cart ([85d536e](https://github.com/ngyngcphu/tick3d-fe/commit/85d536ed23b20256ef0ea0f01844c7ac2e8f2317))
+* **cart:** resolve by check model in cart ([24f6f43](https://github.com/ngyngcphu/tick3d-fe/commit/24f6f4395d461d5fbc253844034ccf26fabaa095))
+* **checkout:** add successful notification model for PayPal checkout ([2d57351](https://github.com/ngyngcphu/tick3d-fe/commit/2d573519b44fb2067bb3b0c69eb600927551519c))
+* **checkout:** integrate PayPal ([1414f89](https://github.com/ngyngcphu/tick3d-fe/commit/1414f899c86f490adbdf50d3e52b24eac3611311))
+* **manage-order:** resolve conflict manageOrder branch ([ab108e2](https://github.com/ngyngcphu/tick3d-fe/commit/ab108e2c60591452ee270eb34ff7505f1918eb11))
+* **search bar:** implement search bar ([0e2c606](https://github.com/ngyngcphu/tick3d-fe/commit/0e2c6065e61c0d7a127562a339445681301fea6e))
+* **search bar:** implement search page for mobile view ([7807ab8](https://github.com/ngyngcphu/tick3d-fe/commit/7807ab8b8e484f1e01e0aaaf28f350880cc750b6))
+
+
+### Bug Fixes
+
+* **add-model:** fix bug and add validation ([2882703](https://github.com/ngyngcphu/tick3d-fe/commit/28827035641d9f24b7b10cd00c4f02117198014f))
+* **cart:** reset cart after user logged out ([c61923c](https://github.com/ngyngcphu/tick3d-fe/commit/c61923c829b48919e6f004aa64a5958f728ff77c))
+* **env:** remove redundancy library and add paypal id into env-example ([6a1080a](https://github.com/ngyngcphu/tick3d-fe/commit/6a1080a4224788404d751a9fea5a097d6cc78f1e))
+* **layout:** spread sub-image of detail model page in view admin ([83be349](https://github.com/ngyngcphu/tick3d-fe/commit/83be3498207475018bd63b7faac9f088e6d881fc))
+* **menu-bar:** rename item cart ([dc6166f](https://github.com/ngyngcphu/tick3d-fe/commit/dc6166f0aeb4c15683f914e3f68f1b26683f5667))
+* **menu-bar:** rename item cart on app layout ([88aab02](https://github.com/ngyngcphu/tick3d-fe/commit/88aab0213d71dbaa74a52ea824068dd4064392dc))
+* **menu-bar:** rename item cart on desktop navigation bar ([8fe0793](https://github.com/ngyngcphu/tick3d-fe/commit/8fe079312b81f4ef3b2833d69ba24dee6aa0a205))
+* **payment:** remove payload redundancy when calling api ([0d0db9f](https://github.com/ngyngcphu/tick3d-fe/commit/0d0db9f16a34a2766974dd25427f2949bf2a0b45))
+* **search bar:** call service directly to resolve search result delay ([3fd8998](https://github.com/ngyngcphu/tick3d-fe/commit/3fd899873ac7f3f0538d2936f84e1bdc956ca512))
+* **searchmobile:** add missing placeholder on Dialog and DialogBody ([a88917c](https://github.com/ngyngcphu/tick3d-fe/commit/a88917cb6c1b28cbf368b67ee2fa1d2fbbb0cc73))
+* **UI:** add missing property placeholder ([b89e36b](https://github.com/ngyngcphu/tick3d-fe/commit/b89e36b0d720c2148de6eba70295923de95a8304))
+
 ## [1.2.0](https://github.com/ngyngcphu/tick3d-fe/compare/v1.1.1...v1.2.0) (2023-12-30)
 
 
