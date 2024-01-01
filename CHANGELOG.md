@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/ngyngcphu/tick3d-fe/compare/v1.3.1...v1.3.2) (2024-01-01)
+
+
+### Bug Fixes
+
+* **checkout:** add required on checkout form; work for ui only ([0caf727](https://github.com/ngyngcphu/tick3d-fe/commit/0caf727b52c34ac021e3cfcc6d0a863a77ae07a8))
+
 ## [1.3.1](https://github.com/ngyngcphu/tick3d-fe/compare/v1.3.0...v1.3.1) (2024-01-01)
 
 
