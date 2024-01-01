@@ -42,12 +42,12 @@ export const AppNavigation: Component<{ menu: RouteMenu }> = ({ menu }) => {
         to='/cart'
         className={
           'focus:bg-blue-100 active:bg-blue-100 focus:text-blue/1 active:text-blue/1 focus:font-bold active:font-bold rounded-lg text-lg w-fit text-center' +
-          (selectedMenu === MENU_BAR.cart
+          (selectedMenu === MENU_BAR.cartOrTrackingOrder
             ? ' bg-blue-100 text-blue/1 font-bold p-2 cursor-pointer'
             : '')
         }
         onClick={() => {
-          setSelectedMenu(MENU_BAR.cart);
+          setSelectedMenu(MENU_BAR.cartOrTrackingOrder);
           setIsCategoryItem(false);
           setSelectedCategoryItem({
             id: '',
