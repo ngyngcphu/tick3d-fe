@@ -20,35 +20,40 @@ export const ManageOrderProduct: Component<{ row: Row<Order>; index: number }> =
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
         </td>
       ))}
-      <Dialog open={openDialog} handler={() => setOpenDialog(!openDialog)}>
-        <DialogHeader className='flex justify-between border-b-2 border-gray-200'>
-          <Typography variant='h4'>{`Chi tiết đơn hàng ${row.original.idOrder}`}</Typography>
+      <Dialog placeholder='' open={openDialog} handler={() => setOpenDialog(!openDialog)}>
+        <DialogHeader placeholder='' className='flex justify-between border-b-2 border-gray-200'>
+          <Typography
+            placeholder=''
+            variant='h4'
+          >{`Chi tiết đơn hàng ${row.original.idOrder}`}</Typography>
           <XMarkIcon
             width={32}
             className='cursor-pointer hover:text-red-500'
             onClick={() => setOpenDialog(!false)}
           />
         </DialogHeader>
-        <DialogBody>
+        <DialogBody placeholder=''>
           <div className='mb-5'>
-            <Typography variant='h5' className='text-black'>
+            <Typography placeholder='' variant='h5' className='text-black'>
               Thông tin khách hàng
             </Typography>
-            <Typography>{`Họ và tên: ${row.original.customerName}`}</Typography>
+            <Typography placeholder=''>{`Họ và tên: ${row.original.customerName}`}</Typography>
           </div>
           <div>
-            <Typography variant='h5' className='text-black mb-5'>
+            <Typography placeholder='' variant='h5' className='text-black mb-5'>
               Giỏ hàng
             </Typography>
             {row.original.listProduct.map((product) => (
               <div className='h-[50px] lg:h-[70px] mb-5 flex justify-between'>
                 <div className='flex gap-3 items-center'>
                   <img src={product.image} className='h-full w-[70px] lg:w-[100px]' />
-                  <Typography className='text-black font-bold'>{product.name}</Typography>
+                  <Typography placeholder='' className='text-black font-bold'>
+                    {product.name}
+                  </Typography>
                 </div>
                 <div className='flex gap-3 items-center'>
-                  <Typography>{`Số lượng: ${product.number}`}</Typography>
-                  <Button className='py-2 text-white font-bold bg-red-700 '>{`${
+                  <Typography placeholder=''>{`Số lượng: ${product.number}`}</Typography>
+                  <Button placeholder='' className='py-2 text-white font-bold bg-red-700 '>{`${
                     product.cost * product.number
                   } VND`}</Button>
                 </div>

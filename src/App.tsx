@@ -48,7 +48,12 @@ export default function App() {
           type: 'item',
           path: '/manageOrder',
           name: MENU_BAR.manageOrder,
-          element: <ManagementOrderPage />
+          element: <></>,
+          elementReplace: (
+            <AdminProtected>
+              <ManagementOrderPage />
+            </AdminProtected>
+          )
         },
         'divider',
         {

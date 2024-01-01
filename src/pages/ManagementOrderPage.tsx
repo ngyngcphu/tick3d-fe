@@ -52,6 +52,7 @@ export function ManagementOrderPage() {
         header: 'Chấp nhận',
         cell: () => (
           <Button
+            placeholder=''
             className='bg-transparent outline outline-2 outline-red-400 text-red-400'
             onClick={(e) => {
               e.stopPropagation();
@@ -68,6 +69,7 @@ export function ManagementOrderPage() {
         header: 'Từ chối',
         cell: () => (
           <Button
+            placeholder=''
             className='bg-transparent outline outline-2 outline-gray-700 text-gray-700'
             onClick={(e) => {
               e.stopPropagation();
@@ -211,32 +213,45 @@ export function ManagementOrderPage() {
     <div className='p-5 w-full'>
       <div className='px-[2rem] pb-[4rem] pt-[1rem] bg-white'>
         <Stepper
+          placeholder=''
           className='lg:px-20'
           activeStep={activeStep}
           isLastStep={(value) => setIsLastStep(value)}
           isFirstStep={(value) => setIsFirstStep(value)}
         >
-          <Step className='cursor-pointer'>
+          <Step placeholder='' className='cursor-pointer'>
             <ShoppingCartIcon className='w-[1.25rem] h-[1.25rem]' />
-            <Typography className='absolute -bottom-[2rem] w-max text-center text-black text-[0.5rem] lg:text-[0.75rem]'>
+            <Typography
+              placeholder=''
+              className='absolute -bottom-[2rem] w-max text-center text-black text-[0.5rem] lg:text-[0.75rem]'
+            >
               Đang chờ xử lý
             </Typography>
           </Step>
-          <Step className='cursor-pointer'>
+          <Step placeholder='' className='cursor-pointer'>
             <Cog8ToothIcon className='w-[1.25rem] h-[1.25rem]' />
-            <Typography className='absolute -bottom-[2rem] w-max text-center text-black text-[0.5rem] lg:text-[0.75rem]'>
+            <Typography
+              placeholder=''
+              className='absolute -bottom-[2rem] w-max text-center text-black text-[0.5rem] lg:text-[0.75rem]'
+            >
               Đang được làm
             </Typography>
           </Step>
-          <Step className='cursor-pointer'>
+          <Step placeholder='' className='cursor-pointer'>
             <TruckIcon className='w-[1.25rem] h-[1.25rem]' />
-            <Typography className='absolute -bottom-[2rem] w-max text-center text-black text-[0.5rem] lg:text-[0.75rem]'>
+            <Typography
+              placeholder=''
+              className='absolute -bottom-[2rem] w-max text-center text-black text-[0.5rem] lg:text-[0.75rem]'
+            >
               Đang giao hàng
             </Typography>
           </Step>
-          <Step className='cursor-pointer'>
+          <Step placeholder='' className='cursor-pointer'>
             <CreditCardIcon className='w-[1.25rem] h-[1.25rem]' />
-            <Typography className='absolute -bottom-[2rem] w-max text-center text-black text-[0.5rem] lg:text-[0.75rem]'>
+            <Typography
+              placeholder=''
+              className='absolute -bottom-[2rem] w-max text-center text-black text-[0.5rem] lg:text-[0.75rem]'
+            >
               Đã thanh toán
             </Typography>
           </Step>
@@ -245,6 +260,7 @@ export function ManagementOrderPage() {
 
       <div className='flex justify-between mt-3'>
         <Button
+          placeholder=''
           className='text-[10px]'
           onClick={() => setActiveStep(activeStep - 1)}
           disabled={isFirstStep}
@@ -252,6 +268,7 @@ export function ManagementOrderPage() {
           Từ chối tất cả
         </Button>
         <Button
+          placeholder=''
           className='text-[10px] bg-red-600'
           onClick={() => setActiveStep(activeStep + 1)}
           disabled={isLastStep}
