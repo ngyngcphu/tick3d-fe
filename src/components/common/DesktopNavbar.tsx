@@ -148,12 +148,12 @@ export const DesktopNavbar: Component<{
                       placeholder=''
                       className={
                         NAVBAR_ITEM_CLASSNAME +
-                        (selectedMenu === MENU_BAR.cart
+                        (selectedMenu === MENU_BAR.cartOrTrackingOrder
                           ? ' bg-blue-100 text-blue/1 font-bold pointer-events-none'
                           : '')
                       }
                       onClick={() => {
-                        setSelectedMenu(MENU_BAR.cart);
+                        setSelectedMenu(MENU_BAR.cartOrTrackingOrder);
                         setIsCategoryItem(false);
                         setSelectedCategoryItem({
                           id: '',
