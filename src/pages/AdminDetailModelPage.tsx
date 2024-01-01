@@ -240,22 +240,14 @@ export function AdminDetailModelPage() {
           <Typography placeholder='' className='font-bold text-2xl lg:mb-3'>
             {modelData ? modelData.name : ''}
           </Typography>
-          <div className='flex justify-center w-4'>
-            <ImageSlider
-              images={
-                modelData
-                  ? [modelData.imageUrl, modelData.subImages[0], modelData.subImages[1]]
-                  : []
-              }
-            />
-          </div>
+          <ImageSlider images={modelData ? [modelData.imageUrl, modelData.subImages[0]] : []} />
         </div>
         <div className='mt-5'>
           <Typography placeholder='' className='font-bold lg:mb-3' variant='h6'>
             Thông tin chi tiết
           </Typography>
           <Typography placeholder='' className='lg:mb-3' variant='paragraph'>
-            {modelData?.description}
+            {modelData ? modelData.description : ''}
           </Typography>
         </div>
         <Typography placeholder='' className='font-bold lg:mb-3' variant='h6'>

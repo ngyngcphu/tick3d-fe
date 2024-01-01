@@ -2,7 +2,7 @@ export const MENU_BAR = {
   home: 'Home',
   category: 'Categories',
   uploadOrDashboard: 'Upload & print',
-  cart: 'Shopping Cart',
+  cartOrTrackingOrder: 'Shopping Cart',
   loginOrStar: 'Log in',
   signupOrOrder: 'Sign up',
   star: 'Stars',
