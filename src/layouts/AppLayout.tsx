@@ -26,7 +26,7 @@ export const AppLayout: Component<{ menu: RouteMenu; child: RouteChild }> = ({ m
       setIsCategoryItem(true);
     }
     if (pathname === '/cart' || pathname === '/checkout') {
-      setSelectedMenu(MENU_BAR.cart);
+      setSelectedMenu(MENU_BAR.cartOrTrackingOrder);
     }
     if (pathname === '/admin/dashboard') {
       setSelectedMenu(MENU_BAR.uploadOrDashboard);
