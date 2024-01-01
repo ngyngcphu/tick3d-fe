@@ -32,7 +32,7 @@ export function DetailModelPage() {
     retry: retryQueryFn
   });
   const {
-    listModelsInCart: { isSuccess, refetch: refetchTotalModelsInCart }
+    listModelsInCart: { data: listModelsInCart, isSuccess, refetch: refetchTotalModelsInCart }
   } = useCartQuery();
   // const { data: modelCartList } = useQuery({
   //   queryKey: ['/api/cart'],
@@ -137,13 +137,20 @@ export function DetailModelPage() {
             </div>
             <button
               className={
-                !listFlagIsModelAdded[modelData.id]
-                  ? 'text-red-500  border-red-500 font-bold text-center block w-full p-3 border-2  mb-2 lg:w-[300px]'
-                  : 'text-blue-500 border-blue-500 font-bold text-center block w-full p-3 border-2  mb-2 lg:w-[300px]'
+                listFlagIsModelAdded[modelData.id] ||
+                (isSuccess &&
+                  listModelsInCart &&
+                  listModelsInCart.cart.map((item) => item.id).includes(modelData.id))
+                  ? 'text-blue-500  border-blue-500 font-bold text-center block w-full p-3 border-2  mb-2 lg:w-[300px]'
+                  : 'text-red-500 border-red-500 font-bold text-center block w-full p-3 border-2  mb-2 lg:w-[300px]'
               }
               onClick={(event) => {
                 event.stopPropagation();
-                if (isSuccess && !listFlagIsModelAdded[modelData.id]) {
+                if (
+                  isSuccess &&
+                  listModelsInCart &&
+                  !listModelsInCart.cart.map((item) => item.id).includes(modelData.id)
+                ) {
                   handleAddtoUserCart({
                     models: [
                       {
@@ -152,7 +159,6 @@ export function DetailModelPage() {
                       }
                     ]
                   });
-                  setListFlagIsModelAdded(modelData.id, true);
                 } else if (!isSuccess && !listFlagIsModelAdded[modelData.id]) {
                   addModelToCart({
                     id: modelData.id,
@@ -168,7 +174,12 @@ export function DetailModelPage() {
                 }
               }}
             >
-              {listFlagIsModelAdded[modelData.id] ? 'Đi đến giỏ hàng' : 'Thêm vào giỏ hàng'}
+              {listFlagIsModelAdded[modelData.id] ||
+              (isSuccess &&
+                listModelsInCart &&
+                listModelsInCart.cart.map((item) => item.id).includes(modelData.id))
+                ? 'Đi đến giỏ hàng'
+                : 'Thêm vào giỏ hàng'}
             </button>
             <button
               className='bg-red-500 font-bold text-center w-full text-white p-3 lg:w-[300px]'

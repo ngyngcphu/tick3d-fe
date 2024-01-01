@@ -106,12 +106,14 @@ export function CategoryPage() {
     setActivePage(1);
   };
   const {
-    listModelsInCart: { isSuccess, refetch: refetchTotalModelsInCart }
+    listModelsInCart: { data: listModelsInCart, isSuccess, refetch: refetchTotalModelsInCart }
   } = useCartQuery();
+
   const handleAddtoUserCart = async (data: { models: CartCreationPayload[] }) => {
     try {
       await createCart.mutateAsync(data);
       await refetchTotalModelsInCart();
+      // data.models[0].IsModelInCart = true;
     } catch (e) {
       alert(e);
     }
@@ -217,11 +219,20 @@ export function CategoryPage() {
                           placeholder=''
                           className={
                             'text-white normal-case text-sm truncate p-4' +
-                            (!listFlagIsModelAdded[item.id] ? ' bg-red-500 ' : ' bg-blue-500')
+                            (listFlagIsModelAdded[item.id] ||
+                            (isSuccess &&
+                              listModelsInCart &&
+                              listModelsInCart.cart.map((item) => item.id).includes(item.id))
+                              ? ' bg-blue-500 '
+                              : ' bg-red-500')
                           }
                           onClick={(event) => {
                             event.stopPropagation();
-                            if (isSuccess && !listFlagIsModelAdded[item.id]) {
+                            if (
+                              isSuccess &&
+                              listModelsInCart &&
+                              !listModelsInCart.cart.map((item) => item.id).includes(item.id)
+                            ) {
                               handleAddtoUserCart({
                                 models: [
                                   {
@@ -230,7 +241,6 @@ export function CategoryPage() {
                                   }
                                 ]
                               });
-                              setListFlagIsModelAdded(item.id, true);
                             } else if (!isSuccess && !listFlagIsModelAdded[item.id]) {
                               addModelToCart({
                                 id: item.id,
@@ -246,7 +256,12 @@ export function CategoryPage() {
                             }
                           }}
                         >
-                          {listFlagIsModelAdded[item.id] ? 'Đi đến giỏ hàng' : 'Thêm vào giỏ hàng'}
+                          {listFlagIsModelAdded[item.id] ||
+                          (isSuccess &&
+                            listModelsInCart &&
+                            listModelsInCart.cart.map((item) => item.id).includes(item.id))
+                            ? 'Đi đến giỏ hàng'
+                            : 'Thêm vào giỏ hàng'}
                         </Button>
                       </div>
                     </div>
@@ -297,12 +312,20 @@ export function CategoryPage() {
                       <Button
                         placeholder=''
                         className={
-                          'text-white normal-case text-sm truncate p-4' +
-                          (!listFlagIsModelAdded[item.id] ? ' bg-red-500 ' : ' bg-blue-500')
+                          listFlagIsModelAdded[item.id] ||
+                          (isSuccess &&
+                            listModelsInCart &&
+                            listModelsInCart.cart.map((item) => item.id).includes(item.id))
+                            ? 'text-white normal-case text-sm truncate p-4 bg-blue-500'
+                            : 'text-white normal-case text-sm truncate p-4 bg-red-500'
                         }
                         onClick={(event) => {
                           event.stopPropagation();
-                          if (isSuccess && !listFlagIsModelAdded[item.id]) {
+                          if (
+                            isSuccess &&
+                            listModelsInCart &&
+                            !listModelsInCart.cart.map((item) => item.id).includes(item.id)
+                          ) {
                             handleAddtoUserCart({
                               models: [
                                 {
@@ -311,7 +334,6 @@ export function CategoryPage() {
                                 }
                               ]
                             });
-                            setListFlagIsModelAdded(item.id, true);
                           } else if (!isSuccess && !listFlagIsModelAdded[item.id]) {
                             addModelToCart({
                               id: item.id,
@@ -327,7 +349,12 @@ export function CategoryPage() {
                           }
                         }}
                       >
-                        {listFlagIsModelAdded[item.id] ? 'Đi đến giỏ hàng' : 'Thêm vào giỏ hàng'}
+                        {listFlagIsModelAdded[item.id] ||
+                        (isSuccess &&
+                          listModelsInCart &&
+                          listModelsInCart.cart.map((item) => item.id).includes(item.id))
+                          ? 'Đi đến giỏ hàng'
+                          : 'Thêm vào giỏ hàng'}
                       </Button>
                     </div>
                   </CardBody>
