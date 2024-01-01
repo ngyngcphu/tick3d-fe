@@ -11,6 +11,7 @@ import {
   ShoppingCartPage,
   SignUpPage,
   PaymentCheckoutPage,
+  ManagementOrderPage,
   AdminDashboard
 } from '@pages';
 import { emitEvent } from '@hooks';
@@ -40,6 +41,17 @@ export default function App() {
           elementReplace: (
             <AdminProtected>
               <AdminDashboard />
+            </AdminProtected>
+          )
+        },
+        {
+          type: 'item',
+          path: '/manageOrder',
+          name: MENU_BAR.manageOrder,
+          element: <></>,
+          elementReplace: (
+            <AdminProtected>
+              <ManagementOrderPage />
             </AdminProtected>
           )
         },

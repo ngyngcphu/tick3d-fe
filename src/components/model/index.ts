@@ -3,3 +3,4 @@
  */
 
 export * from './ImageSlider';
+export * from './ManageOrderProduct';

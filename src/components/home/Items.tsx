@@ -5,6 +5,7 @@ import { homeService } from '@services';
 import { useCartStore } from '@states';
 import { retryQueryFn } from '@utils';
 import { useCartQuery, useCartMutation } from '@hooks';
+import { SORT_ORDER } from '@constants';
 
 export function Items() {
   const { createCart } = useCartMutation();
@@ -12,7 +13,7 @@ export function Items() {
 
   const { data: items } = useQuery({
     queryKey: ['topModels'],
-    queryFn: () => homeService.getTopModels(8, 'numberBought', 'desc'),
+    queryFn: () => homeService.getTopModels(8, 'numberBought', SORT_ORDER.numberBought),
     retry: retryQueryFn
   });
 

@@ -8,6 +8,7 @@ export * from './CategoryPage';
 export * from './DetailModelPage';
 export * from './HomePage';
 export * from './LoginPage';
+export * from './ManagementOrderPage';
 export * from './MyOrderPage';
 export * from './MyStarPage';
 export * from './PaymentCheckoutPage';
