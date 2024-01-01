@@ -7,5 +7,6 @@ export const MENU_BAR = {
   signupOrOrder: 'Sign up',
   star: 'Stars',
   order: 'My order',
-  dashboard: 'Dashboard'
+  dashboard: 'Dashboard',
+  manageOrder: 'Manage Order'
 };
