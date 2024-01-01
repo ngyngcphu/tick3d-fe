@@ -20,7 +20,7 @@ export function ManagementOrderPage() {
   const [activeStep, setActiveStep] = useState<number>(0);
   const [isLastStep, setIsLastStep] = useState<boolean>(false);
   const [isFirstStep, setIsFirstStep] = useState<boolean>(false);
-  const columnHelper = createColumnHelper<Order>();
+  const columnHelper = createColumnHelper<ManageOrder>();
 
   const columnDefs = useMemo(
     () => [
@@ -204,7 +204,7 @@ export function ManagementOrderPage() {
     ],
     []
   );
-  const orderTable = useReactTable<Order>({
+  const orderTable = useReactTable<ManageOrder>({
     columns: columnDefs,
     data: orders,
     getCoreRowModel: getCoreRowModel<RowModel<Order>>()

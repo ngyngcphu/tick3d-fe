@@ -5,7 +5,7 @@ type ProductInOrder = {
   cost: number;
 };
 
-type Order = {
+type ManageOrder = {
   idOrder: string;
   dateOrder: Date;
   customerName: string;
